@@ -1,0 +1,31 @@
+description: Данные о пункте хранения
+type: object
+required:
+    - id
+    - name
+    - address
+    - workingHours
+    - status
+properties:
+    id:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    name:
+        description: Название пункта хранения
+        type: string
+        example: Хранилище "У Рязановой"
+    address:
+        description: Адрес пункта хранения
+        type: string
+        example: Ленинградская область, г. Мурино, ул. Меллстроя, д. 13, стр. 66
+    workingHours:
+        description: Рабочие часы пункта хранения
+        type: string
+        example: 9:00-21:00
+    description:
+        description: Описание пункта хранения
+        type: string
+        example: Лучший пункт хранения в Мурино! 100-процентная гарантия защиты ваших вещей от всяких фогов!
+    status:
+        $ref: 'storage-status.schema.yaml'

@@ -2,49 +2,35 @@ openapi: 3.0.0
 
 info:
     version: v1
-    title: API для работы с пользователями в сервисе по бронированию камер хранения
+    title: API для работы с пунктами хранения в сервисе по бронированию камер хранения
 
 tags:
-    -   name: users
-        description: Пользователи
+    -   name: storages
+        description: Пункты хранения
 
 paths:
-    /api/v1/users:
+    /api/v1/storages:
         get:
             tags:
-                - users
-            summary: Найти аккаунты
+                - storages
+            summary: Найти пункты хранения
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: username
-                    in: query
-                    required: false
-                    description: Логин пользователя
-                    schema:
-                        type: string
-                        example: g1gachad
                 -   name: name
                     in: query
                     required: false
-                    description: Имя пользователя
+                    description: Название пункта хранения
                     schema:
                         type: string
-                        example: Зубенко Михаил Петрович
-                -   name: email
+                        example: Хранилище "У Рязановой"
+                -   name: address
                     in: query
                     required: false
-                    description: Почта пользователя
+                    description: Адрес пункта хранения
                     schema:
                         type: string
-                        example: a@b.c
-                -   name: role
-                    in: query
-                    required: false
-                    description: Роль пользователя
-                    schema:
-                        type: string
-                        example: admin
+                        example: Москва
                 -   name: pageNumber
                     in: query
                     required: false
@@ -69,7 +55,7 @@ paths:
                             schema:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/UserGet'
+                                    $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные параметры поиска
                 '401':
@@ -80,23 +66,19 @@ paths:
                     description: Ошибки сервера
         post:
             tags:
-                - users
-            summary: Создать аккаунт
+                - storages
+            summary: Создать пункт хранения
             security:
                 -   JWTBearer: [ ]
             requestBody:
-                description: Форма для создания пользователя
+                description: Форма для создания пункта хранения
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserCreate'
+                            $ref: '#/components/schemas/StorageCreate'
             responses:
-                '201':
-                    description: Пользователь создан
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UserGet'
+                '204':
+                    description: Пункт хранения создан
                 '400':
                     description: Некорректные данные формы создания пользователя
                 '401':
@@ -106,22 +88,21 @@ paths:
                 '405':
                     description: Сервер запущен только на чтение
                 '409':
-                    description: Пользователь с таким логином уже существует
+                    description: Пользователь с таким логином или почтой уже существует
                 '500':
                     description: Ошибки сервера
-
-    /api/v1/users/{userId}:
+    /api/v1/storages/{storageId}:
         get:
             tags:
-                - users
-            summary: Просмотреть данные аккаунта
+                - storages
+            summary: Просмотреть данные пункта хранения
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: userId
+                -   name: storageId
                     in: path
                     required: true
-                    description: Идентификатор пользователя
+                    description: Идентификатор пункта хранения
                     schema:
                         type: string
                         format: uuid
@@ -131,7 +112,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UserGet'
+                                $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные параметры запроса
                 '401':
@@ -139,147 +120,173 @@ paths:
                 '403':
                     description: Пользователь не имеет прав на эту операцию
                 '404':
-                    description: Пользователь не найден
+                    description: Пункт хранения не найден
                 '500':
                     description: Ошибки сервера
         patch:
             tags:
-                - users
-            summary: Обновить данные аккаунта
+                - storages
+            summary: Обновить данные пункта хранения
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: userId
+                -   name: storageId
                     in: path
                     required: true
-                    description: Идентификатор пользователя
+                    description: Идентификатор пункта хранения
                     schema:
                         type: string
                         format: uuid
             requestBody:
-                description: Форма для обновления пользователя
+                description: Форма для обновления пункта хранения
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserUpdate'
-            responses:
-                '200':
-                    description: Данные получены
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/UserGet'
-                '400':
-                    description: Некорректные данные формы обновления
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
-                '404':
-                    description: Пользователь не найден
-                '405':
-                    description: Сервер запущен только на чтение
-                '409':
-
-                    description: Пользователь с таким логином уже существует
-                '500':
-                    description: Ошибки сервера
-        delete:
-            tags:
-                - users
-            summary: Заблокировать аккаунт
-            security:
-                -   JWTBearer: [ ]
-            parameters:
-                -   name: userId
-                    in: path
-                    required: true
-                    description: Идентификатор пользователя
-                    schema:
-                        type: string
-                        format: uuid
-            responses:
-                '204':
-                    description: Пользователь заблокирован
-                '400':
-                    description: Некорректные параметры запроса
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
-                '404':
-                    description: Пользователь не найден
-                '405':
-                    description: Сервер запущен только на чтение
-                '500':
-                    description: Ошибки сервера
-    /api/v1/users/me:
-        get:
-            tags:
-                - users
-            summary: Просмотреть данные своего аккаунта
-            security:
-                -   JWTBearer: [ ]
-            responses:
-                '200':
-                    description: Данные получены
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MeGet'
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь заблокирован
-                '404':
-                    description: Пользователь не найден
-                '500':
-                    description: Ошибки сервера
-        patch:
-            tags:
-                - users
-            summary: Обновить данные своего аккаунта
-            security:
-                -   JWTBearer: [ ]
-            requestBody:
-                description: Форма для регистрациии
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MeUpdate'
+                            $ref: '#/components/schemas/StorageUpdate'
             responses:
                 '200':
                     description: Данные обновлены
                     content:
                         application/json:
                             schema:
-                                type: string
-                                format: application/jwt
-                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные данные формы обновления
                 '401':
                     description: Пользователь не авторизован
                 '403':
-                    description: Пользователь заблокирован
+                    description: Пользователь не имеет прав на эту операцию
                 '404':
                     description: Пользователь не найден
                 '405':
                     description: Сервер запущен только на чтение
-                '409':
-                    description: Пользователь с таким логином уже существует
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/{storageId}/approve:
+        patch:
+            tags:
+                - storages
+            summary: Подтвердить данные пункта хранения
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: storageId
+                    in: path
+                    required: true
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '200':
+                    description: Пункт хранения подтверждён
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StorageGet'
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пункт хранения не найден
+                '405':
+                    description: Сервер запущен только на чтение
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/{storageId}/reject:
+        delete:
+            tags:
+                - storages
+            summary: Отклонить заявку на создание пункта хранения
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: storageId
+                    in: path
+                    required: true
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '204':
+                    description: Заявка отклонена
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пункт хранения не найден
+                '405':
+                    description: Сервер запущен только на чтение
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/my:
+        get:
+            tags:
+                - storages
+            summary: Просмотреть данные пункта хранения
+            security:
+                -   JWTBearer: [ ]
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StorageGet'
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пункт хранения не найден
+                '500':
+                    description: Ошибки сервера
+        patch:
+            tags:
+                - storages
+            summary: Обновить данные пункта хранения
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для обновления пункта хранения
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/StorageUpdate'
+            responses:
+                '200':
+                    description: Данные обновлены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/StorageGet'
+                '400':
+                    description: Некорректные данные формы обновления
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пользователь не найден
+                '405':
+                    description: Сервер запущен только на чтение
                 '500':
                     description: Ошибки сервера
 
 components:
     schemas:
-        UserCreate:
-            $ref: '../dtos/users/user-create.schema.yaml'
-        UserGet:
-            $ref: '../dtos/users/user-get.schema.yaml'
-        UserUpdate:
-            $ref: '../dtos/users/user-update.schema.yaml'
-        MeGet:
-            $ref: '../dtos/users/user-me.schema.yaml'
-        MeUpdate:
-            $ref: '../dtos/users/user-me-update.schema.yaml'
+        StorageCreate:
+            $ref: '../dtos/storages/storage-create.schema.yaml'
+        StorageGet:
+            $ref: '../dtos/storages/storage-get.schema.yaml'
+        StorageUpdate:
+            $ref: '../dtos/storages/storage-update.schema.yaml'

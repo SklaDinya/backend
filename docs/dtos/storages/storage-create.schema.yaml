@@ -1,0 +1,40 @@
+description: Данные про пункт хранения
+type: object
+required:
+    - id
+    - storageName
+    - address
+    - workingHours
+properties:
+    id:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    password:
+        description: Пароль пользователя
+        type: string
+        example: qwerty123
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c
+    storageName:
+        description: Название пункта хранения
+        type: string
+        example: Хранилище "У Рязановой"
+    address:
+        description: Адрес пункта хранения
+        type: string
+        example: Ленинградская область, г. Мурино, ул. Меллстроя, д. 13, стр. 66
+    workingHours:
+        description: Рабочие часы пункта хранения
+        type: string
+        example: 9:00-21:00
+    description:
+        description: Описание пункта хранения
+        type: string
+        example: Лучший пункт хранения в Мурино! 100-процентная гарантия защиты ваших вещей от всяких фогов!
