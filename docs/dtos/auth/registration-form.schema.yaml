@@ -1,0 +1,23 @@
+description: Форма для регистрации
+type: object
+required:
+    - username
+    - password
+    - name
+properties:
+    username:
+        description: Логин пользователя
+        type: string
+        example: g1gachad
+    password:
+        description: Пароль пользователя
+        type: string
+        example: qwerty123
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c

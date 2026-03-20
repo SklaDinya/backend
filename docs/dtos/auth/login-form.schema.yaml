@@ -1,0 +1,15 @@
+description: Форма для входа
+type:
+    object
+required:
+    - username
+    - password
+properties:
+    username:
+        description: Логин пользователя
+        type: string
+        example: g1gachad
+    password:
+        description: Пароль пользователя
+        type: string
+        example: qwerty123

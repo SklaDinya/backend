@@ -1,0 +1,45 @@
+description: Данные о пользователе для администратора
+type: object
+required:
+    - id
+    - username
+    - name
+    - role
+    - createdAt
+    - updatedAt
+    - banned
+properties:
+    id:
+        description: Идентификатор пользователя
+        type: string
+        format: uuid
+    username:
+        description: Логин пользователя
+        type: string
+        example: g1gachad
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c
+    role:
+        description: Роль пользователя
+        type: string
+        example: default
+    createdAt:
+        description: Время создания аккаунта
+        type: string
+        format: date-time
+        example: 2001-09-11T08:46:26Z
+    updatedAt:
+        description: Время последнего обновления аккаунта
+        type: string
+        format: date-time
+        example: 2001-09-11T09:03:02Z
+    banned:
+        description: Заблокирован ли аккаунт
+        type: boolean
+        example: false
