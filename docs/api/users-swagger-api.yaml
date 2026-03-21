@@ -212,7 +212,7 @@ paths:
             security:
                 -   JWTBearer: [ ]
             requestBody:
-                description: Форма для регистрациии
+                description: Форма для обновления своего аккаунта
                 content:
                     application/json:
                         schema:
