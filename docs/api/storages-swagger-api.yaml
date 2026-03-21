@@ -14,8 +14,6 @@ paths:
             tags:
                 - storages
             summary: Найти пункты хранения
-            security:
-                -   JWTBearer: [ ]
             parameters:
                 -   name: name
                     in: query

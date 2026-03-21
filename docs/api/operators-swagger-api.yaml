@@ -9,7 +9,7 @@ tags:
         description: Операторы
 
 paths:
-    /api/v1/storages/{storageId}/operators:
+    /api/v1/storages/my/operators:
         get:
             tags:
                 - operators
@@ -17,13 +17,6 @@ paths:
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: storageId
-                    in: path
-                    required: true
-                    description: Идентификатор пункта хранения
-                    schema:
-                        type: string
-                        format: uuid
                 -   name: username
                     in: query
                     required: false
@@ -91,14 +84,6 @@ paths:
             summary: Создать оператора
             security:
                 -   JWTBearer: [ ]
-            parameters:
-                -   name: storageId
-                    in: path
-                    required: true
-                    description: Идентификатор пункта хранения
-                    schema:
-                        type: string
-                        format: uuid
             requestBody:
                 description: Форма для создания оператора
                 content:
@@ -125,7 +110,7 @@ paths:
                 '500':
                     description: Ошибки сервера
 
-    /api/v1/storages/{storageId}/operators/{operatorId}:
+    /api/v1/storages/my/operators/{operatorId}:
         get:
             tags:
                 - operators
@@ -133,13 +118,6 @@ paths:
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: storageId
-                    in: path
-                    required: true
-                    description: Идентификатор пункта хранения
-                    schema:
-                        type: string
-                        format: uuid
                 -   name: operatorId
                     in: path
                     required: true
@@ -171,13 +149,6 @@ paths:
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: storageId
-                    in: path
-                    required: true
-                    description: Идентификатор пункта хранения
-                    schema:
-                        type: string
-                        format: uuid
                 -   name: operatorId
                     in: path
                     required: true

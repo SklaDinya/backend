@@ -1,0 +1,14 @@
+description: Данные для создания ячейки
+type: object
+required:
+    - name
+    - cellClass
+properties:
+    name:
+        description: Название ячейки
+        type: string
+        example: 34
+    cellClass:
+        description: Класс ячейки
+        type: string
+        example: Обычная
