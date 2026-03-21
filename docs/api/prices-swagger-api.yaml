@@ -1,0 +1,94 @@
+openapi: 3.0.0
+
+info:
+    version: v1
+    title: API для работы с тарифами в сервисе по бронированию камер хранения
+
+tags:
+    -   name: prices
+        description: Тарифы
+
+paths:
+    /api/v1/storages/{storageId}/prices:
+        get:
+            tags:
+                - prices
+            summary: Найти тарифы
+            parameters:
+                -   name: storageId
+                    in: path
+                    required: true
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PriceGet'
+                '400':
+                    description: Некорректные данные  
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/my/prices:
+        get:
+            tags:
+                - prices
+            summary: Найти тарифы
+            security:
+                -   JWTBearer: [ ]
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PriceGet'
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '500':
+                    description: Ошибки сервера
+        post:
+            tags:
+                - prices
+            summary: Добавить тариф
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для создания камеры хранения
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PriceCreate'
+            responses:
+                '204':
+                    description: Тариф создан
+                '400':
+                    description: Некорректные данные формы создания тарифа
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '405':
+                    description: Сервер запущен только на чтение
+                '500':
+                    description: Ошибки сервера
+
+components:
+    schemas:
+        PriceCreate:
+            $ref: '../dtos/prices/price-create.schema.yaml'
+        PriceGet:
+            $ref: '../dtos/prices/price-get.schema.yaml'
+    securitySchemes:
+        JWTBearer:
+            $ref: '../security/jwt.schema.yaml'

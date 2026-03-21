@@ -1,0 +1,32 @@
+description: Форма создания пункта хранения
+type: object
+required:
+    - name
+    - password
+    - storageName
+    - address
+properties:
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    password:
+        description: Пароль пользователя
+        type: string
+        example: qwerty123
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c
+    storageName:
+        description: Название пункта хранения
+        type: string
+        example: Хранилище "У Рязановой"
+    address:
+        description: Адрес пункта хранения
+        type: string
+        example: Ленинградская область, г. Мурино, ул. Меллстроя, д. 13, стр. 66
+    description:
+        description: Описание пункта хранения
+        type: string
+        example: Лучший пункт хранения в Мурино! 100-процентная гарантия защиты ваших вещей от всяких фогов!

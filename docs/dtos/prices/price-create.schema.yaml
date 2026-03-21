@@ -1,0 +1,15 @@
+description: Форма для создания тарифа
+type: object
+required:
+    - cellClass
+    - price
+properties:
+    cellClass:
+        description: Класс ячеек
+        type: string
+        example: Обычная
+    price:
+        description: Цена
+        type: string
+        format: decimal128
+        example: 993

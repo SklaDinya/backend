@@ -1,0 +1,31 @@
+description: Данные об операторе
+type: object
+required:
+    - id
+    - username
+    - name
+    - role
+    - banned
+properties:
+    id:
+        description: Идентификатор оператора
+        type: string
+        format: uuid
+    username:
+        description: Логин пользователя
+        type: string
+        example: g1gachad
+    name:
+        description: Имя оператора
+        type: string
+        example: Зубенко Михаил Петрович
+    email:
+        description: Почта оператора
+        type: string
+        example: a@b.c
+    role:
+        $ref: 'operator-role.schema.yaml'
+    banned:
+        description: Заблокирован ли аккаунт
+        type: boolean
+        example: false

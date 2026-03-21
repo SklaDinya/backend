@@ -1,0 +1,258 @@
+openapi: 3.0.0
+
+info:
+    version: v1
+    title: API для работы с пользователями в сервисе по бронированию камер хранения
+
+tags:
+    -   name: users
+        description: Пользователи
+
+paths:
+    /api/v1/users:
+        get:
+            tags:
+                - users
+            summary: Найти аккаунты
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: username
+                    in: query
+                    required: false
+                    description: Логин пользователя
+                    schema:
+                        type: string
+                        example: g1gachad
+                -   name: name
+                    in: query
+                    required: false
+                    description: Имя пользователя
+                    schema:
+                        type: string
+                        example: Зубенко Михаил Петрович
+                -   name: email
+                    in: query
+                    required: false
+                    description: Почта пользователя
+                    schema:
+                        type: string
+                        example: a@b.c
+                -   name: role
+                    in: query
+                    required: false
+                    description: Роль пользователя
+                    schema:
+                        type: string
+                        example: Admin
+                -   name: pageNumber
+                    in: query
+                    required: false
+                    description: Номер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 0
+                -   name: pageSize
+                    in: query
+                    required: false
+                    description: Размер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 50
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/UserGet'
+                '400':
+                    description: Некорректные параметры поиска
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '500':
+                    description: Ошибки сервера
+        post:
+            tags:
+                - users
+            summary: Создать аккаунт
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для создания пользователя
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserCreate'
+            responses:
+                '201':
+                    description: Пользователь создан
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserGet'
+                '400':
+                    description: Некорректные данные формы создания пользователя
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '405':
+                    description: Сервер запущен только на чтение
+                '409':
+                    description: Пользователь с таким логином или почтой уже существует
+                '500':
+                    description: Ошибки сервера
+
+    /api/v1/users/{userId}:
+        get:
+            tags:
+                - users
+            summary: Просмотреть данные аккаунта
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: userId
+                    in: path
+                    required: true
+                    description: Идентификатор пользователя
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserGet'
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пользователь не найден
+                '500':
+                    description: Ошибки сервера
+        patch:
+            tags:
+                - users
+            summary: Обновить данные аккаунта
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: userId
+                    in: path
+                    required: true
+                    description: Идентификатор пользователя
+                    schema:
+                        type: string
+                        format: uuid
+            requestBody:
+                description: Форма для обновления пользователя
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserUpdate'
+            responses:
+                '200':
+                    description: Данные обновлены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserGet'
+                '400':
+                    description: Некорректные данные формы обновления
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пользователь не найден
+                '405':
+                    description: Сервер запущен только на чтение
+                '409':
+                    description: Пользователь с таким логином или почтой уже существует
+                '500':
+                    description: Ошибки сервера
+    /api/v1/users/me:
+        get:
+            tags:
+                - users
+            summary: Просмотреть данные своего аккаунта
+            security:
+                -   JWTBearer: [ ]
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/MeGet'
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь заблокирован
+                '404':
+                    description: Пользователь не найден
+                '500':
+                    description: Ошибки сервера
+        patch:
+            tags:
+                - users
+            summary: Обновить данные своего аккаунта
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для обновления своего аккаунта
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MeUpdate'
+            responses:
+                '200':
+                    description: Данные обновлены
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                format: application/jwt
+                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                '400':
+                    description: Некорректные данные формы обновления
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь заблокирован
+                '404':
+                    description: Пользователь не найден
+                '405':
+                    description: Сервер запущен только на чтение
+                '409':
+                    description: Пользователь с таким логином или почтой уже существует
+                '500':
+                    description: Ошибки сервера
+
+components:
+    schemas:
+        UserCreate:
+            $ref: '../dtos/users/user-create.schema.yaml'
+        UserGet:
+            $ref: '../dtos/users/user-get.schema.yaml'
+        UserUpdate:
+            $ref: '../dtos/users/user-update.schema.yaml'
+        MeGet:
+            $ref: '../dtos/users/user-me.schema.yaml'
+        MeUpdate:
+            $ref: '../dtos/users/user-me-update.schema.yaml'
+    securitySchemes:
+        JWTBearer:
+            $ref: '../security/jwt.schema.yaml'

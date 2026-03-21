@@ -1,0 +1,48 @@
+description: Данные о бронировании для пользователя
+type: object
+required:
+    - id
+    - userId
+    - storageId
+    - storage
+    - cells
+    - startTime
+    - bookingTime
+    - createdAt
+    - status
+properties:
+    id:
+        description: Идентификатор ячейки
+        type: string
+        format: uuid
+    userId:
+        description: Идентификатор пользователя
+        type: string
+        format: uuid
+    storageId:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    storage:  
+        $ref: '../storages/storage-get.schema.yaml'
+    cells:
+        description: Список забронированных ячеек
+        type: array
+        items:
+            $ref: '../cells/cell-get.schema.yaml'
+    startTime:
+        description: Время начала бронирования
+        type: string
+        format: date-time
+        example: 2001-09-11T08:00:00Z
+    bookingTime:
+        description: Длительность бронирования
+        type: string
+        format: duration
+    createdAt:
+        description: Время создания бронирования
+        type: string
+        format: date-time
+        example: 2001-09-11T08:46:26Z
+    status:
+        $ref: 'booking-status.schema.yaml'

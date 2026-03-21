@@ -1,0 +1,75 @@
+openapi: 3.0.0
+
+info:
+    version: v1
+    title: API для работы с авторизацией и регистрацией в сервисе по бронированию камер хранения
+
+tags:
+    -   name: auth
+        description: Авторизация и регистрация
+
+paths:
+    /api/v1/auth/login:
+        post:
+            tags:
+                - auth
+            summary: Авторизоваться
+            requestBody:
+                description: Форма для входа
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginForm'
+            responses:
+                '200':
+                    description: Вход успешен
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                format: application/jwt
+                                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                '400':
+                    description: Некорректные входные данные
+                '403':
+                    description: Пользователь заблокирован или не существует
+                '405':
+                    description: Сервер запущен только на чтение
+                '500':
+                    description: Ошибки сервера
+    /api/v1/auth/register:
+        post:
+            tags:
+                - auth
+            summary: Зарегистрироваться
+            requestBody:
+                description: Форма для регистрации
+                content:
+                    application/json:
+
+                        schema:
+                            $ref: '#/components/schemas/RegistrationForm'
+            responses:
+                '200':
+                    description: Регистрация успешна
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                format: application/jwt
+                                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                '400':
+                    description: Некорректные данные для регистрации
+                '405':
+                    description: Сервер запущен только на чтение
+                '409':
+                    description: Пользователь с таким логином уже существует
+                '500':
+                    description: Ошибки сервера
+
+components:
+    schemas:
+        LoginForm:
+            $ref: '../dtos/auth/login-form.schema.yaml'
+        RegistrationForm:
+            $ref: '../dtos/auth/registration-form.schema.yaml'

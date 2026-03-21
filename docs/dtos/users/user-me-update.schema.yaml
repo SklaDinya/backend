@@ -1,0 +1,23 @@
+description: Форма для обновления пользователя
+type: object
+properties:
+    username:
+        description: Логин пользователя
+        type: string
+        example: g1gachad
+    oldPassword:
+        description: Старый пароль пользователя
+        type: string
+        example: qwerty123
+    newPassword:
+        description: Новый пароль пользователя
+        type: string
+        example: qwerty124
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c

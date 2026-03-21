@@ -1,0 +1,228 @@
+openapi: 3.0.0
+
+info:
+    version: v1
+    title: API для работы с бронированиями в сервисе по бронированию камер хранения
+
+tags:
+    -   name: bookings
+        description: Бронирования
+
+paths:
+    /api/v1/users/me/bookings:
+        get:
+            tags:
+                - bookings
+            summary: Найти бронирования
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: pageNumber
+                    in: query
+                    required: false
+                    description: Номер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 0
+                -   name: pageSize
+                    in: query
+                    required: false
+                    description: Размер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 50
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/BookingGetUser'
+                '400':
+                    description: Некорректные параметры поиска
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '500':
+                    description: Ошибки сервера
+        post:
+            tags:
+                - bookings
+            summary: Создать бронирование
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для создания бронирования
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/BookingCreate'
+            responses:
+                '201':
+                    description: Бронирование создано, но не оплачено
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingReceipt'
+                '400':
+                    description: Некорректные данные формы создания бронирования
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '405':
+                    description: Сервер запущен только на чтение
+                '409':
+                    description: Камеры хранения уже были забронированы на это время
+                '500':
+                    description: Ошибки сервера
+
+    /api/v1/users/me/bookings/{bookingId}:
+        get:
+            tags:
+                - bookings
+            summary: Просмотреть данные бронирования
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: bookingId
+                    in: path
+                    required: true
+                    description: Идентификатор бронирования
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingGetUser'
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Бронирование не найдено
+                '500':
+                    description: Ошибки сервера
+        delete:
+            tags:
+                - bookings
+            summary: Отменить бронирование
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: bookingId
+                    in: path
+                    required: true
+                    description: Идентификатор бронирования
+                    schema:
+                        type: string
+                        format: uuid
+            responses:
+                '200':
+                    description: Бронирование отменено
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BookingGetUser'
+                '400':
+                    description: Некорректные параметры запроса
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Бронирование не найдено
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/my/bookings:
+        get:
+            tags:
+                - bookings
+            summary: Найти бронирования
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: startBooking
+                    in: query
+                    required: true
+                    description: Верхний предел диапазона времени
+                    schema:
+                        type: string
+                        format: date-time
+                        example: 2001-09-11T08:00:00Z
+                -   name: endBooking
+                    in: query
+                    required: true
+                    description: Нижний предел диапазона времени
+                    schema:
+                        type: string
+                        format: date-time
+                        example: 2001-09-11T09:00:00Z
+                -   name: statuses
+                    in: query
+                    required: false
+                    description: Статусы бронирований
+                    schema:
+                        type: array
+                        items:
+                            $ref: '#/components/schemas/BookingStatus'
+                -   name: pageNumber
+                    in: query
+                    required: false
+                    description: Номер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 0
+                -   name: pageSize
+                    in: query
+                    required: false
+                    description: Размер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 50
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/BookingGetOperator'
+                '400':
+                    description: Некорректные параметры поиска
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
+                '500':
+                    description: Ошибки сервера
+
+components:
+    schemas:
+        BookingCreate:
+            $ref: '../dtos/bookings/booking-create.schema.yaml'
+        BookingGetUser:
+            $ref: '../dtos/bookings/booking-get-user.schema.yaml'
+        BookingGetOperator:
+            $ref: '../dtos/bookings/booking-get-operator.schema.yaml'
+        BookingReceipt:
+            $ref: '../dtos/bookings/booking-receipt.schema.yaml'
+        BookingStatus:
+            $ref: '../dtos/bookings/booking-status.schema.yaml'
+    securitySchemes:
+        JWTBearer:
+            $ref: '../security/jwt.schema.yaml'

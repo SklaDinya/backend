@@ -1,0 +1,24 @@
+description: Данные о камере хранения
+type: object
+required:
+    - id
+    - storageId
+    - name
+    - cellClass
+properties:
+    id:
+        description: Идентификатор ячейки
+        type: string
+        format: uuid
+    storageId:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    name:
+        description: Название ячейки
+        type: string
+        example: 34
+    cellClass:
+        description: Класс ячейки
+        type: string
+        example: Обычная
