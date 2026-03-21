@@ -12,7 +12,7 @@ required:
     - status
 properties:
     id:
-        description: Идентификатор ячейки
+        description: Идентификатор бронирования
         type: string
         format: uuid
     userId:
