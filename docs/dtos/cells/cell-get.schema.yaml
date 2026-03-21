@@ -1,4 +1,4 @@
-description: Данные о ячейке
+description: Данные о камере хранения
 type: object
 required:
     - id

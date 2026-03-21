@@ -238,14 +238,10 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/StorageGet'
-                '400':
-                    description: Некорректные параметры запроса
                 '401':
                     description: Пользователь не авторизован
                 '403':
                     description: Пользователь не имеет прав на эту операцию
-                '404':
-                    description: Пункт хранения не найден
                 '500':
                     description: Ошибки сервера
         patch:

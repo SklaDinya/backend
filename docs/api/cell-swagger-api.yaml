@@ -37,6 +37,7 @@ paths:
                     schema:
                         type: string
                         format: duration
+                        example: P3D
                 -   name: cellClasses
                     in: query
                     required: false
@@ -73,10 +74,8 @@ paths:
                                     $ref: '#/components/schemas/CellGet'
                 '400':
                     description: Некорректные параметры поиска
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пункт хранения не найден
                 '500':
                     description: Ошибки сервера
     /api/v1/storages/{storageId}/cells/classes:
@@ -102,29 +101,27 @@ paths:
                                 items:
                                     type: string
                                     example: Обычная
-                '400':
-                    description: Некорректные параметры поиска
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
+                '404':
+                    description: Пункт хранения не найден
                 '500':
                     description: Ошибки сервера
     /api/v1/storages/my/cells:
         get:
             tags:
                 - cells
-            summary: Найти операторов
+            summary: Найти камеры хранения
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: cellClass
+                -   name: cellClasses
                     in: query
                     required: false
-                    description: Класс ячеек
+                    description: Классы ячеек
                     schema:
-                        type: string
-                        example: Обычная
+                        type: array
+                        items:
+                            type: string
+                            example: Обычная
                 -   name: pageNumber
                     in: query
                     required: false
@@ -206,8 +203,6 @@ paths:
                                 items:
                                     type: string
                                     example: Обычная
-                '400':
-                    description: Некорректные параметры поиска
                 '401':
                     description: Пользователь не авторизован
                 '403':

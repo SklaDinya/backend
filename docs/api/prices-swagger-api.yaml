@@ -31,6 +31,8 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/PriceGet'
+                '400':
+                    description: Некорректные данные  
                 '500':
                     description: Ошибки сервера
     /api/v1/storages/my/prices:

@@ -1,4 +1,4 @@
-description: Данные для создания ячейки
+description: Данные для создания камеры хранения
 type: object
 required:
     - name
