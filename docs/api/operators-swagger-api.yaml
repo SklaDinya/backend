@@ -2,49 +2,56 @@ openapi: 3.0.0
 
 info:
     version: v1
-    title: API для работы с пользователями в сервисе по бронированию камер хранения
+    title: API для работы с операторами в сервисе по бронированию камер хранения
 
 tags:
-    -   name: users
-        description: Пользователи
+    -   name: operators
+        description: Операторы
 
 paths:
-    /api/v1/users:
+    /api/v1/storages/{storageId}/operators:
         get:
             tags:
-                - users
-            summary: Найти аккаунты
+                - operators
+            summary: Найти операторов
             security:
                 -   JWTBearer: [ ]
             parameters:
+                -   name: storageId
+                    in: path
+                    required: true
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
                 -   name: username
                     in: query
                     required: false
-                    description: Логин пользователя
+                    description: Логин оператора
                     schema:
                         type: string
                         example: g1gachad
                 -   name: name
                     in: query
                     required: false
-                    description: Имя пользователя
+                    description: Имя оператора
                     schema:
                         type: string
                         example: Зубенко Михаил Петрович
                 -   name: email
                     in: query
                     required: false
-                    description: Почта пользователя
+                    description: Почта оператора
                     schema:
                         type: string
                         example: a@b.c
                 -   name: role
                     in: query
                     required: false
-                    description: Роль пользователя
+                    description: Роль оператора
                     schema:
                         type: string
-                        example: Admin
+                        example: MainOperator
                 -   name: pageNumber
                     in: query
                     required: false
@@ -69,7 +76,7 @@ paths:
                             schema:
                                 type: array
                                 items:
-                                    $ref: '#/components/schemas/UserGet'
+                                    $ref: '#/components/schemas/OperatorGet'
                 '400':
                     description: Некорректные параметры поиска
                 '401':
@@ -80,25 +87,33 @@ paths:
                     description: Ошибки сервера
         post:
             tags:
-                - users
-            summary: Создать аккаунт
+                - operators
+            summary: Создать оператора
             security:
                 -   JWTBearer: [ ]
+            parameters:
+                -   name: storageId
+                    in: path
+                    required: true
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
             requestBody:
-                description: Форма для создания пользователя
+                description: Форма для создания оператора
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserCreate'
+                            $ref: '#/components/schemas/OperatorCreate'
             responses:
                 '201':
-                    description: Пользователь создан
+                    description: Оператор создан
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UserGet'
+                                $ref: '#/components/schemas/OperatorGet'
                 '400':
-                    description: Некорректные данные формы создания пользователя
+                    description: Некорректные данные формы создания оператора
                 '401':
                     description: Пользователь не авторизован
                 '403':
@@ -110,18 +125,25 @@ paths:
                 '500':
                     description: Ошибки сервера
 
-    /api/v1/users/{userId}:
+    /api/v1/storages/{storageId}/operators/{operatorId}:
         get:
             tags:
-                - users
-            summary: Просмотреть данные аккаунта
+                - operators
+            summary: Просмотреть данные аккаунта оператора
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: userId
+                -   name: storageId
                     in: path
                     required: true
-                    description: Идентификатор пользователя
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
+                -   name: operatorId
+                    in: path
+                    required: true
+                    description: Идентификатор оператора
                     schema:
                         type: string
                         format: uuid
@@ -131,7 +153,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UserGet'
+                                $ref: '#/components/schemas/OperatorGet'
                 '400':
                     description: Некорректные параметры запроса
                 '401':
@@ -139,99 +161,49 @@ paths:
                 '403':
                     description: Пользователь не имеет прав на эту операцию
                 '404':
-                    description: Пользователь не найден
+                    description: Оператор не найден
                 '500':
                     description: Ошибки сервера
         patch:
             tags:
-                - users
-            summary: Обновить данные аккаунта
+                - operators
+            summary: Обновить данные аккаунта оператора
             security:
                 -   JWTBearer: [ ]
             parameters:
-                -   name: userId
+                -   name: storageId
                     in: path
                     required: true
-                    description: Идентификатор пользователя
+                    description: Идентификатор пункта хранения
+                    schema:
+                        type: string
+                        format: uuid
+                -   name: operatorId
+                    in: path
+                    required: true
+                    description: Идентификатор оператора
                     schema:
                         type: string
                         format: uuid
             requestBody:
-                description: Форма для обновления пользователя
+                description: Форма для обновления аккаунта оператора
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UserUpdate'
+                            $ref: '#/components/schemas/OperatorUpdate'
             responses:
                 '200':
                     description: Данные обновлены
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UserGet'
+                                $ref: '#/components/schemas/OperatorGet'
                 '400':
                     description: Некорректные данные формы обновления
                 '401':
                     description: Пользователь не авторизован
                 '403':
                     description: Пользователь не имеет прав на эту операцию
-                '404':
-                    description: Пользователь не найден
-                '405':
-                    description: Сервер запущен только на чтение
-                '409':
-                    description: Пользователь с таким логином или почтой уже существует
-                '500':
-                    description: Ошибки сервера
-    /api/v1/users/me:
-        get:
-            tags:
-                - users
-            summary: Просмотреть данные своего аккаунта
-            security:
-                -   JWTBearer: [ ]
-            responses:
-                '200':
-                    description: Данные получены
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/MeGet'
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь заблокирован
-                '404':
-                    description: Пользователь не найден
-                '500':
-                    description: Ошибки сервера
-        patch:
-            tags:
-                - users
-            summary: Обновить данные своего аккаунта
-            security:
-                -   JWTBearer: [ ]
-            requestBody:
-                description: Форма для регистрациии
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MeUpdate'
-            responses:
-                '200':
-                    description: Данные обновлены
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-                                format: application/jwt
-                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                '400':
-                    description: Некорректные данные формы обновления
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь заблокирован
                 '404':
                     description: Пользователь не найден
                 '405':
@@ -243,16 +215,12 @@ paths:
 
 components:
     schemas:
-        UserCreate:
-            $ref: '../dtos/users/user-create.schema.yaml'
-        UserGet:
-            $ref: '../dtos/users/user-get.schema.yaml'
-        UserUpdate:
-            $ref: '../dtos/users/user-update.schema.yaml'
-        MeGet:
-            $ref: '../dtos/users/user-me.schema.yaml'
-        MeUpdate:
-            $ref: '../dtos/users/user-me-update.schema.yaml'
+        OperatorCreate:
+            $ref: '../dtos/operators/operator-create.schema.yaml'
+        OperatorGet:
+            $ref: '../dtos/operators/operator-get.schema.yaml'
+        OperatorUpdate:
+            $ref: '../dtos/operators/operator-update.schema.yaml'
     securitySchemes:
         JWTBearer:
             $ref: '../security/jwt.schema.yaml'

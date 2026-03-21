@@ -1,22 +1,30 @@
-description: Форма для обновления пользователя
+description: Данные об операторе
 type: object
+required:
+    - id
+    - username
+    - name
+    - role
+    - banned
 properties:
+    id:
+        description: Идентификатор оператора
+        type: string
+        format: uuid
     username:
         description: Логин пользователя
         type: string
         example: g1gachad
-    password:
-        description: Пароль пользователя
-        type: string
-        example: qwerty123
     name:
-        description: Имя пользователя
+        description: Имя оператора
         type: string
         example: Зубенко Михаил Петрович
     email:
-        description: Почта пользователя
+        description: Почта оператора
         type: string
         example: a@b.c
+    role:
+        $ref: 'operator-role.schema.yaml'
     banned:
         description: Заблокирован ли аккаунт
         type: boolean

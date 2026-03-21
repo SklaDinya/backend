@@ -290,3 +290,6 @@ components:
             $ref: '../dtos/storages/storage-get.schema.yaml'
         StorageUpdate:
             $ref: '../dtos/storages/storage-update.schema.yaml'
+    securitySchemes:
+        JWTBearer:
+            $ref: '../security/jwt.schema.yaml'

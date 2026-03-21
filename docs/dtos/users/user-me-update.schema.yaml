@@ -5,10 +5,6 @@ properties:
         description: Логин пользователя
         type: string
         example: g1gachad
-    name:
-        description: Имя пользователя
-        type: string
-        example: Зубенко Михаил Петрович
     oldPassword:
         description: Старый пароль пользователя
         type: string
@@ -17,6 +13,10 @@ properties:
         description: Новый пароль пользователя
         type: string
         example: qwerty124
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
     email:
         description: Почта пользователя
         type: string

@@ -1,22 +1,24 @@
-description: Форма для обновления пользователя
+description: Форма для обновления оператора
 type: object
 properties:
     username:
-        description: Логин пользователя
+        description: Логин оператора
         type: string
         example: g1gachad
     password:
-        description: Пароль пользователя
+        description: Пароль оператора
         type: string
         example: qwerty123
     name:
-        description: Имя пользователя
+        description: Имя оператора
         type: string
         example: Зубенко Михаил Петрович
     email:
-        description: Почта пользователя
+        description: Почта оператора
         type: string
         example: a@b.c
+    role:
+        $ref: 'operator-role.schema.yaml'
     banned:
         description: Заблокирован ли аккаунт
         type: boolean
