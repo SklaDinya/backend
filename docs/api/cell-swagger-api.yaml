@@ -30,21 +30,22 @@ paths:
                         type: string
                         format: date-time
                         example: 2001-09-11T08:00:00Z
-                -   name: endBooking
+                -   name: timeBooking
                     in: query
                     required: true
-                    description: Время конца бронирования
+                    description: Время бронирования
                     schema:
                         type: string
-                        format: date-time
-                        example: 2001-09-11T09:00:00Z
-                -   name: cellClass
+                        format: duration
+                -   name: cellClasses
                     in: query
                     required: false
-                    description: Класс ячеек
+                    description: Классы ячеек
                     schema:
-                        type: string
-                        example: Обычная
+                        type: array
+                        items:
+                            type: string
+                            example: Обычная
                 -   name: pageNumber
                     in: query
                     required: false

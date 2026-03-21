@@ -1,0 +1,18 @@
+description: Данные о пользователе при получении бронирования
+type: object
+required:
+    - id
+    - name
+properties:
+    id:
+        description: Идентификатор пользователя
+        type: string
+        format: uuid
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
+    email:
+        description: Почта пользователя
+        type: string
+        example: a@b.c

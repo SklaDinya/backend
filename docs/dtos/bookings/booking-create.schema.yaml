@@ -1,0 +1,27 @@
+description: Форма создания бронирования
+type: object
+required:
+    - storageId
+    - cells
+    - startTime
+    - bookingTime
+properties:
+    storageId:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    cellIds:
+        description: Список ячеек для бронирования
+        type: array
+        items:
+            type: string
+            format: uuid
+    startTime:
+        description: Время начала бронирования
+        type: string
+        format: date-time
+        example: 2001-09-11T08:00:00Z
+    bookingTime:
+        description: Длительность бронирования
+        type: string
+        format: duration

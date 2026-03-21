@@ -1,0 +1,89 @@
+openapi: 3.0.0
+
+info:
+    version: v1
+    title: API для работы с оплатой в сервисе по бронированию камер хранения
+
+tags:
+    -   name: payments
+        description: Тарифы
+
+paths:
+    /api/v1/payments/noop:
+        post:
+            tags:
+                - payments
+            summary: Гарантированная оплата
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для оплаты
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PaymentRandom'
+            responses:
+                '200':
+                    description: Оплата прошла
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/BookingGetUser'
+                '400':
+                    description: Некорректные данные для оплаты                    
+                '401':
+                    description: Пользователь не авторизован                    
+                '404':
+                    description: Бронирование не найдено                    
+                '405':
+                    description: Сервер запущен только на чтение                    
+                '500':
+                    description: Ошибки сервера
+    /api/v1/payments/random:
+        post:
+            tags:
+                - payments
+            summary: Оплата с шансом 50%
+            security:
+                -   JWTBearer: [ ]
+            requestBody:
+                description: Форма для оплаты
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PaymentRandom'
+            responses:
+                '200':
+                    description: Оплата прошла
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/BookingGetUser'
+                '400':
+                    description: Некорректные данные для оплаты                    
+                '401':
+                    description: Пользователь не авторизован                    
+                '404':
+                    description: Бронирование не найдено                    
+                '405':
+                    description: Сервер запущен только на чтение                       
+                '418':
+                    description: Оплата не прошла                    
+                '500':
+                    description: Ошибки сервера
+
+components:
+    schemas:
+        PaymentNoop:
+            $ref: '../dtos/payments/payment-noop.schema.yaml'
+        PaymentRandom:
+            $ref: '../dtos/payments/payment-random.schema.yaml'
+        BookingGetUser:
+            $ref: '../dtos/bookings/booking-get-user.schema.yaml'
+    securitySchemes:
+        JWTBearer:
+            $ref: '../security/jwt.schema.yaml'
