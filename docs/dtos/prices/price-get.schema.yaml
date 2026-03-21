@@ -1,0 +1,26 @@
+description: Данные о тарифе
+type: object
+required:
+    - storageId
+    - cellClass
+    - price
+    - createdAt
+properties:
+    storageId:
+        description: Идентификатор пункта хранения
+        type: string
+        format: uuid
+    cellClass:
+        description: Класс ячеек
+        type: string
+        example: Обычная
+    price:
+        description: Цена
+        type: string
+        format: decimal128
+        example: 993
+    createdAt:
+        description: Время установления тарифа
+        type: string
+        format: date-time
+        example: 2001-09-11T08:46:26Z
