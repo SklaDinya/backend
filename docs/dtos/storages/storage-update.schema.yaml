@@ -1,4 +1,4 @@
-description: ФОрма обновления данных о пункте хранения
+description: Форма обновления данных о пункте хранения
 type: object
 properties:
     name:

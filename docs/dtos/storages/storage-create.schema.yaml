@@ -1,15 +1,11 @@
-description: Данные про пункт хранения
+description: Форма создания пункта хранения
 type: object
 required:
-    - id
+    - name
+    - password
     - storageName
     - address
-    - workingHours
 properties:
-    id:
-        description: Идентификатор пункта хранения
-        type: string
-        format: uuid
     name:
         description: Имя пользователя
         type: string
