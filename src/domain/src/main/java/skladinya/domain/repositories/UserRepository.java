@@ -18,5 +18,7 @@ public interface UserRepository {
 
     Iterable<User> getAllBySearchOptions(UserSearchOptions options);
 
-    User update(UUID uuid, User user);
+    User update(UUID userId, User user);
+
+    void delete(UUID userId);
 }

@@ -12,4 +12,6 @@ public interface StorageRepository {
     Optional<Storage> getByStorageId(UUID storageId);
 
     Storage update(UUID storageId, Storage storage);
+
+    Storage delete(UUID storageId);
 }
