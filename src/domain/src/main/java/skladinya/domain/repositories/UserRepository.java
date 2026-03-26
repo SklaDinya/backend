@@ -16,7 +16,7 @@ public interface UserRepository {
 
     Optional<User> getByEmail(String email);
 
-    Iterable<User> getBySearchOptions(UserSearchOptions options);
+    Iterable<User> getAllBySearchOptions(UserSearchOptions options);
 
     User update(UUID uuid, User user);
 }

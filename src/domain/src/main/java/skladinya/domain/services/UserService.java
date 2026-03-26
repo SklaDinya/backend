@@ -9,9 +9,9 @@ public interface UserService {
 
     User create(UserCreate createForm);
 
-    User get(UUID userId);
+    User getByUserId(UUID userId);
 
-    List<User> getBySearchOptions(UserSearchOptions options);
+    List<User> getAllBySearchOptions(UserSearchOptions options);
 
     User update(UUID userId, UserUpdate updateForm);
 
