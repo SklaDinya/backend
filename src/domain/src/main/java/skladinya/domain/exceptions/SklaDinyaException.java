@@ -43,6 +43,6 @@ public final class SklaDinyaException extends RuntimeException {
     }
 
     public static SklaDinyaException joke(String message) {
-        return new SklaDinyaException(ExceptionType.DeveloperIsClown, message);
+        return new SklaDinyaException(ExceptionType.TeapotMock, message);
     }
 }
