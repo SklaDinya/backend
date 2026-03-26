@@ -43,8 +43,7 @@ paths:
                     required: false
                     description: Роль оператора
                     schema:
-                        type: string
-                        example: MainOperator
+                        $ref: '#/components/schemas/OperatorRole'
                 -   name: pageNumber
                     in: query
                     required: false
@@ -192,6 +191,8 @@ components:
             $ref: '../dtos/operators/operator-get.schema.yaml'
         OperatorUpdate:
             $ref: '../dtos/operators/operator-update.schema.yaml'
+        OperatorRole:
+            $ref: '../dtos/operators/operator-role.schema.yaml'
     securitySchemes:
         JWTBearer:
             $ref: '../security/jwt.schema.yaml'

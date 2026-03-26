@@ -6,6 +6,8 @@ required:
     - name
     - role
     - banned
+    - createdAt
+    - updatedAt
 properties:
     id:
         description: Идентификатор оператора
@@ -29,3 +31,13 @@ properties:
         description: Заблокирован ли аккаунт
         type: boolean
         example: false
+    createdAt:
+        description: Время создания аккаунта
+        type: string
+        format: date-time
+        example: 2001-09-11T08:46:26Z
+    updatedAt:
+        description: Время последнего обновления аккаунта
+        type: string
+        format: date-time
+        example: 2001-09-11T09:03:02Z

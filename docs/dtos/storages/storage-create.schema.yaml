@@ -1,19 +1,25 @@
 description: Форма создания пункта хранения
 type: object
 required:
-    - name
+    - username
     - password
+    - name
+    - email
     - storageName
     - address
 properties:
-    name:
-        description: Имя пользователя
+    username:
+        description: Логин пользователя
         type: string
-        example: Зубенко Михаил Петрович
+        example: g1gachad
     password:
         description: Пароль пользователя
         type: string
         example: qwerty123
+    name:
+        description: Имя пользователя
+        type: string
+        example: Зубенко Михаил Петрович
     email:
         description: Почта пользователя
         type: string
