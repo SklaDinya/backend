@@ -1,6 +1,6 @@
 package skladinya.domain.models.cell;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record Cell(
@@ -8,7 +8,7 @@ public record Cell(
         UUID storageId,
         String name,
         String cellClass,
-        Date createdAt
+        LocalDateTime createdAt
 ) {
 
     public Cell(UUID storageId, String name, String cellClass) {
@@ -17,7 +17,7 @@ public record Cell(
                 storageId,
                 name,
                 cellClass,
-                new Date()
+                LocalDateTime.now()
         );
     }
 }

@@ -1,6 +1,6 @@
 package skladinya.domain.models.user;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record User(
@@ -10,8 +10,8 @@ public record User(
         String name,
         String email,
         UserRole role,
-        Date createdAt,
-        Date updatedAt,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
         boolean banned
 ) {
 
@@ -22,7 +22,7 @@ public record User(
             String name,
             String email,
             UserRole role,
-            Date createdAt,
+            LocalDateTime createdAt,
             boolean banned
     ) {
         this(
@@ -33,7 +33,7 @@ public record User(
                 email,
                 role,
                 createdAt,
-                new Date(),
+                LocalDateTime.now(),
                 banned
         );
     }
@@ -54,7 +54,7 @@ public record User(
                 name,
                 email,
                 role,
-                new Date(),
+                LocalDateTime.now(),
                 banned
         );
     }

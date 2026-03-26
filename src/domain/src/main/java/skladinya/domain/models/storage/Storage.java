@@ -1,6 +1,6 @@
 package skladinya.domain.models.storage;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record Storage(
@@ -9,8 +9,8 @@ public record Storage(
         String address,
         String description,
         StorageStatus status,
-        Date createdAt,
-        Date updatedAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 
     public Storage(
@@ -19,7 +19,7 @@ public record Storage(
             String address,
             String description,
             StorageStatus status,
-            Date createdAt
+            LocalDateTime createdAt
     ) {
         this(
                 storageId,
@@ -28,7 +28,7 @@ public record Storage(
                 description,
                 status,
                 createdAt,
-                new Date()
+                LocalDateTime.now()
         );
     }
 
@@ -43,7 +43,7 @@ public record Storage(
                 address,
                 description,
                 StorageStatus.Created,
-                new Date()
+                LocalDateTime.now()
         );
     }
 }

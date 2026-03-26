@@ -7,7 +7,7 @@ import skladinya.domain.models.user.User;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,10 +19,10 @@ public record Booking(
         Storage storage,
         List<UUID> cellIds,
         List<Cell> cells,
-        Date startTime,
+        LocalDateTime startTime,
         Duration bookingTime,
-        Date endTime,
-        Date createdAt,
+        LocalDateTime endTime,
+        LocalDateTime createdAt,
         BookingStatus status,
         BigDecimal price,
         Payment payment
@@ -32,9 +32,9 @@ public record Booking(
             UUID userId,
             UUID storageId,
             List<UUID> cellIds,
-            Date startTime,
+            LocalDateTime startTime,
             Duration bookingTime,
-            Date endTime,
+            LocalDateTime endTime,
             BigDecimal price
     ) {
         this(
@@ -48,7 +48,7 @@ public record Booking(
                 startTime,
                 bookingTime,
                 endTime,
-                new Date(),
+                LocalDateTime.now(),
                 BookingStatus.Created,
                 price,
                 null

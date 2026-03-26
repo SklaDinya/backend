@@ -1,11 +1,12 @@
 package skladinya.domain.models.booking;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public record BookingSearchOptions(
-        Date startBooking,
-        Date endBooking,
+        LocalDateTime startBooking,
+        LocalDateTime endBooking,
         List<BookingStatus> statuses,
         int pageSize,
         int pageNumber

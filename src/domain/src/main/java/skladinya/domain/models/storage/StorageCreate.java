@@ -1,12 +1,9 @@
 package skladinya.domain.models.storage;
 
-import skladinya.domain.models.user.UserCreate;
+import skladinya.domain.models.operator.OperatorCreate;
 
 public record StorageCreate(
-        String username,
-        String password,
-        String name,
-        String email,
+        OperatorCreate operatorCreate,
         String storageName,
         String address,
         String description

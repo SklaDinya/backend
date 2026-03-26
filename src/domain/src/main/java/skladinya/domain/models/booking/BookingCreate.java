@@ -1,6 +1,7 @@
 package skladinya.domain.models.booking;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -8,7 +9,7 @@ import java.util.UUID;
 public record BookingCreate(
         UUID storageId,
         List<UUID> cellIds,
-        Date startTime,
+        LocalDateTime startTime,
         Duration bookingTime
 ) {
 }

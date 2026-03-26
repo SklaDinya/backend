@@ -1,7 +1,7 @@
 package skladinya.domain.models.price;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record Price(
@@ -9,7 +9,7 @@ public record Price(
         UUID storageId,
         String cellClass,
         BigDecimal price,
-        Date createdAt
+        LocalDateTime createdAt
 ) {
 
     public Price(UUID storageId, String cellClass, BigDecimal price) {
@@ -18,7 +18,7 @@ public record Price(
                 storageId,
                 cellClass,
                 price,
-                new Date()
+                LocalDateTime.now()
         );
     }
 }
