@@ -9,17 +9,17 @@ import java.util.UUID;
 
 public interface BookingService {
 
-    String create(BookingCreate createForm);
+    String create(UUID userId, BookingCreate createForm);
 
-    Booking getByBookingId(UUID bookingId);
+    Booking getByBookingId(UUID userId, UUID bookingId);
 
     List<Booking> getAllForUser(UUID userId, int pageSize, int pageNumber);
 
     List<Booking> getAllForOperator(UUID storageId, BookingSearchOptions options);
 
-    Booking payNoOp(String receipt);
+    Booking payNoOp(UUID userId, String receipt);
 
-    Booking payRandom(String receipt);
+    Booking payRandom(UUID userId, String receipt);
 
     Booking cancel(UUID userId, UUID bookingId);
 }

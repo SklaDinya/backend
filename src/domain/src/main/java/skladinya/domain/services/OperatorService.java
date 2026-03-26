@@ -10,15 +10,15 @@ import java.util.UUID;
 
 public interface OperatorService {
 
-    Operator create(OperatorCreate createForm);
+    Operator create(UUID storageId, OperatorCreate createForm);
 
-    Operator getByOperatorId(UUID operatorId);
+    Operator getByOperatorId(UUID storageId, UUID operatorId);
 
-    Operator getByUserId(UUID userId);
+    Operator getByUserId(UUID storageId, UUID userId);
 
-    List<Operator> getAllBySearchOptions(OperatorSearchOptions options);
+    List<Operator> getAllBySearchOptions(UUID storageId, OperatorSearchOptions options);
 
-    Operator update(OperatorUpdate updateForm);
+    Operator update(UUID storageId, UUID operatorId, OperatorUpdate updateForm);
 
-    void delete(UUID operatorId);
+    void delete(UUID storageId, UUID operatorId);
 }
