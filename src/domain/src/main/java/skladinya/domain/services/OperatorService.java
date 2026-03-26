@@ -14,7 +14,11 @@ public interface OperatorService {
 
     Operator getByOperatorId(UUID operatorId);
 
+    Operator getByUserId(UUID userId);
+
     List<Operator> getAllBySearchOptions(OperatorSearchOptions options);
 
     Operator update(OperatorUpdate updateForm);
+
+    void delete(UUID operatorId);
 }

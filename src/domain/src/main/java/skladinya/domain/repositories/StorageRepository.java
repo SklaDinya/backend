@@ -13,5 +13,5 @@ public interface StorageRepository {
 
     Storage update(UUID storageId, Storage storage);
 
-    Storage delete(UUID storageId);
+    void delete(UUID storageId);
 }
