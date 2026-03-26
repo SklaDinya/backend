@@ -13,5 +13,7 @@ public interface CellService {
 
     List<Cell> getAllBySearchOptions(UUID storageId, CellSearchOptions options);
 
+    List<Cell> getAllByCellIds(List<UUID> cellIds);
+
     List<String> getClasses(UUID storageId);
 }
