@@ -2,7 +2,6 @@ package skladinya.domain.models.cell;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public record CellSearchOptions(
