@@ -5,21 +5,24 @@ public record UserCreate(
         String password,
         String name,
         String email,
-        UserRole role
+        UserRole role,
+        boolean blocked
 ) {
 
     public UserCreate(
             String username,
             String password,
             String name,
-            String email
+            String email,
+            boolean blocked
     ) {
         this(
                 username,
                 password,
                 name,
                 email,
-                UserRole.Client
+                UserRole.Client,
+                blocked
         );
     }
 }

@@ -22,7 +22,8 @@ public record User(
             String name,
             String email,
             UserRole role,
-            Date createdAt
+            Date createdAt,
+            boolean banned
     ) {
         this(
                 userId,
@@ -33,7 +34,7 @@ public record User(
                 role,
                 createdAt,
                 new Date(),
-                false
+                banned
         );
     }
 
@@ -43,7 +44,8 @@ public record User(
             String password,
             String name,
             String email,
-            UserRole role
+            UserRole role,
+            boolean banned
     ) {
         this(
                 UUID.randomUUID(),
@@ -52,7 +54,8 @@ public record User(
                 name,
                 email,
                 role,
-                new Date()
+                new Date(),
+                banned
         );
     }
 }
