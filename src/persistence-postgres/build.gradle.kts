@@ -9,6 +9,13 @@ description = "persistence-postgres"
 group = "skladinya.persistence.postgres"
 
 dependencies {
+    implementation(project(":domain"))
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    runtimeOnly("org.postgresql:postgresql")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.h2database:h2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
 
