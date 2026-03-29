@@ -1,8 +1,11 @@
 description: Чек для оплаты бронирования
 type: object
 required:
+    - booking
     - receipt
 properties:
+    booking:
+        $ref: 'booking-get-user.schema.yaml'
     receipt:
         description: Чек для оплаты
         type: string
