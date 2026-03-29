@@ -2,6 +2,7 @@ package skladinya.domain.services;
 
 import skladinya.domain.models.booking.Booking;
 import skladinya.domain.models.booking.BookingCreate;
+import skladinya.domain.models.booking.BookingReceipt;
 import skladinya.domain.models.booking.BookingSearchOptions;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 public interface BookingService {
 
-    String create(UUID userId, BookingCreate createForm);
+    BookingReceipt create(UUID userId, BookingCreate createForm);
 
     Booking getByBookingId(UUID userId, UUID bookingId);
 
