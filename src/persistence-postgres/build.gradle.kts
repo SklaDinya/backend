@@ -8,7 +8,13 @@ plugins {
 description = "persistence-postgres"
 group = "skladinya.persistence.postgres"
 
-dependencies {}
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
 
 tasks.jar {
     manifest {
