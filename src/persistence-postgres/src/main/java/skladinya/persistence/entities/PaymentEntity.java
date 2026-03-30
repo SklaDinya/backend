@@ -3,6 +3,7 @@ package skladinya.persistence.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import skladinya.domain.models.payment.PaymentType;
 
 import java.util.UUID;
@@ -26,6 +27,7 @@ public class PaymentEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_fk", nullable = false)
+    @Setter
     private BookingEntity booking;
 
     public PaymentEntity(UUID id, PaymentType paymentType, String payload, BookingEntity booking) {

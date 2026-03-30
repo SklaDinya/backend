@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import lombok.Setter;
 import skladinya.domain.models.booking.BookingStatus;
 
 import java.time.LocalDateTime;
@@ -50,6 +51,7 @@ public class BookingEntity {
     private Set<CellEntity> cells;
 
     @OneToOne(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private PaymentEntity payment;
 
     public BookingEntity(
