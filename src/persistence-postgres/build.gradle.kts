@@ -3,6 +3,8 @@ import java.util.Date
 
 plugins {
     id("java-library")
+    id("org.springframework.boot") version "3.3.4"
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
 description = "persistence-postgres"
@@ -17,10 +19,20 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.h2database:h2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    testCompileOnly("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.bootJar {
+    enabled = false
 }
 
 tasks.jar {
