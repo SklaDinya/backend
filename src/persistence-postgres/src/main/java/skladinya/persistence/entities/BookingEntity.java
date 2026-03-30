@@ -32,6 +32,7 @@ public class BookingEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
+    @Setter
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

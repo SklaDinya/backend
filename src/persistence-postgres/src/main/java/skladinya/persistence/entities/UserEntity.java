@@ -3,6 +3,7 @@ package skladinya.persistence.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import skladinya.domain.models.user.UserRole;
 
 import java.time.LocalDateTime;
@@ -20,28 +21,36 @@ public class UserEntity {
     private UUID id;
 
     @Column(name = "username", nullable = false, unique = true)
+    @Setter
     private String username;
 
     @Column(name = "password", nullable = false)
+    @Setter
     private String password;
 
     @Column(name = "name", nullable = false)
+    @Setter
     private String name;
 
     @Column(name = "email", nullable = false, unique = true)
+    @Setter
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @Setter
     private UserRole role;
 
     @Column(name = "created_at", nullable = false)
+    @Setter
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
+    @Setter
     private LocalDateTime updatedAt;
 
     @Column(name = "banned", nullable = false)
+    @Setter
     private boolean banned;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
