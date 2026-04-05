@@ -9,6 +9,7 @@ import skladinya.domain.models.payment.payloads.RandomPaymentPayload;
 import skladinya.persistence.entities.BookingEntity;
 import skladinya.persistence.mappers.enums.BookingStatusMapper;
 import skladinya.persistence.mappers.enums.PaymentTypeMapper;
+import skladinya.persistence.mappers.helpers.PaymentPayloadResolver;
 
 import java.time.Duration;
 import java.util.List;
@@ -70,18 +71,9 @@ public class BookingMapper {
         entity.getPayment() != null
                 ? PaymentMapper.toDomain(
                         entity.getPayment(),
-                        resolvePaymentType(PaymentTypeMapper.toDomain(entity.getPayment().getPaymentType()))
+                        PaymentPayloadResolver.resolve(PaymentTypeMapper.toDomain(entity.getPayment().getPaymentType()))
                 )
                 : null
-);
-    }
-
-    private static Class<? extends PaymentPayload> resolvePaymentType(PaymentType type) {
-        if (type == null) return null;
-
-        return switch (type) {
-            case NoOp -> NoOpPaymentPayload.class;
-            case Random -> RandomPaymentPayload.class;
-        };
+        );
     }
 }
