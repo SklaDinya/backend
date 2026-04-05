@@ -29,8 +29,11 @@ public class CellEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "storage_fk", nullable = false)
+    private UUID storageId;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "storage_fk", nullable = false)
+    @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
     private StorageEntity storage;
 
     @ManyToMany(mappedBy = "cells", fetch = FetchType.LAZY)
@@ -48,5 +51,10 @@ public class CellEntity {
         this.cellClass = cellClass;
         this.createdAt = createdAt;
         this.storage = storage;
+    }
+
+    public void setStorage(StorageEntity storage) {
+        this.storage = storage;
+        this.storageId = storage != null ? storage.getId() : null;
     }
 }

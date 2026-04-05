@@ -29,8 +29,11 @@ public class PriceEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "storage_fk", nullable = false)
+    private UUID storageId;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "storage_fk", nullable = false)
+    @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
     private StorageEntity storage;
 
     public PriceEntity(UUID id, String cellClass, BigDecimal price, LocalDateTime createdAt, StorageEntity storage) {
@@ -39,5 +42,10 @@ public class PriceEntity {
         this.price = price;
         this.createdAt = createdAt;
         this.storage = storage;
+    }
+
+    public void setStorage(StorageEntity storage) {
+        this.storage = storage;
+        this.storageId = storage != null ? storage.getId() : null;
     }
 }

@@ -23,12 +23,18 @@ public class OperatorEntity {
     @Column(name = "role", nullable = false)
     private OperatorRole role;
 
+    @Column(name = "user_fk", nullable = false)
+    private UUID userId;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_fk", nullable = false)
+    @JoinColumn(name = "user_fk", insertable = false, updatable = false)
     private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
-    @JoinColumn(name = "storage_fk", nullable = false)
+    @Column(name = "storage_fk", nullable = false)
+    private UUID storageId;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
     private StorageEntity storage;
 
     public OperatorEntity(UUID id, OperatorRole role, UserEntity user, StorageEntity storage) {
@@ -36,5 +42,15 @@ public class OperatorEntity {
         this.role = role;
         this.user = user;
         this.storage = storage;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+        this.userId = user != null ? user.getId() : null;
+    }
+
+    public void setStorage(StorageEntity storage) {
+        this.storage = storage;
+        this.storageId = storage != null ? storage.getId() : null;
     }
 }

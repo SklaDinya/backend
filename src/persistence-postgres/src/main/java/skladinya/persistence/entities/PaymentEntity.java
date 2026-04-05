@@ -26,8 +26,11 @@ public class PaymentEntity {
     @Column(name = "payload", nullable = false, columnDefinition = "text")
     private String payload;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booking_fk", nullable = false)
+    @Column(name = "booking_fk", nullable = false)
+    private UUID bookingId;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "booking_fk", insertable = false, updatable = false)
     private BookingEntity booking;
 
     public PaymentEntity(UUID id, PaymentType paymentType, String payload, BookingEntity booking) {
@@ -35,5 +38,10 @@ public class PaymentEntity {
         this.paymentType = paymentType;
         this.payload = payload;
         this.booking = booking;
+    }
+
+    public void setBooking(BookingEntity booking) {
+        this.booking = booking;
+        this.bookingId = booking != null ? booking.getId() : null;
     }
 }

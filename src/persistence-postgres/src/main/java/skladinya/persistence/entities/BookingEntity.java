@@ -35,12 +35,18 @@ public class BookingEntity {
     @Column(name = "status", nullable = false)
     private BookingStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "storage_fk", nullable = false)
-    private StorageEntity storage;
+    @Column(name = "storage_fk", nullable = false)
+    private UUID storageId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_fk", nullable = false)
+    @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
+    private StorageEntity storage;
+
+    @Column(name = "user_fk", nullable = false)
+    private UUID userId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_fk", insertable = false, updatable = false)
     private UserEntity user;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -72,5 +78,15 @@ public class BookingEntity {
         this.storage = storage;
         this.cells = cells;
         this.user = user;
+    }
+
+    public void setStorage(StorageEntity storage) {
+        this.storage = storage;
+        this.storageId = storage != null ? storage.getId() : null;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+        this.userId = user != null ? user.getId() : null;
     }
 }
