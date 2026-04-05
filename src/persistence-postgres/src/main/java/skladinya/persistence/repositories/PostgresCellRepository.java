@@ -63,7 +63,7 @@ class CellSpecification {
 
 @Repository
 @RequiredArgsConstructor
-public class CellRepositoryPostgres implements CellRepository {
+public class PostgresCellRepository implements CellRepository {
 
     private final SpringCellRepository repo;
 

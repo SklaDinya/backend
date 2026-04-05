@@ -17,7 +17,7 @@ interface SpringPriceRepository extends JpaRepository<PriceEntity, UUID> {
 
 @Repository
 @RequiredArgsConstructor
-public class PriceRepositoryPostgres implements PriceRepository {
+public class PostgresPriceRepository implements PriceRepository {
 
     private final SpringPriceRepository repo;
 

@@ -64,7 +64,7 @@ class BookingSpecification {
 
 @Repository
 @RequiredArgsConstructor
-public class BookingRepositoryPostgres implements BookingRepository {
+public class PostgresBookingRepository implements BookingRepository {
 
     private final SpringBookingRepository repo;
 

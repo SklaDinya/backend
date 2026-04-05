@@ -16,7 +16,7 @@ interface SpringStorageRepository extends JpaRepository<StorageEntity, UUID> {}
 
 @Repository
 @RequiredArgsConstructor
-public class StorageRepositoryPostgres implements StorageRepository {
+public class PostgresStorageRepository implements StorageRepository {
 
     private final SpringStorageRepository repo;
 

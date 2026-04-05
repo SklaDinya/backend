@@ -20,7 +20,7 @@ interface SpringPaymentRepository extends JpaRepository<PaymentEntity, UUID> {
 
 @Repository
 @RequiredArgsConstructor
-public class PaymentRepositoryPostgres implements PaymentRepository {
+public class PostgresPaymentRepository implements PaymentRepository {
 
     private final SpringPaymentRepository repo;
 

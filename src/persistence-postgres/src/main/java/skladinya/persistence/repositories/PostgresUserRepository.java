@@ -59,7 +59,7 @@ class UserSpecification {
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryPostgres implements UserRepository {
+public class PostgresUserRepository implements UserRepository {
 
     private final SpringUserRepository repo;
 

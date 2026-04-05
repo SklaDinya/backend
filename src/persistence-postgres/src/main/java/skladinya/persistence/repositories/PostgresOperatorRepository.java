@@ -75,7 +75,7 @@ class OperatorSpecification {
 
 @Repository
 @RequiredArgsConstructor
-public class OperatorRepositoryPostgres implements OperatorRepository {
+public class PostgresOperatorRepository implements OperatorRepository {
 
     private final SpringOperatorRepository repo;
 
