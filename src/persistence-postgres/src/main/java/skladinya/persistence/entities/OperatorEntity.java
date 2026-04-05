@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.domain.models.operator.OperatorRole;
+import skladinya.persistence.entities.enums.OperatorRole;
 
 import java.util.UUID;
 

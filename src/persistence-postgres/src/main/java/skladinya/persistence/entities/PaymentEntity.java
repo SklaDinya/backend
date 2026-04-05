@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.domain.models.payment.PaymentType;
+import skladinya.persistence.entities.enums.PaymentType;
 
 import java.util.UUID;
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import lombok.Setter;
-import skladinya.domain.models.booking.BookingStatus;
+import skladinya.persistence.entities.enums.BookingStatus;
 
 import java.time.LocalDateTime;
 import java.util.Set;
