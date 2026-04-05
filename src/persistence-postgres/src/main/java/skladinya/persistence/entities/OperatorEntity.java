@@ -11,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "operators")
 @Getter
+@Setter
 @NoArgsConstructor
 public class OperatorEntity {
 
@@ -20,17 +21,14 @@ public class OperatorEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    @Setter
     private OperatorRole role;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_fk", nullable = false)
-    @Setter
     private UserEntity user;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     @JoinColumn(name = "storage_fk", nullable = false)
-    @Setter
     private StorageEntity storage;
 
     public OperatorEntity(UUID id, OperatorRole role, UserEntity user, StorageEntity storage) {

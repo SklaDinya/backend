@@ -13,6 +13,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "storages")
 @Getter
+@Setter
 @NoArgsConstructor
 public class StorageEntity {
 
@@ -21,28 +22,22 @@ public class StorageEntity {
     private UUID id;
 
     @Column(name = "name", nullable = false)
-    @Setter
     private String name;
 
     @Column(name = "address", nullable = false)
-    @Setter
     private String address;
 
     @Column(name = "description")
-    @Setter
     private String description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @Setter
     private StorageStatus status;
 
     @Column(name = "created_at", nullable = false)
-    @Setter
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Setter
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

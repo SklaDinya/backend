@@ -11,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "payments")
 @Getter
+@Setter
 @NoArgsConstructor
 public class PaymentEntity {
 
@@ -27,7 +28,6 @@ public class PaymentEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_fk", nullable = false)
-    @Setter
     private BookingEntity booking;
 
     public PaymentEntity(UUID id, PaymentType paymentType, String payload, BookingEntity booking) {

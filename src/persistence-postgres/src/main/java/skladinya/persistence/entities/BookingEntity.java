@@ -14,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "bookings")
 @Getter
+@Setter
 @NoArgsConstructor
 public class BookingEntity {
 
@@ -32,7 +33,6 @@ public class BookingEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @Setter
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -52,7 +52,6 @@ public class BookingEntity {
     private Set<CellEntity> cells;
 
     @OneToOne(mappedBy = "booking", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Setter
     private PaymentEntity payment;
 
     public BookingEntity(
