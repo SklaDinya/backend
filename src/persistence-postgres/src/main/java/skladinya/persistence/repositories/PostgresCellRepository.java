@@ -16,10 +16,11 @@ import skladinya.domain.models.cell.CellSearchOptions;
 import skladinya.domain.repositories.CellRepository;
 import skladinya.persistence.entities.BookingEntity;
 import skladinya.persistence.entities.CellEntity;
+import skladinya.persistence.entities.enums.BookingStatusEntity;
 import skladinya.persistence.mappers.CellMapper;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,10 @@ interface SpringCellRepository extends JpaRepository<CellEntity, UUID>, JpaSpeci
 class CellSpecification {
 
     public static Specification<CellEntity> byOptions(UUID storageId, CellSearchOptions options) {
+        List<String> inactiveStatuses = Arrays.asList(
+                BookingStatusEntity.Cancelled.toString(),
+                BookingStatusEntity.Finished.toString());
+
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -45,13 +50,14 @@ class CellSpecification {
 
             if (options.startBooking() != null && options.timeBooking() != null) {
 
-                LocalDateTime end = options.startBooking().plus(options.timeBooking());
-
                 Join<CellEntity, BookingEntity> bookingJoin = root.join("bookings", JoinType.LEFT);
 
-                Predicate noBookings = cb.isNull(bookingJoin.get("id"));
+                Predicate noActiveBookings = cb.or(
+                        cb.isNull(bookingJoin.get("id")),
+                        bookingJoin.get("status").in(inactiveStatuses)
+                );
 
-                predicates.add(noBookings);
+                predicates.add(noActiveBookings);
             }
 
             query.distinct(true);
