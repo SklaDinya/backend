@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.booking.Booking;
 import skladinya.domain.models.booking.BookingSearchOptions;
 import skladinya.domain.models.booking.BookingStatus;
@@ -103,7 +104,7 @@ public class PostgresBookingRepository implements BookingRepository {
     @Override
     public Booking updateStatus(UUID bookingId, BookingStatus status) {
         BookingEntity existing = repo.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
 
         existing.setStatus(BookingStatusMapper.toEntity(status));
 
@@ -114,7 +115,7 @@ public class PostgresBookingRepository implements BookingRepository {
     @Override
     public Booking delete(UUID bookingId) {
         BookingEntity existing = repo.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
 
         repo.delete(existing);
         return BookingMapper.toDomain(existing);

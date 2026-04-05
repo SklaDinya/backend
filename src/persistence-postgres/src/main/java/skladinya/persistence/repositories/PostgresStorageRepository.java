@@ -3,6 +3,7 @@ package skladinya.persistence.repositories;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.storage.Storage;
 import skladinya.domain.repositories.StorageRepository;
 import skladinya.persistence.entities.StorageEntity;
@@ -36,7 +37,7 @@ public class PostgresStorageRepository implements StorageRepository {
     @Override
     public Storage update(UUID storageId, Storage storage) {
         StorageEntity existing = repo.findById(storageId)
-                .orElseThrow(() -> new RuntimeException("Storage not found"));
+                .orElseThrow(() -> SklaDinyaException.notFound("Storage not found"));
 
         existing.setName(storage.name());
         existing.setAddress(storage.address());

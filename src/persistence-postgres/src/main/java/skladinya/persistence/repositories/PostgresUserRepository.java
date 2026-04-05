@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.user.User;
 import skladinya.domain.models.user.UserSearchOptions;
 import skladinya.domain.repositories.UserRepository;
@@ -101,7 +102,7 @@ public class PostgresUserRepository implements UserRepository {
     @Override
     public User update(UUID userId, User user) {
         UserEntity existing = repo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> SklaDinyaException.notFound("User not found"));
 
         existing.setUsername(user.username());
         existing.setPassword(user.password());

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
+import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.operator.Operator;
 import skladinya.domain.models.operator.OperatorSearchOptions;
 import skladinya.domain.repositories.OperatorRepository;
@@ -111,7 +112,7 @@ public class PostgresOperatorRepository implements OperatorRepository {
     @Override
     public Operator update(UUID operatorId, Operator operator) {
         OperatorEntity existing = repo.findById(operatorId)
-                .orElseThrow(() -> new RuntimeException("Operator not found"));
+                .orElseThrow(() -> SklaDinyaException.notFound("Operator not found"));
 
         existing.setRole(OperatorRoleMapper.toEntity(operator.role()));
         existing.setUserId(operator.userId());
