@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import skladinya.persistence.entities.enums.BookingStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -30,6 +31,12 @@ public class BookingEntity {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "finished_at", nullable = false)
+    private LocalDateTime endTime;
+
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
