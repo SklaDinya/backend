@@ -1,6 +1,6 @@
 package skladinya.persistence.entities.enums;
 
-public enum UserRole {
+public enum UserRoleEntity {
     Client,
     StorageOperator,
     Admin

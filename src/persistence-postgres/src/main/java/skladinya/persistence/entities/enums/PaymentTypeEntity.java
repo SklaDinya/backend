@@ -1,6 +1,6 @@
 package skladinya.persistence.entities.enums;
 
-public enum PaymentType {
+public enum PaymentTypeEntity {
     NoOp,
     Random
 }

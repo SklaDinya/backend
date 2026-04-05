@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import lombok.Setter;
-import skladinya.persistence.entities.enums.BookingStatus;
+import skladinya.persistence.entities.enums.BookingStatusEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ public class BookingEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private BookingStatus status;
+    private BookingStatusEntity status;
 
     @Column(name = "storage_fk", nullable = false)
     private UUID storageId;
@@ -72,7 +72,7 @@ public class BookingEntity {
             LocalDateTime startTime,
             Long bookingTimeHour,
             LocalDateTime createdAt,
-            BookingStatus status,
+            BookingStatusEntity status,
             StorageEntity storage,
             Set<CellEntity> cells,
             UserEntity user

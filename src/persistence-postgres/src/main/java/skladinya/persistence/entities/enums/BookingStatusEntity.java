@@ -1,6 +1,6 @@
 package skladinya.persistence.entities.enums;
 
-public enum BookingStatus {
+public enum BookingStatusEntity {
     Created,
     Paid,
     InProcess,

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.persistence.entities.enums.StorageStatus;
+import skladinya.persistence.entities.enums.StorageStatusEntity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -32,7 +32,7 @@ public class StorageEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private StorageStatus status;
+    private StorageStatusEntity status;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -57,7 +57,7 @@ public class StorageEntity {
             String name,
             String address,
             String description,
-            StorageStatus status,
+            StorageStatusEntity status,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {

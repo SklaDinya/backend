@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.persistence.entities.enums.PaymentType;
+import skladinya.persistence.entities.enums.PaymentTypeEntity;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class PaymentEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", nullable = false)
-    private PaymentType paymentType;
+    private PaymentTypeEntity paymentType;
 
     @Column(name = "payload", nullable = false, columnDefinition = "text")
     private String payload;
@@ -33,7 +33,7 @@ public class PaymentEntity {
     @JoinColumn(name = "booking_fk", insertable = false, updatable = false)
     private BookingEntity booking;
 
-    public PaymentEntity(UUID id, PaymentType paymentType, String payload, BookingEntity booking) {
+    public PaymentEntity(UUID id, PaymentTypeEntity paymentType, String payload, BookingEntity booking) {
         this.id = id;
         this.paymentType = paymentType;
         this.payload = payload;

@@ -1,6 +1,6 @@
 package skladinya.persistence.entities.enums;
 
-public enum OperatorRole {
+public enum OperatorRoleEntity {
     MainOperator,
     OrdinaryOperator
 }

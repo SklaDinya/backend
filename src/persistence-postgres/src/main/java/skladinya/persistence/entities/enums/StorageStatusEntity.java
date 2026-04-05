@@ -1,6 +1,6 @@
 package skladinya.persistence.entities.enums;
 
-public enum StorageStatus {
+public enum StorageStatusEntity {
     Created,
     Active
 }

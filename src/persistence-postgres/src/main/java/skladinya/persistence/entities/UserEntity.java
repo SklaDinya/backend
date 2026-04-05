@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.persistence.entities.enums.UserRole;
+import skladinya.persistence.entities.enums.UserRoleEntity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private UserRole role;
+    private UserRoleEntity role;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -58,7 +58,7 @@ public class UserEntity {
             String password,
             String name,
             String email,
-            UserRole role,
+            UserRoleEntity role,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             boolean banned

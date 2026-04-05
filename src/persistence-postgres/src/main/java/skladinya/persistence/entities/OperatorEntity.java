@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import skladinya.persistence.entities.enums.OperatorRole;
+import skladinya.persistence.entities.enums.OperatorRoleEntity;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class OperatorEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private OperatorRole role;
+    private OperatorRoleEntity role;
 
     @Column(name = "user_fk", nullable = false)
     private UUID userId;
@@ -37,7 +37,7 @@ public class OperatorEntity {
     @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
     private StorageEntity storage;
 
-    public OperatorEntity(UUID id, OperatorRole role, UserEntity user, StorageEntity storage) {
+    public OperatorEntity(UUID id, OperatorRoleEntity role, UserEntity user, StorageEntity storage) {
         this.id = id;
         this.role = role;
         this.user = user;
