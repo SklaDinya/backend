@@ -49,8 +49,8 @@ public class StorageEntity {
     @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PriceEntity> prices;
 
-    @OneToOne(mappedBy = "storage", fetch = FetchType.LAZY)
-    private OperatorEntity operator;
+    @OneToMany(mappedBy = "storage", fetch = FetchType.LAZY)
+    private Set<OperatorEntity> operators;
 
     public StorageEntity(
             UUID id,

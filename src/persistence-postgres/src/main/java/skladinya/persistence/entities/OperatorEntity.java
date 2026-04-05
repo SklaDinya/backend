@@ -33,7 +33,7 @@ public class OperatorEntity {
     @Column(name = "storage_fk", nullable = false)
     private UUID storageId;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "storage_fk", insertable = false, updatable = false)
     private StorageEntity storage;
 
