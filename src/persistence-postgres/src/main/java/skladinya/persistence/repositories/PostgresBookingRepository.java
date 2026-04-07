@@ -58,7 +58,7 @@ class BookingSpecification {
             }
 
             query.distinct(true);
-            return cb.and(predicates.toArray(new Predicate[0]));
+            return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
 }
