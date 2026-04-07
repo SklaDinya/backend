@@ -52,8 +52,8 @@ class BookingSpecification {
 
             if (options.startBooking() != null && options.endBooking() != null) {
                 predicates.add(cb.or(
-                        cb.greaterThanOrEqualTo(root.get("endTime"), options.startBooking()),
-                        cb.lessThanOrEqualTo(root.get("startTime"), options.endBooking())
+                        cb.lessThanOrEqualTo(root.get("endTime"), options.startBooking()),
+                        cb.greaterThanOrEqualTo(root.get("startTime"), options.endBooking())
                 ));
             }
 
