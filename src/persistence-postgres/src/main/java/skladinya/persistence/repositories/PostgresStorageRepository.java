@@ -36,17 +36,17 @@ public class PostgresStorageRepository implements StorageRepository {
 
     @Override
     public Storage update(UUID storageId, Storage storage) {
-        StorageEntity existing = repo.findById(storageId)
-                .orElseThrow(() -> SklaDinyaException.notFound("Storage not found"));
+        return repo.findById(storageId)
+                .map(existing -> {
+                    existing.setName(storage.name());
+                    existing.setAddress(storage.address());
+                    existing.setDescription(storage.description());
+                    existing.setStatus(StorageStatusMapper.toEntity(storage.status()));
+                    existing.setUpdatedAt(storage.updatedAt());
 
-        existing.setName(storage.name());
-        existing.setAddress(storage.address());
-        existing.setDescription(storage.description());
-        existing.setStatus(StorageStatusMapper.toEntity(storage.status()));
-        existing.setUpdatedAt(storage.updatedAt());
-
-        StorageEntity saved = repo.save(existing);
-        return StorageMapper.toDomain(saved);
+                    return StorageMapper.toDomain(repo.save(existing));
+                })
+                .orElse(null);
     }
 
     @Override

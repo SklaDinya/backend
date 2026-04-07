@@ -111,15 +111,15 @@ public class PostgresOperatorRepository implements OperatorRepository {
 
     @Override
     public Operator update(UUID operatorId, Operator operator) {
-        OperatorEntity existing = repo.findById(operatorId)
-                .orElseThrow(() -> SklaDinyaException.notFound("Operator not found"));
+        return repo.findById(operatorId)
+                .map(existing -> {
+                    existing.setRole(OperatorRoleMapper.toEntity(operator.role()));
+                    existing.setUserId(operator.userId());
+                    existing.setStorageId(operator.storageId());
 
-        existing.setRole(OperatorRoleMapper.toEntity(operator.role()));
-        existing.setUserId(operator.userId());
-        existing.setStorageId(operator.storageId());
-
-        OperatorEntity saved = repo.save(existing);
-        return OperatorMapper.toDomain(saved);
+                    return OperatorMapper.toDomain(repo.save(existing));
+                })
+                .orElse(null);
     }
 
     @Override

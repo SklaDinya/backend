@@ -101,21 +101,21 @@ public class PostgresBookingRepository implements BookingRepository {
 
     @Override
     public Booking updateStatus(UUID bookingId, BookingStatus status) {
-        BookingEntity existing = repo.findById(bookingId)
-                .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
-
-        existing.setStatus(BookingStatusMapper.toEntity(status));
-
-        BookingEntity saved = repo.save(existing);
-        return BookingMapper.toDomain(saved);
+        return repo.findById(bookingId)
+                .map(existing -> {
+                    existing.setStatus(BookingStatusMapper.toEntity(status));
+                    return BookingMapper.toDomain(repo.save(existing));
+                })
+                .orElse(null);
     }
 
     @Override
     public Booking delete(UUID bookingId) {
-        BookingEntity existing = repo.findById(bookingId)
-                .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
-
-        repo.delete(existing);
-        return BookingMapper.toDomain(existing);
+        return repo.findById(bookingId)
+                .map(existing -> {
+                    repo.delete(existing);
+                    return BookingMapper.toDomain(existing);
+                })
+                .orElse(null);
     }
 }

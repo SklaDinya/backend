@@ -101,19 +101,19 @@ public class PostgresUserRepository implements UserRepository {
 
     @Override
     public User update(UUID userId, User user) {
-        UserEntity existing = repo.findById(userId)
-                .orElseThrow(() -> SklaDinyaException.notFound("User not found"));
+        return repo.findById(userId)
+                .map(existing -> {
+                    existing.setUsername(user.username());
+                    existing.setPassword(user.password());
+                    existing.setName(user.name());
+                    existing.setEmail(user.email());
+                    existing.setRole(UserRoleMapper.toEntity(user.role()));
+                    existing.setUpdatedAt(user.updatedAt());
+                    existing.setBanned(user.banned());
 
-        existing.setUsername(user.username());
-        existing.setPassword(user.password());
-        existing.setName(user.name());
-        existing.setEmail(user.email());
-        existing.setRole(UserRoleMapper.toEntity(user.role()));
-        existing.setUpdatedAt(user.updatedAt());
-        existing.setBanned(user.banned());
-
-        UserEntity saved = repo.save(existing);
-        return UserMapper.toDomain(saved);
+                    return UserMapper.toDomain(repo.save(existing));
+                })
+                .orElse(null);
     }
 
     @Override
