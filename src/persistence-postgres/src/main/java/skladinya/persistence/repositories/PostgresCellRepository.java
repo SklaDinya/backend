@@ -27,7 +27,7 @@ import java.util.UUID;
 
 interface SpringCellRepository extends JpaRepository<CellEntity, UUID>, JpaSpecificationExecutor<CellEntity> {
 
-    List<CellEntity> findAllByIdIn(List<UUID> ids);
+    List<CellEntity> findAllByIdInOrderByName(List<UUID> ids);
 
     @Query("select distinct c.cellClass from CellEntity c where c.storageId = :storageId")
     List<String> findAllCellClasses(UUID storageId);
@@ -94,7 +94,7 @@ public class PostgresCellRepository implements CellRepository {
     public List<Cell> getAllByCellIds(List<UUID> cellIds) {
         if (cellIds == null || cellIds.isEmpty()) return List.of();
 
-        return repo.findAllByIdIn(cellIds).stream()
+        return repo.findAllByIdInOrderByName(cellIds).stream()
                 .map(CellMapper::toDomain)
                 .toList();
     }

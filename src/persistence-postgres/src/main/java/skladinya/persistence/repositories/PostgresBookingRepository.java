@@ -27,9 +27,7 @@ interface SpringBookingRepository extends
         JpaRepository<BookingEntity, UUID>,
         JpaSpecificationExecutor<BookingEntity> {
 
-    List<BookingEntity> findAllByUserId(UUID userId, Pageable pageable);
-
-    List<BookingEntity> findAllByStorageId(UUID storageId, Pageable pageable);
+    List<BookingEntity> findAllByUserIdOrderByCreatedAtDesc(UUID userId, Pageable pageable);
 }
 
 class BookingSpecification {
@@ -85,7 +83,7 @@ public class PostgresBookingRepository implements BookingRepository {
     @Override
     public List<Booking> getAllForUser(UUID userId, int pageSize, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return repo.findAllByUserId(userId, pageable)
+        return repo.findAllByUserIdOrderByCreatedAtDesc(userId, pageable)
                 .stream()
                 .map(BookingMapper::toDomain)
                 .toList();
