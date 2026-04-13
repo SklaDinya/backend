@@ -53,8 +53,14 @@ class CellSpecification {
 
                 Predicate noOverlap = cb.or(
                         cb.isNull(bookingJoin.get("id")),
-                        cb.lessThanOrEqualTo(bookingJoin.get("endTime"), options.startBooking()),
-                        cb.greaterThanOrEqualTo(bookingJoin.get("startTime"), end)
+                        cb.and(
+                                cb.lessThan(root.get("endTime"), options.startBooking()),
+                                cb.greaterThanOrEqualTo(root.get("startTime"), options.startBooking())
+                        ),
+                        cb.and(
+                                cb.lessThanOrEqualTo(root.get("endTime"), end),
+                                cb.greaterThan(root.get("startTime"), end)
+                        )
                 );
 
                 predicates.add(noOverlap);
