@@ -4,18 +4,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import skladinya.domain.models.user.User;
-import skladinya.persistence.entities.UserEntity;
-import skladinya.persistence.mappers.UserMapper;
-import skladinya.persistence.repositories.PostgresUserRepository;
-import skladinya.persistence.repositories.SpringUserRepository;
+import skladinya.domain.models.user.UserSearchOptions;
 import skladinya.tests.helper.builder.UserBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestApplication.class)
@@ -37,33 +35,94 @@ class PostgresUserRepositoryTest {
         User user = UserBuilder.builder().build();
 
         User result = userRepo.create(user);
+        User actual = userRepo.getByUserId(result.userId()).orElse(null);
 
-        assertNotNull(result);
-        assertEquals(user.userId(), result.userId());
-        assertEquals(user.username(), result.username());
+        assertNotNull(actual);
+        assertEquals(user.userId(), actual.userId());
+        assertEquals(user.username(), actual.username());
     }
 
     @Test
-    void getByUserId() {
+    void getByUserId_shouldReturnSavedUser_whenUserExists() {
+        User user = UserBuilder.builder().build();
+        userRepo.create(user);
+
+        User actual = userRepo.getByUserId(user.userId()).orElse(null);
+
+        assertNotNull(actual);
+        assertEquals(user.userId(), actual.userId());
+        assertEquals(user.username(), actual.username());
     }
 
     @Test
-    void getByUsername() {
+    void getByUsername_shouldReturnUser_whenUsernameExists() {
+        User user = UserBuilder.builder().build();
+        userRepo.create(user);
+
+        User actual = userRepo.getByUsername(user.username()).orElse(null);
+
+        assertNotNull(actual);
+        assertEquals(user.username(), actual.username());
+        assertEquals(user.userId(), actual.userId());
     }
 
     @Test
-    void getByEmail() {
+    void getByEmail_shouldReturnUser_whenEmailExists() {
+        User user = UserBuilder.builder().build();
+        userRepo.create(user);
+
+        User actual = userRepo.getByEmail(user.email()).orElse(null);
+
+        assertNotNull(actual);
+        assertEquals(user.email(), actual.email());
+        assertEquals(user.userId(), actual.userId());
     }
 
     @Test
-    void getAllBySearchOptions() {
+    void getAllBySearchOptions_shouldReturnUsers_whenFilterByUsername() {
+        User user = UserBuilder.builder()
+                .username("test_user")
+                .build();
+        userRepo.create(user);
+        UserSearchOptions options = new UserSearchOptions(
+                "test",
+                null,
+                null,
+                null,
+                10,
+                0
+        );
+
+        List<User> result = userRepo.getAllBySearchOptions(options);
+
+        assertFalse(result.isEmpty());
+        assertTrue(result.stream()
+                .anyMatch(u -> u.username().equals("test_user")));
     }
 
     @Test
-    void update() {
+    void update_shouldModifyUserFields_whenUserExists() {
+        User user = UserBuilder.builder().build();
+        userRepo.create(user);
+        User updated = UserBuilder.builder()
+                .username("updated_username")
+                .email("updated@mail.com")
+                .build();
+
+        User result = userRepo.update(user.userId(), updated);
+
+        assertEquals("updated_username", result.username());
+        assertEquals("updated@mail.com", result.email());
     }
 
     @Test
-    void delete() {
+    void delete_shouldRemoveUser_whenUserExists() {
+        User user = UserBuilder.builder().build();
+        userRepo.create(user);
+
+        userRepo.delete(user.userId());
+
+        Optional<User> result = userRepo.getByUserId(user.userId());
+        assertTrue(result.isEmpty());
     }
 }
