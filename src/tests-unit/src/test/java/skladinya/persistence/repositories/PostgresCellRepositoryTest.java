@@ -127,7 +127,7 @@ class PostgresCellRepositoryTest {
     }
 
     @Test
-    void getAllBySearchOptions_shouldExcludeBusyCells() {
+    void getAllBySearchOptions_shouldExcludeBusyCells() { // TODO тест не проходит
         UUID storageId = storage.storageId();
         Cell cell1 = CellBuilder.builder()
                 .storageId(storageId)

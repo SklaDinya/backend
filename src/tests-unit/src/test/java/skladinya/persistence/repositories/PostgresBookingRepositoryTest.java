@@ -123,7 +123,7 @@ class PostgresBookingRepositoryTest {
     }
 
     @Test
-    void getAllForOperator_shouldFilterByTimeRange() {
+    void getAllForOperator_shouldFilterByTimeRange() { // TODO тест не проходит
         UUID storageId = storage.storageId();
         LocalDateTime now = LocalDateTime.now();
         Booking booking = BookingBuilder.builder()
