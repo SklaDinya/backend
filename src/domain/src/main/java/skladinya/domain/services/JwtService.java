@@ -11,7 +11,7 @@ public interface JwtService {
 
     String create(UUID userId, UserRole userRole);
 
-    String createStorageOperator(UUID userId, UserRole userRole, UUID storageId, OperatorRole operatorRole);
+    String createStorageOperator(UUID userId, UUID storageId, OperatorRole operatorRole);
 
     UserData validate(String token);
 
