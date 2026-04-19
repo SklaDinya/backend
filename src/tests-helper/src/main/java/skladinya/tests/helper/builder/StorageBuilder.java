@@ -9,9 +9,9 @@ import java.util.UUID;
 public final class StorageBuilder {
 
     private UUID storageId = UUID.randomUUID();
-    private String name = "Пункт поедания чебуреков";
-    private String address = "улица Пушкина, дом Кукушкина";
-    private String description = "А его кто-то будет читать?";
+    private String name = UUID.randomUUID().toString();
+    private String address = UUID.randomUUID().toString();
+    private String description = UUID.randomUUID().toString();
     private StorageStatus status = StorageStatus.Active;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();

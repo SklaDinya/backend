@@ -1,6 +1,5 @@
 package skladinya.services.user;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import skladinya.domain.exceptions.SklaDinyaException;
@@ -41,16 +40,16 @@ public final class UserServiceImpl implements UserService {
     @Override
     public User create(UserCreate createForm) {
         return synchronizer.executeTransactionFunction(() -> {
-            var username = createForm.username();
-            var password = createForm.password();
-            var name = createForm.name();
-            var email = createForm.email();
-            var role = createForm.role();
-            var banned = createForm.banned();
-            var user = new User(username, password, name, email, role, banned);
-            var found = userRepository.getByUsername(username);
+            var user = fromCreateForm(createForm);
+            var found = userRepository.getByUsername(user.username());
             if (found.isPresent()) {
                 throw SklaDinyaException.conflict("Username already exists");
+            }
+            if (user.email() != null) {
+                found = userRepository.getByEmail(user.email());
+                if (found.isPresent()) {
+                    throw SklaDinyaException.conflict("Email already in use");
+                }
             }
             return userRepository.create(user);
         });
@@ -76,6 +75,12 @@ public final class UserServiceImpl implements UserService {
                     () -> SklaDinyaException.notFound("User not found"));
             if (updateForm.username() != null) {
                 var found = userRepository.getByUsername(updateForm.username()).orElse(null);
+                if (found != null && !found.userId().equals(userId)) {
+                    throw SklaDinyaException.conflict("Username already exists");
+                }
+            }
+            if (updateForm.email() != null) {
+                var found = userRepository.getByEmail(updateForm.email()).orElse(null);
                 if (found != null && !found.userId().equals(userId)) {
                     throw SklaDinyaException.conflict("Username already exists");
                 }
@@ -106,6 +111,12 @@ public final class UserServiceImpl implements UserService {
                     throw SklaDinyaException.invalidAccess("Invalid password");
                 }
             }
+            if (updateForm.email() != null) {
+                var found = userRepository.getByEmail(updateForm.email()).orElse(null);
+                if (found != null && !found.userId().equals(userId)) {
+                    throw SklaDinyaException.conflict("Email already in use");
+                }
+            }
             var updated = getUpdatedUser(userId, new UserUpdate(updateForm), user);
             var saved = userRepository.update(userId, updated);
             return generateToken(saved);
@@ -125,6 +136,16 @@ public final class UserServiceImpl implements UserService {
             result = jwtService.create(user.userId(), user.role());
         }
         return result;
+    }
+
+    private static User fromCreateForm(UserCreate createForm) {
+        var username = createForm.username();
+        var password = createForm.password();
+        var name = createForm.name();
+        var email = createForm.email();
+        var role = createForm.role();
+        var banned = createForm.banned();
+        return new User(username, password, name, email, role, banned);
     }
 
     private static User getUpdatedUser(UUID userId, UserUpdate updateForm, User user) {

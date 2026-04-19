@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":tests-helper"))
     implementation(project(":services-auth"))
+    implementation(project(":services-user"))
     // Add project dependencies here
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

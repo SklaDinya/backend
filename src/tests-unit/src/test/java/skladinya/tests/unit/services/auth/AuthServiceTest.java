@@ -12,6 +12,8 @@ import skladinya.domain.services.AuthService;
 import skladinya.domain.services.UserService;
 import skladinya.services.auth.AuthServiceImpl;
 import skladinya.tests.helper.builder.UserBuilder;
+import skladinya.tests.helper.factory.JwtFactory;
+import skladinya.tests.helper.factory.UserCreateFactory;
 import skladinya.tests.helper.synchronizer.SynchronizerTest;
 
 import java.util.Optional;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AuthServiceImplTest {
+class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -47,7 +49,7 @@ class AuthServiceImplTest {
         var user = UserBuilder.builder().build();
         var login = user.username();
         var password = user.password();
-        var token = "token";
+        var token = JwtFactory.create();
         given(userRepository.getByUsername(login)).willReturn(Optional.of(user));
         given(userService.generateToken(user)).willReturn(token);
 
@@ -62,7 +64,7 @@ class AuthServiceImplTest {
         var user = UserBuilder.builder().build();
         var login = user.email();
         var password = user.password();
-        var token = "token";
+        var token = JwtFactory.create();
         given(userRepository.getByUsername(login)).willReturn(Optional.empty());
         given(userRepository.getByEmail(login)).willReturn(Optional.of(user));
         given(userService.generateToken(user)).willReturn(token);
@@ -101,8 +103,8 @@ class AuthServiceImplTest {
     @Test
     void givenValidData_whenRegister_thenReturnJwt() {
         var user = UserBuilder.builder().build();
-        var form = new UserCreate(user.username(), user.password(), user.name(), user.email(), user.banned());
-        var token = "token";
+        var form = UserCreateFactory.create(user);
+        var token = JwtFactory.create();
         given(userService.create(form)).willReturn(user);
         given(userService.generateToken(user)).willReturn(token);
 
@@ -113,7 +115,7 @@ class AuthServiceImplTest {
 
     @Test
     void givenInvalidData_whenRegister_thenThrowException() {
-        var form = new UserCreate(null, null, null, null, false);
+        var form = UserCreateFactory.empty();
         willThrow(SklaDinyaException.conflict("")).given(userService).create(form);
 
         assertThrows(SklaDinyaException.class, () -> authService.register(form));
