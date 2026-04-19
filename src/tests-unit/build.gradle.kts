@@ -21,11 +21,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
     testImplementation("com.h2database:h2")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
-
-// Add unit tests to the src/test/java in that module to package skladinya.tests.unit.<rest.path.to.tested.class.package>
