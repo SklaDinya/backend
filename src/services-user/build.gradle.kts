@@ -12,7 +12,7 @@ dependencies {
     implementation(project(":domain"))
 
     implementation("org.springframework:spring-context:6.2.18")
-    implementation("com.auth0:java-jwt:4.5.1")
+    implementation("org.springframework:spring-web:6.2.18")
 }
 
 tasks.jar {

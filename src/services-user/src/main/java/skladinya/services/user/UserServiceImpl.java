@@ -1,6 +1,8 @@
 package skladinya.services.user;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.helpers.Synchronizer;
 import skladinya.domain.models.user.*;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequestScope
 public final class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
