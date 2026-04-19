@@ -13,6 +13,7 @@ group = "skladinya.tests.unit"
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":persistence-postgres"))
     implementation(project(":tests-helper"))
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

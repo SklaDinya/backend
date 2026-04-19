@@ -1,23 +1,19 @@
-package skladinya.tests.unit.persistence.repositories;
+package skladinya.persistence.repositories;
 
 import org.junit.jupiter.api.Test;
 
-class PostgresUserRepositoryTest {
+class PostgresOperatorRepositoryTest {
 
     @Test
     void create() {
     }
 
     @Test
+    void getByOperatorId() {
+    }
+
+    @Test
     void getByUserId() {
-    }
-
-    @Test
-    void getByUsername() {
-    }
-
-    @Test
-    void getByEmail() {
     }
 
     @Test

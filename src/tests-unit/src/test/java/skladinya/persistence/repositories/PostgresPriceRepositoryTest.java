@@ -1,4 +1,4 @@
-package skladinya.tests.unit.persistence.repositories;
+package skladinya.persistence.repositories;
 
 import org.junit.jupiter.api.Test;
 
