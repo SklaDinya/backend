@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import skladinya.domain.models.booking.Booking;
+import skladinya.domain.models.booking.BookingSearchOptions;
 import skladinya.domain.models.cell.Cell;
 import skladinya.domain.models.cell.CellSearchOptions;
 import skladinya.domain.models.storage.Storage;
@@ -94,7 +95,7 @@ class PostgresCellRepositoryTest {
     }
 
     @Test
-    void getAllBySearchOptions_shouldExcludeBusyCells_whenInnerInterval() { // TODO тест не проходит
+    void getAllBySearchOptions_shouldExcludeBusyCells_whenIntervalBetweenBookings() {
         UUID storageId = storage.storageId();
         var cells = createCells(storageId);
         bookingRepo.create(BookingBuilder.builder()
@@ -102,7 +103,7 @@ class PostgresCellRepositoryTest {
                 .cells(List.of(cells.get(1)))
                 .user(user)
                 .startTime(LocalDateTime.of(2020, 10, 10, 10, 0))
-                .bookingTime(Duration.ofHours(2))
+                .endTime(LocalDateTime.of(2020, 10, 10, 12, 0))
                 .build()
         );
         bookingRepo.create(BookingBuilder.builder()
@@ -110,20 +111,86 @@ class PostgresCellRepositoryTest {
                 .cells(List.of(cells.get(2)))
                 .user(user)
                 .startTime(LocalDateTime.of(2020, 10, 10, 17, 0))
-                .bookingTime(Duration.ofHours(2))
+                .endTime(LocalDateTime.of(2020, 10, 10, 19, 0))
                 .build()
         );
 
         CellSearchOptions options = new CellSearchOptions(
                 LocalDateTime.of(2020, 10, 10, 14, 0),
                 Duration.ofHours(1),
-                List.of("A"),
+                null,
                 0,
                 10
         );
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
 
         assertEquals(3, result.size());
+    }
+
+    @Test
+    void getAllBySearchOptions_shouldExcludeBusyCells_whenIntervalLeftCrossBookings() {
+        UUID storageId = storage.storageId();
+        var cells = createCells(storageId);
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(1)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 10, 0))
+                .endTime(LocalDateTime.of(2020, 10, 10, 12, 0))
+                .build()
+        );
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(2)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 17, 0))
+                .endTime(LocalDateTime.of(2020, 10, 10, 19, 0))
+                .build()
+        );
+
+        CellSearchOptions options = new CellSearchOptions(
+                LocalDateTime.of(2020, 10, 10, 11, 0),
+                Duration.ofHours(1),
+                null,
+                0,
+                10
+        );
+        List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void getAllBySearchOptions_shouldExcludeBusyCells_whenIntervalLeftAndRightCrossBookings() {
+        UUID storageId = storage.storageId();
+        var cells = createCells(storageId);
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(1)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 10, 0))
+                .endTime(LocalDateTime.of(2020, 10, 10, 12, 0))
+                .build()
+        );
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(2)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 17, 0))
+                .endTime(LocalDateTime.of(2020, 10, 10, 19, 0))
+                .build()
+        );
+
+        CellSearchOptions options = new CellSearchOptions(
+                LocalDateTime.of(2020, 10, 10, 11, 0),
+                Duration.ofHours(10),
+                null,
+                0,
+                10
+        );
+        List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
+
+        assertEquals(1, result.size());
     }
 
     private List<Cell> createCells(UUID storageId) {
