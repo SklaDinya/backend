@@ -1,8 +1,6 @@
 package skladinya.persistence.repositories;
 
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,22 +46,24 @@ class CellSpecification {
 
             if (options.startBooking() != null && options.timeBooking() != null) {
 
-                LocalDateTime end = options.startBooking().plus(options.timeBooking());
-                Join<CellEntity, BookingEntity> bookingJoin = root.join("bookings", JoinType.LEFT);
+                LocalDateTime endBooking = options.startBooking().plus(options.timeBooking());
 
-                Predicate noOverlap = cb.or(
-                        cb.isNull(bookingJoin.get("id")),
-                        cb.and(
-                                cb.lessThan(root.get("endTime"), options.startBooking()),
-                                cb.greaterThanOrEqualTo(root.get("startTime"), options.startBooking())
-                        ),
-                        cb.and(
-                                cb.lessThanOrEqualTo(root.get("endTime"), end),
-                                cb.greaterThan(root.get("startTime"), end)
-                        )
+                Subquery<UUID> subquery = query.subquery(UUID.class);
+                Root<BookingEntity> bookingRoot = subquery.from(BookingEntity.class);
+                Join<BookingEntity, CellEntity> cellJoin = bookingRoot.join("cells");
+
+                subquery.select(bookingRoot.get("id"));
+
+                Predicate sameCell = cb.equal(cellJoin.get("id"), root.get("id"));
+
+                Predicate overlap = cb.and(
+                        cb.lessThan(bookingRoot.get("startTime"), endBooking),
+                        cb.greaterThan(bookingRoot.get("endTime"), options.startBooking())
                 );
 
-                predicates.add(noOverlap);
+                subquery.where(cb.and(sameCell, overlap));
+
+                predicates.add(cb.not(cb.exists(subquery)));
             }
 
             query.distinct(true);
