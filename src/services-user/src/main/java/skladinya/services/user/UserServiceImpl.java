@@ -82,7 +82,7 @@ public final class UserServiceImpl implements UserService {
             if (updateForm.email() != null) {
                 var found = userRepository.getByEmail(updateForm.email()).orElse(null);
                 if (found != null && !found.userId().equals(userId)) {
-                    throw SklaDinyaException.conflict("Username already exists");
+                    throw SklaDinyaException.conflict("Email already in use");
                 }
             }
             var updated = getUpdatedUser(userId, updateForm, user);

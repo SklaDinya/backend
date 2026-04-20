@@ -6,6 +6,6 @@ public final class JwtFactory {
     }
 
     public static String create() {
-        return "token";
+        return "best-token-67-ever";
     }
 }
