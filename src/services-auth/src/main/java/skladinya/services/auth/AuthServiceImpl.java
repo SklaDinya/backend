@@ -30,11 +30,10 @@ public final class AuthServiceImpl implements AuthService {
         return synchronizer.executeTransactionFunction(() -> {
             var user = userRepository
                     .getByUsername(login)
-                    .orElse(null);
-            if (user == null) {
-                user = userRepository.getByEmail(login).orElseThrow(() ->
-                        SklaDinyaException.invalidAccess("User not found"));
-            }
+                    .or(() -> userRepository
+                            .getByEmail(login))
+                    .orElseThrow(() ->
+                            SklaDinyaException.invalidAccess("User not found"));
             if (!user.password().equals(password)) {
                 throw SklaDinyaException.invalidAccess("Invalid password");
             }
