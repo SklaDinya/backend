@@ -43,38 +43,19 @@ class PostgresCellRepositoryTest {
     private PostgresCellRepository cellRepo;
 
     private Storage storage;
+    private User user;
+    private PostgresBookingRepository bookingRepo;
 
     @BeforeEach
     void setUp() {
         PostgresStorageRepository storageRepo = new PostgresStorageRepository(springStorageRepo);
         storage = storageRepo.create(StorageBuilder.builder().build());
 
-        cellRepo = new PostgresCellRepository(springCellRepo);
-    }
-
-    void saveBooking(List<Cell> cells) {
         PostgresUserRepository userRepo = new PostgresUserRepository(springUserRepo);
-        User user = userRepo.create(UserBuilder.builder().build());
+        user = userRepo.create(UserBuilder.builder().build());
+        bookingRepo = new PostgresBookingRepository(springBookingRepo);
 
-        PostgresBookingRepository bookingRepo = new PostgresBookingRepository(springBookingRepo);
-
-        bookingRepo.create(BookingBuilder.builder()
-                .storage(storage)
-                .cells(List.of(cells.get(1)))
-                .user(user)
-                .startTime(LocalDateTime.of(2020, 10, 10, 10, 0))
-                .bookingTime(Duration.ofHours(2))
-                .build()
-        );
-
-        bookingRepo.create(BookingBuilder.builder()
-                .storage(storage)
-                .cells(List.of(cells.get(2)))
-                .user(user)
-                .startTime(LocalDateTime.of(2020, 10, 10, 17, 0))
-                .bookingTime(Duration.ofHours(2))
-                .build()
-        );
+        cellRepo = new PostgresCellRepository(springCellRepo);
     }
 
     @Test
@@ -96,21 +77,7 @@ class PostgresCellRepositoryTest {
     @Test
     void getAllBySearchOptions_shouldReturnCells_whenFilterByClass() {
         UUID storageId = storage.storageId();
-        Cell cell1 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("A")
-                .build();
-        Cell cell2 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("B")
-                .build();
-        Cell cell3 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("A")
-                .build();
-        cellRepo.create(cell1);
-        cellRepo.create(cell2);
-        cellRepo.create(cell3);
+        createCells(storageId);
 
         CellSearchOptions options = new CellSearchOptions(
                 null,
@@ -127,24 +94,25 @@ class PostgresCellRepositoryTest {
     }
 
     @Test
-    void getAllBySearchOptions_shouldExcludeBusyCells() { // TODO тест не проходит
+    void getAllBySearchOptions_shouldExcludeBusyCells_whenInnerInterval() { // TODO тест не проходит
         UUID storageId = storage.storageId();
-        Cell cell1 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("A")
-                .build();
-        Cell cell2 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("A")
-                .build();
-        Cell cell3 = CellBuilder.builder()
-                .storageId(storageId)
-                .cellClass("A")
-                .build();
-        cellRepo.create(cell1);
-        cellRepo.create(cell2);
-        cellRepo.create(cell3);
-        saveBooking(List.of(cell1, cell2, cell3));
+        var cells = createCells(storageId);
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(1)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 10, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
+        bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .cells(List.of(cells.get(2)))
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 17, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
 
         CellSearchOptions options = new CellSearchOptions(
                 LocalDateTime.of(2020, 10, 10, 14, 0),
@@ -156,6 +124,26 @@ class PostgresCellRepositoryTest {
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
 
         assertEquals(3, result.size());
+    }
+
+    private List<Cell> createCells(UUID storageId) {
+        Cell cell1 = CellBuilder.builder()
+                .storageId(storageId)
+                .cellClass("A")
+                .build();
+        Cell cell2 = CellBuilder.builder()
+                .storageId(storageId)
+                .cellClass("B")
+                .build();
+        Cell cell3 = CellBuilder.builder()
+                .storageId(storageId)
+                .cellClass("A")
+                .build();
+        cellRepo.create(cell1);
+        cellRepo.create(cell2);
+        cellRepo.create(cell3);
+
+        return List.of(cell1, cell2, cell3);
     }
 
     @Test
