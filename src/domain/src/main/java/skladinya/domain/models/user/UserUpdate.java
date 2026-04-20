@@ -8,4 +8,15 @@ public record UserUpdate(
         UserRole role,
         Boolean banned
 ) {
+
+    public UserUpdate(SelfUpdate selfUpdate) {
+        this(
+                selfUpdate.username(),
+                selfUpdate.password(),
+                selfUpdate.name(),
+                selfUpdate.email(),
+                null,
+                null
+        );
+    }
 }

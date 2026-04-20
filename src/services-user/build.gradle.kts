@@ -5,8 +5,8 @@ plugins {
     id("java-library")
 }
 
-description = "services-auth"
-group = "skladinya.services.auth"
+description = "services-user"
+group = "skladinya.services.user"
 
 dependencies {
     implementation(project(":domain"))
@@ -26,10 +26,10 @@ tasks.jar {
         attributes["Build-Date"] = SimpleDateFormat("yyyy-MM-dd").format(date)
         attributes["Build-Time"] = SimpleDateFormat("HH:mm:ss.SSSZ").format(date)
         attributes["Build-By"] = "FRANK"
-        attributes["Bundle-Name"] = "SklaDinya Auth Service"
+        attributes["Bundle-Name"] = "SklaDinya User Service"
         attributes["Bundle-SymbolicName"] = archiveBaseName
     }
-    archiveBaseName.set("skladinya-services-auth")
+    archiveBaseName.set("skladinya-services-user")
     archiveClassifier.set("")
     archiveVersion.set("")
 }

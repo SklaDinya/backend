@@ -10,7 +10,7 @@ public final class PriceBuilder {
 
     private UUID priceId = UUID.randomUUID();
     private UUID storageId = UUID.randomUUID();
-    private String cellClass = "Млекопитающие";
+    private String cellClass = UUID.randomUUID().toString();
     private BigDecimal price = BigDecimal.valueOf(67);
     private LocalDateTime createdAt = LocalDateTime.now();
 

@@ -9,8 +9,8 @@ public final class CellBuilder {
 
     private UUID cellId = UUID.randomUUID();
     private UUID storageId = UUID.randomUUID();
-    private String name = "67";
-    private String cellClass = "Млекопитающие";
+    private String name = UUID.randomUUID().toString();
+    private String cellClass = UUID.randomUUID().toString();
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private CellBuilder() {
