@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@EntityScan("skladinya.persistence.entities")
+@EntityScan("skladinya.persistence")
 public class TestApplication {}
