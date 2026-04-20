@@ -16,6 +16,7 @@ import skladinya.tests.helper.builder.BookingBuilder;
 import skladinya.tests.helper.builder.StorageBuilder;
 import skladinya.tests.helper.builder.UserBuilder;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -123,20 +124,92 @@ class PostgresBookingRepositoryTest {
     }
 
     @Test
-    void getAllForOperator_shouldFilterByTimeRange() { // TODO тест не проходит
+    void getAllForOperator_shouldFilterByTimeRange_whenInnerInterval() {
         UUID storageId = storage.storageId();
-        LocalDateTime now = LocalDateTime.now();
-        Booking booking = BookingBuilder.builder()
-                .user(user)
+        Booking booking = bookingRepo.create(BookingBuilder.builder()
                 .storage(storage)
-                .startTime(now)
-                .endTime(now.plusHours(2))
-                .build();
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 12, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
         bookingRepo.create(booking);
 
         BookingSearchOptions options = new BookingSearchOptions(
-                now.minusHours(1),
-                now.plusHours(1),
+                LocalDateTime.of(2020, 10, 10, 10, 0),
+                LocalDateTime.of(2020, 10, 10, 15, 0),
+                null,
+                10,
+                0
+        );
+        List<Booking> result = bookingRepo.getAllForOperator(storageId, options);
+
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    void getAllForOperator_shouldFilterByTimeRange_whenOutsideInterval() {
+        UUID storageId = storage.storageId();
+        Booking booking = bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 11, 12, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
+        bookingRepo.create(booking);
+
+        BookingSearchOptions options = new BookingSearchOptions(
+                LocalDateTime.of(2020, 10, 10, 10, 0),
+                LocalDateTime.of(2020, 10, 10, 15, 0),
+                null,
+                10,
+                0
+        );
+        List<Booking> result = bookingRepo.getAllForOperator(storageId, options);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getAllForOperator_shouldFilterByTimeRange_whenLeftCrossInterval() {
+        UUID storageId = storage.storageId();
+        Booking booking = bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 9, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
+        bookingRepo.create(booking);
+
+        BookingSearchOptions options = new BookingSearchOptions(
+                LocalDateTime.of(2020, 10, 10, 10, 0),
+                LocalDateTime.of(2020, 10, 10, 15, 0),
+                null,
+                10,
+                0
+        );
+        List<Booking> result = bookingRepo.getAllForOperator(storageId, options);
+
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    void getAllForOperator_shouldFilterByTimeRange_whenRightCrossInterval() {
+        UUID storageId = storage.storageId();
+        Booking booking = bookingRepo.create(BookingBuilder.builder()
+                .storage(storage)
+                .user(user)
+                .startTime(LocalDateTime.of(2020, 10, 10, 14, 0))
+                .bookingTime(Duration.ofHours(2))
+                .build()
+        );
+        bookingRepo.create(booking);
+
+        BookingSearchOptions options = new BookingSearchOptions(
+                LocalDateTime.of(2020, 10, 10, 10, 0),
+                LocalDateTime.of(2020, 10, 10, 15, 0),
                 null,
                 10,
                 0
