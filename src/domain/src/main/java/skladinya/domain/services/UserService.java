@@ -16,4 +16,6 @@ public interface UserService {
     User update(UUID userId, UserUpdate updateForm);
 
     String updateSelf(UUID userId, SelfUpdate updateForm);
+
+    String generateToken(User user);
 }

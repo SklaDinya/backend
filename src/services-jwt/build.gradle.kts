@@ -5,14 +5,14 @@ plugins {
     id("java-library")
 }
 
-description = "services-auth"
-group = "skladinya.services.auth"
+description = "services-jwt"
+group = "skladinya.services.jwt"
 
 dependencies {
     implementation(project(":domain"))
 
     implementation("org.springframework:spring-context:6.2.18")
-    implementation("org.springframework:spring-web:6.2.18")
+    implementation("com.auth0:java-jwt:4.5.1")
 }
 
 tasks.jar {
@@ -26,10 +26,10 @@ tasks.jar {
         attributes["Build-Date"] = SimpleDateFormat("yyyy-MM-dd").format(date)
         attributes["Build-Time"] = SimpleDateFormat("HH:mm:ss.SSSZ").format(date)
         attributes["Build-By"] = "FRANK"
-        attributes["Bundle-Name"] = "SklaDinya Auth Service"
+        attributes["Bundle-Name"] = "SklaDinya JWT Service"
         attributes["Bundle-SymbolicName"] = archiveBaseName
     }
-    archiveBaseName.set("skladinya-services-auth")
+    archiveBaseName.set("skladinya-services-jwt")
     archiveClassifier.set("")
     archiveVersion.set("")
 }

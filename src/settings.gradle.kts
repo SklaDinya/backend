@@ -1,7 +1,9 @@
 rootProject.name = "sklaDinya"
-include(":domain")
 include(":application")
+include(":domain")
 include(":services-auth")
+include(":services-jwt")
+include(":services-user")
 include(":persistence-postgres")
 include(":persistence-redis")
 include(":tests-helper")

@@ -9,10 +9,10 @@ import java.util.UUID;
 public final class UserBuilder {
 
     private UUID userId = UUID.randomUUID();
-    private String username = "random_username";
-    private String password = "qwerty123";
-    private String name = "Зубенко Михаил Петрович";
-    private String email = "abc@d.e";
+    private String username = UUID.randomUUID().toString();
+    private String password = UUID.randomUUID().toString();
+    private String name = UUID.randomUUID().toString();
+    private String email = UUID.randomUUID() + "@a.b";
     private UserRole role = UserRole.Client;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
