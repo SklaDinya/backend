@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
-import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.booking.Booking;
 import skladinya.domain.models.booking.BookingSearchOptions;
 import skladinya.domain.models.booking.BookingStatus;
@@ -49,16 +48,11 @@ class BookingSpecification {
             }
 
             if (options.startBooking() != null && options.endBooking() != null) {
-                predicates.add(cb.or(
-                        cb.and(
-                                cb.lessThanOrEqualTo(root.get("endTime"), options.startBooking()),
-                                cb.greaterThanOrEqualTo(root.get("startTime"), options.startBooking())
-                        ),
-                        cb.and(
-                                cb.lessThanOrEqualTo(root.get("endTime"), options.endBooking()),
-                                cb.greaterThanOrEqualTo(root.get("startTime"), options.endBooking())
-                        )
-                ));
+                Predicate timeOverlap = cb.and(
+                        cb.lessThanOrEqualTo(root.get("startTime"), options.endBooking()),
+                        cb.greaterThanOrEqualTo(root.get("endTime"), options.startBooking())
+                );
+                predicates.add(timeOverlap);
             }
 
             query.distinct(true);
