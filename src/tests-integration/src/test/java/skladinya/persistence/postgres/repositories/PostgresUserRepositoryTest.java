@@ -98,10 +98,15 @@ class PostgresUserRepositoryTest {
         User user = UserBuilder.builder().build();
         userRepo.create(user);
         User updated = UserBuilder.builder()
+                .name(user.name())
+                .username("updated_username")
+                .email("updated@mail.com")
                 .build();
 
         User result = userRepo.update(user.userId(), updated);
 
+        assertEquals(user.userId(), result.userId());
+        assertEquals(user.name(), result.name());
         assertEquals(updated.username(), result.username());
         assertEquals(updated.email(), result.email());
     }

@@ -11,6 +11,7 @@ import skladinya.domain.models.operator.OperatorRole;
 import skladinya.domain.models.operator.OperatorSearchOptions;
 import skladinya.domain.models.storage.Storage;
 import skladinya.domain.models.user.User;
+import skladinya.domain.models.user.UserRole;
 import skladinya.domain.repositories.OperatorRepository;
 import skladinya.domain.repositories.StorageRepository;
 import skladinya.domain.repositories.UserRepository;
@@ -46,6 +47,7 @@ class PostgresOperatorRepositoryTest {
         user = userRepo.create(UserBuilder.builder()
                 .name("test-name")
                 .username("test-username")
+                .role(UserRole.StorageOperator)
                 .build()
         );
     }
