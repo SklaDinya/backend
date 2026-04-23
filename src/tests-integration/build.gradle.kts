@@ -1,5 +1,11 @@
 plugins {
     id("java-library")
+    id("org.springframework.boot") version "3.3.4"
+    id("io.spring.dependency-management") version "1.1.6"
+}
+
+repositories {
+    mavenCentral()
 }
 
 description = "tests-integration"
@@ -7,17 +13,18 @@ group = "skladinya.tests.integration"
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":persistence-postgres"))
     implementation(project(":tests-helper"))
-    // Add project dependencies here
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    // Add other dependencies here
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    testImplementation("com.h2database:h2")
 }
 
 tasks.test {
     useJUnitPlatform()
 }
-
-// Add integration tests to the src/test/java in that module to package skladinya.tests.integration
