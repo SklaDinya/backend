@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestApplication.class)
-@ActiveProfiles("test")
+@ActiveProfiles("test-persistence-postgres")
 class PostgresPaymentRepositoryTest {
 
     @Autowired

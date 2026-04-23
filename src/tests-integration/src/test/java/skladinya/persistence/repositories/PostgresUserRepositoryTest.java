@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestApplication.class)
-@ActiveProfiles("test")
+@ActiveProfiles("test-persistence-postgres")
 class PostgresUserRepositoryTest {
 
     @Autowired
