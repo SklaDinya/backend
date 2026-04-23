@@ -59,13 +59,11 @@ class PostgresStorageRepositoryTest {
         storageRepo.create(storage);
 
         Storage updated = StorageBuilder.builder()
-                .name("updated_name")
-                .address("updated_address")
                 .build();
         Storage result = storageRepo.update(storage.storageId(), updated);
 
-        assertEquals("updated_name", result.name());
-        assertEquals("updated_address", result.address());
+        assertEquals(updated.name(), result.name());
+        assertEquals(updated.address(), result.address());
     }
 
     @Test
