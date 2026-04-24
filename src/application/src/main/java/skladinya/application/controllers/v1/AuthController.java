@@ -1,5 +1,6 @@
 package skladinya.application.controllers.v1;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginFormDto dto) {
+    public String login(@Valid @RequestBody LoginFormDto dto) {
         return authService.login(dto.getUsername(), dto.getPassword());
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegistrationFormDto dto) {
+    public String register(@Valid @RequestBody RegistrationFormDto dto) {
         return authService.register(RegistrationFormDtoConverter.toCoreEntity(dto));
     }
 }

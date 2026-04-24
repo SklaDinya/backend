@@ -1,6 +1,6 @@
 server:
-    address: 0.0.0.0
-    port: 8082
+    address: ${SPRING_HOST}
+    port: ${SPRING_PORT}
 spring:
     datasource:
         url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -16,6 +16,9 @@ spring:
         redis:
             host: ${REDIS_HOST}
             port: ${REDIS_PORT}
+    threads:
+        virtual:
+            enabled: true
 skladinya:
     jwt:
         issuer: ${JWT_ISSUER}

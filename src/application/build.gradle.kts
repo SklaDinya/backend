@@ -15,7 +15,10 @@ dependencies {
     implementation(project(":services-auth"))
     implementation(project(":services-jwt"))
     implementation(project(":services-user"))
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude(module = "spring-boot-starter-tomcat")
+    }
+    implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
