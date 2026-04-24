@@ -1,11 +1,13 @@
 package skladinya.persistence.postgres.helpers;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import skladinya.domain.helpers.SynchronizedConsumer;
 import skladinya.domain.helpers.SynchronizedFunction;
 import skladinya.domain.helpers.Synchronizer;
 
+@Component
 public class PostgresSynchronizer implements Synchronizer {
 
     @Override

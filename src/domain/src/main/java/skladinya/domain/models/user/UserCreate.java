@@ -13,8 +13,7 @@ public record UserCreate(
             String username,
             String password,
             String name,
-            String email,
-            boolean banned
+            String email
     ) {
         this(
                 username,
@@ -22,7 +21,7 @@ public record UserCreate(
                 name,
                 email,
                 UserRole.Client,
-                banned
+                false
         );
     }
 }

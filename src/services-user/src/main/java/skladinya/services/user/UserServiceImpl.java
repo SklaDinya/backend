@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @RequestScope
-public final class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 

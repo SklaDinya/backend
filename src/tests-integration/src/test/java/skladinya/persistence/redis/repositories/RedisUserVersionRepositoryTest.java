@@ -36,13 +36,13 @@ class RedisUserVersionRepositoryTest {
     }
 
     @Autowired
-    private SpringVersionRepository springVersionRepository;
+    private SpringUserVersionRepository springUserVersionRepository;
 
     private UserVersionRepository userVersionRepository;
 
     @BeforeEach
     void setUp() {
-        userVersionRepository = new RedisUserVersionRepository(springVersionRepository, TTL);
+        userVersionRepository = new RedisUserVersionRepository(springUserVersionRepository, TTL);
     }
 
     @Test
@@ -92,6 +92,6 @@ class RedisUserVersionRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        springVersionRepository.deleteAll();
+        springUserVersionRepository.deleteAll();
     }
 }
