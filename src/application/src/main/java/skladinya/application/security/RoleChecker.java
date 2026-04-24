@@ -11,6 +11,8 @@ import skladinya.domain.services.JwtService;
 @Component
 public class RoleChecker {
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     private final JwtService jwtService;
 
     public RoleChecker(JwtService jwtService) {
@@ -21,28 +23,29 @@ public class RoleChecker {
         return jwtService.validate(extractToken(token));
     }
 
-    public UserData client(String token) {
+    public UserData requireClient(String token) {
         return withRole(token, UserRole.Client);
     }
 
-    public UserData admin(String token) {
+    public UserData requireAdmin(String token) {
         return withRole(token, UserRole.Admin);
     }
 
-    public OperatorData storageOperator(String token) {
+    public OperatorData requireStorageOperator(String token) {
         return jwtService.validateStorageOperator(extractToken(token));
     }
 
-    public OperatorData mainStorageOperator(String token) {
+    public OperatorData requireMainStorageOperator(String token) {
         return withRole(token, OperatorRole.MainOperator);
     }
 
-    public OperatorData ordinaryStorageOperator(String token) {
+    public OperatorData requireOrdinaryStorageOperator(String token) {
         return withRole(token, OperatorRole.OrdinaryOperator);
     }
 
     private String extractToken(String token) {
-        return token.substring(7);
+        var prefixSize = BEARER_PREFIX.length();
+        return token.length() > prefixSize ? token.substring(prefixSize) : "";
     }
 
     private UserData withRole(String token, UserRole role) {
@@ -55,7 +58,7 @@ public class RoleChecker {
     }
 
     private OperatorData withRole(String token, OperatorRole role) {
-        var data = storageOperator(token);
+        var data = requireStorageOperator(token);
         if (!role.equals(data.role())) {
             throw SklaDinyaException.invalidAccess(
                     String.format("Invalid role (%s expected, %s got)", role, data.role()));

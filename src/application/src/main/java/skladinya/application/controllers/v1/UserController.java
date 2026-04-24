@@ -25,21 +25,21 @@ public class UserController {
 
     @GetMapping
     public List<UserGetDto> getAll(@RequestHeader String authorization, @Valid UserSearchParamsDto dto) {
-        roleChecker.admin(authorization);
+        roleChecker.requireAdmin(authorization);
         var result = userService.getAllBySearchOptions(UserSearchParamsDtoConverter.toCoreEntity(dto));
         return result.stream().map(UserGetDtoConverter::toDto).toList();
     }
 
     @PostMapping
     public UserGetDto create(@RequestHeader String authorization, @Valid @RequestBody UserCreateDto dto) {
-        roleChecker.admin(authorization);
+        roleChecker.requireAdmin(authorization);
         var result = userService.create(UserCreateDtoConverter.toCoreEntity(dto));
         return UserGetDtoConverter.toDto(result);
     }
 
     @GetMapping("/{userId}")
     public UserGetDto get(@RequestHeader String authorization, @PathVariable UUID userId) {
-        roleChecker.admin(authorization);
+        roleChecker.requireAdmin(authorization);
         var result = userService.getByUserId(userId);
         return UserGetDtoConverter.toDto(result);
     }
@@ -49,7 +49,7 @@ public class UserController {
             @RequestHeader String authorization,
             @PathVariable UUID userId,
             @Valid @RequestBody UserUpdateDto dto) {
-        roleChecker.admin(authorization);
+        roleChecker.requireAdmin(authorization);
         var result = userService.update(userId, UserUpdateDtoConverter.toCoreEntity(dto));
         return UserGetDtoConverter.toDto(result);
     }

@@ -22,5 +22,5 @@ services:
 volumes:
     postgres_data:
 
-# Для запуска: docker-compose -f docker-compose-local-env.yml up -d
-# Для остановки: docker-compose -f docker-compose-local-env.yml down
+# Для запуска: docker-compose -f docker-compose-local-env.yaml up -d
+# Для остановки: docker-compose -f docker-compose-local-env.yaml down

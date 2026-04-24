@@ -1,4 +1,6 @@
 spring:
+    application:
+        name: skladinya-app
     config:
         import: "optional:file:../.env"
     jpa:

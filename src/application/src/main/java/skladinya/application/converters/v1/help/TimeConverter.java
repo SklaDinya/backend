@@ -2,7 +2,7 @@ package skladinya.application.converters.v1.help;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 public final class TimeConverter {
 
@@ -10,6 +10,6 @@ public final class TimeConverter {
     }
 
     public static OffsetDateTime toOffsetDateTime(LocalDateTime time) {
-        return time.atOffset(ZoneOffset.UTC);
+        return time.atZone(ZoneId.systemDefault()).toOffsetDateTime();
     }
 }
