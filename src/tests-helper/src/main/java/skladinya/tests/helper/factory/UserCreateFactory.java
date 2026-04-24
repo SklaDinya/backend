@@ -13,6 +13,6 @@ public final class UserCreateFactory {
     }
 
     public static UserCreate empty() {
-        return new UserCreate(null, null, null, null, false);
+        return new UserCreate(null, null, null, null);
     }
 }

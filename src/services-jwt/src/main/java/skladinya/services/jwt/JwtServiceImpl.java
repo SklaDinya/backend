@@ -12,6 +12,7 @@ import skladinya.domain.models.user.UserRole;
 import skladinya.domain.repositories.UserVersionRepository;
 import skladinya.domain.services.JwtService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public final class JwtServiceImpl implements JwtService {
@@ -135,7 +136,7 @@ public final class JwtServiceImpl implements JwtService {
     private static Date getExpirationDate(int expiration) {
         var calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY, expiration);
+        calendar.add(Calendar.SECOND, expiration);
         return calendar.getTime();
     }
 

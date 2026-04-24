@@ -8,7 +8,17 @@ plugins {
 description = "application"
 group = "skladinya.application"
 
-dependencies {}
+dependencies {
+    implementation(project(":domain"))
+    implementation(project(":persistence-postgres"))
+    implementation(project(":persistence-redis"))
+    implementation(project(":services-auth"))
+    implementation(project(":services-jwt"))
+    implementation(project(":services-user"))
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.projectlombok:lombok")
+}
 
 tasks.jar {
     manifest {
