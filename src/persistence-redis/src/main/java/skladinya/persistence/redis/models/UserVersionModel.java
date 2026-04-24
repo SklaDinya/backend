@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.TimeToLive;
 import java.util.UUID;
 
 @Data
-@RedisHash("Version")
+@RedisHash("UserVersion")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserVersionModel {

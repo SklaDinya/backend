@@ -11,8 +11,8 @@ group = "skladinya.services.auth"
 dependencies {
     implementation(project(":domain"))
 
-    implementation("org.springframework:spring-context:6.2.18")
-    implementation("org.springframework:spring-web:6.2.18")
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework:spring-web")
 }
 
 tasks.jar {
