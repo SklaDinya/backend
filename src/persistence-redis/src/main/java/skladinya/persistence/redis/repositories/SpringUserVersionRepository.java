@@ -7,5 +7,5 @@ import skladinya.persistence.redis.models.UserVersionModel;
 import java.util.UUID;
 
 @Repository
-public interface SpringVersionRepository extends CrudRepository<UserVersionModel, UUID> {
+public interface SpringUserVersionRepository extends CrudRepository<UserVersionModel, UUID> {
 }

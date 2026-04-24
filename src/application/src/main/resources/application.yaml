@@ -1,9 +1,12 @@
 spring:
+    config:
+        import: "optional:file:../.env"
     jpa:
         open-in-view: false
         properties:
             hibernate:
                 format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
     level:
