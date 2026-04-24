@@ -4,18 +4,16 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import org.springframework.stereotype.Service;
 import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.operator.OperatorData;
 import skladinya.domain.models.operator.OperatorRole;
 import skladinya.domain.models.user.UserData;
 import skladinya.domain.models.user.UserRole;
-import skladinya.domain.repositories.VersionRepository;
+import skladinya.domain.repositories.UserVersionRepository;
 import skladinya.domain.services.JwtService;
 
 import java.util.*;
 
-@Service
 public final class JwtServiceImpl implements JwtService {
 
     private static final String USER_ID_CLAIM = "userId";
@@ -28,7 +26,7 @@ public final class JwtServiceImpl implements JwtService {
 
     private static final String VERSION_CLAIM = "version";
 
-    private final VersionRepository versionRepository;
+    private final UserVersionRepository userVersionRepository;
 
     private final Algorithm algorithm;
 
@@ -40,13 +38,13 @@ public final class JwtServiceImpl implements JwtService {
 
     private final int expiration;
 
-    public JwtServiceImpl(VersionRepository versionRepository, JwtConfig jwtConfig) {
-        this.versionRepository = versionRepository;
+    public JwtServiceImpl(UserVersionRepository userVersionRepository, JwtConfig jwtConfig) {
+        this.userVersionRepository = userVersionRepository;
         issuer = jwtConfig.issuer();
         algorithm = Algorithm.HMAC256(jwtConfig.secret());
         verifier = createVerifier(UserRole.Client);
         operatorVerifier = createVerifier(UserRole.StorageOperator);
-        expiration = jwtConfig.expiration();
+        expiration = jwtConfig.ttl();
     }
 
     @Override
@@ -97,7 +95,7 @@ public final class JwtServiceImpl implements JwtService {
     @Override
     public void update(UUID userId) {
         var version = UUID.randomUUID().toString();
-        versionRepository.save(userId, version);
+        userVersionRepository.save(userId, version);
     }
 
     private JWTVerifier createVerifier(UserRole role) {
@@ -115,7 +113,7 @@ public final class JwtServiceImpl implements JwtService {
         if (userId == null || userRole == null) {
             throw SklaDinyaException.validationError("null data while create token");
         }
-        var version = versionRepository.getByUserId(userId);
+        var version = userVersionRepository.getByUserId(userId);
         var builder = JWT.create()
                 .withIssuer(issuer)
                 .withClaim(USER_ID_CLAIM, userId.toString())
@@ -142,7 +140,7 @@ public final class JwtServiceImpl implements JwtService {
     }
 
     private void validateVersion(UUID userId, String version) {
-        var expected = versionRepository.getByUserId(userId);
+        var expected = userVersionRepository.getByUserId(userId);
         if (!Objects.equals(expected, version)) {
             throw SklaDinyaException.badCredentials("Invalid token version");
         }

@@ -2,7 +2,7 @@ package skladinya.domain.repositories;
 
 import java.util.UUID;
 
-public interface VersionRepository {
+public interface UserVersionRepository {
 
     String getByUserId(UUID userId);
 

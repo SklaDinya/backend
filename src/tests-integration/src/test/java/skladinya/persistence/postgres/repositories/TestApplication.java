@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@EntityScan("skladinya.persistence")
+@EntityScan("skladinya.persistence.postgres")
 @ComponentScan(basePackages = "skladinya.persistence.postgres")
 public class TestApplication {}
