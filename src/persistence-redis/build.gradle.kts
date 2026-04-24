@@ -3,12 +3,20 @@ import java.util.Date
 
 plugins {
     id("java-library")
+    id("org.springframework.boot") version "3.3.4"
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
 description = "persistence-redis"
 group = "skladinya.persistence.redis"
 
-dependencies {}
+dependencies {
+    implementation(project(":domain"))
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+}
 
 tasks.jar {
     manifest {

@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import org.springframework.stereotype.Service;
 import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.models.operator.OperatorData;
 import skladinya.domain.models.operator.OperatorRole;
@@ -15,7 +14,6 @@ import skladinya.domain.services.JwtService;
 
 import java.util.*;
 
-@Service
 public final class JwtServiceImpl implements JwtService {
 
     private static final String USER_ID_CLAIM = "userId";
@@ -46,7 +44,7 @@ public final class JwtServiceImpl implements JwtService {
         algorithm = Algorithm.HMAC256(jwtConfig.secret());
         verifier = createVerifier(UserRole.Client);
         operatorVerifier = createVerifier(UserRole.StorageOperator);
-        expiration = jwtConfig.expiration();
+        expiration = jwtConfig.ttl();
     }
 
     @Override
