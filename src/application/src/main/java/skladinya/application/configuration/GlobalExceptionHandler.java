@@ -18,8 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleSkladinyaException(SklaDinyaException ex) {
         logger.warn("Exception type: {}", ex.getExceptionType());
         logger.warn("Exception body: {}", ex.getMessage());
-        logger.warn("Exception trace: {}", (Object) ex.getStackTrace());
-        logger.warn("Exception cause: ", ex.getCause());
+        logger.warn("Exception: ", ex);
         return (switch (ex.getExceptionType()) {
             case ExceptionType.ValidationError -> ResponseEntity.badRequest();
             case ExceptionType.BadCredentials -> ResponseEntity.status(HttpStatus.UNAUTHORIZED);
