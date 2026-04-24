@@ -13,7 +13,7 @@ import java.util.UUID;
 @RedisHash("Version")
 @NoArgsConstructor
 @AllArgsConstructor
-public class VersionModel {
+public class UserVersionModel {
 
     @Id
     private UUID userId;

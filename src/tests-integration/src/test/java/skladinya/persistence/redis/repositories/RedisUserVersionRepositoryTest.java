@@ -11,7 +11,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import skladinya.domain.repositories.VersionRepository;
+import skladinya.domain.repositories.UserVersionRepository;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataRedisTest
 @Testcontainers
 @ContextConfiguration(classes = TestApplication.class)
-class RedisVersionRepositoryTest {
+class RedisUserVersionRepositoryTest {
 
     static int REDIS_PORT = 6379;
 
@@ -38,20 +38,20 @@ class RedisVersionRepositoryTest {
     @Autowired
     private SpringVersionRepository springVersionRepository;
 
-    private VersionRepository versionRepository;
+    private UserVersionRepository userVersionRepository;
 
     @BeforeEach
     void setUp() {
-        versionRepository = new RedisVersionRepository(springVersionRepository, TTL);
+        userVersionRepository = new RedisUserVersionRepository(springVersionRepository, TTL);
     }
 
     @Test
     void givenValidData_whenGetByUserId_thenReturnVersion() {
         var userId = UUID.randomUUID();
         var version = "67";
-        versionRepository.save(userId, version);
+        userVersionRepository.save(userId, version);
 
-        var result = versionRepository.getByUserId(userId);
+        var result = userVersionRepository.getByUserId(userId);
 
         assertEquals(version, result);
     }
@@ -60,7 +60,7 @@ class RedisVersionRepositoryTest {
     void givenNewUserId_whenGetByUserId_thenReturnEmpty() {
         var userId = UUID.randomUUID();
 
-        var result = versionRepository.getByUserId(userId);
+        var result = userVersionRepository.getByUserId(userId);
 
         assertTrue(result.isEmpty());
     }
@@ -69,10 +69,10 @@ class RedisVersionRepositoryTest {
     void givenAfterTimeout_whenGetByUserId_thenReturnEmpty() throws InterruptedException {
         var userId = UUID.randomUUID();
         var version = "67";
-        versionRepository.save(userId, version);
+        userVersionRepository.save(userId, version);
         Thread.sleep(TTL * 1100L);
 
-        var result = versionRepository.getByUserId(userId);
+        var result = userVersionRepository.getByUserId(userId);
 
         assertTrue(result.isEmpty());
     }
@@ -81,11 +81,11 @@ class RedisVersionRepositoryTest {
     void givenAfterUpdate_whenGetByUserId_thenReturnUpdated() throws InterruptedException {
         var userId = UUID.randomUUID();
         var version = "45";
-        versionRepository.save(userId, version);
+        userVersionRepository.save(userId, version);
         var newVersion = "67";
-        versionRepository.save(userId, newVersion);
+        userVersionRepository.save(userId, newVersion);
 
-        var result = versionRepository.getByUserId(userId);
+        var result = userVersionRepository.getByUserId(userId);
 
         assertEquals(newVersion, result);
     }
