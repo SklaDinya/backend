@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ public class FakeDataManager {
         createDirIfNotExists();
         Map<String, List<? extends Model>> generated = generateAll();
         exportAll(generated);
+        exportAllToSingleFile(generated);
     }
 
     protected Map<String, List<? extends Model>> generateAll() {
@@ -56,6 +58,24 @@ public class FakeDataManager {
                 ex.export(outputDir + modelName, models);
             }
         }
+    }
+
+    protected void exportAllToSingleFile(Map<String, List<? extends Model>> generated) {
+        String out = "main.sql";
+
+        try {
+            Files.write(Paths.get(outputDir + out), new byte[0]);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        generated.keySet().forEach(file -> {
+            try {
+                Files.write(Paths.get(outputDir + out),
+                        Files.readAllBytes(Paths.get(outputDir + file + ".sql")),
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (IOException ignored) {}
+        });
     }
 
     private void createDirIfNotExists() {
