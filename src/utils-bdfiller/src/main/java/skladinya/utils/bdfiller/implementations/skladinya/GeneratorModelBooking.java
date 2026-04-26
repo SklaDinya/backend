@@ -62,10 +62,12 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
             );
             LocalDateTime startTime = createdDate.plusHours(faker.number().numberBetween(1, 10));
             Duration bookingTime = Duration.ofHours(faker.number().numberBetween(1, 100));
-
             ModelCell cell = getRandomElement(cells);
 
-            out.add(
+            String cellClass = cell.getCellClass();
+            BigDecimal price = UtilsFaker.getClassPrice(cellClass);
+
+                    out.add(
                     new ModelBooking(
                             UUID.randomUUID(),
                             getRandomElement(users).getUserId(),
@@ -76,7 +78,7 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
                             startTime.plus(bookingTime),
                             createdDate,
                             BookingStatus.Finished,
-                            BigDecimal.valueOf(500 * bookingTime.toHours())
+                            BigDecimal.valueOf(price.intValue() * bookingTime.toHours())
                     )
             );
         }

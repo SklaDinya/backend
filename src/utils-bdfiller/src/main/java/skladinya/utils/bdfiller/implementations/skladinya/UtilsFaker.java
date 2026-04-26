@@ -4,10 +4,12 @@ import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -41,6 +43,15 @@ public class UtilsFaker {
                 faker.number().numberBetween(from, to),
                 faker.number().numberBetween(10, 50)
         );
+    }
+
+    static String getCellClass() {
+        return String.valueOf("ABC".charAt(random.nextInt(3)));
+    }
+
+    static BigDecimal getClassPrice(String cellClass) {
+        Map<String, BigDecimal> prices = Map.of("A", BigDecimal.ONE, "B", BigDecimal.TEN, "C", BigDecimal.valueOf(100));
+        return prices.getOrDefault(cellClass, BigDecimal.valueOf(0));
     }
 
     static String generateSentence(int minWordsCount, int maxWordsCount) {

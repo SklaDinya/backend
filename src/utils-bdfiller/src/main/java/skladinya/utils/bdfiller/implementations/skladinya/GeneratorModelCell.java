@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import skladinya.utils.bdfiller.model.Model;
 import skladinya.utils.bdfiller.service.GeneratorModel;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,8 +40,7 @@ public class GeneratorModelCell extends GeneratorModel<ModelCell> {
     }
 
     private String getRandomClass() {
-        String[] sizes = {"Малая", "Обычная", "Большая"};
-        return sizes[random.nextInt(sizes.length)];
+        return UtilsFaker.getCellClass();
     }
 
     @Override

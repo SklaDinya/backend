@@ -38,14 +38,17 @@ public class GeneratorModelPrice extends GeneratorModel<ModelPrice> {
                 continue;
             }
             int cntPrice = faker.number().numberBetween(1, 3);
+            String cellClass = UtilsFaker.getCellClass();
+            BigDecimal price = UtilsFaker.getClassPrice(cellClass);
+
             for (int i = 0; i < cntPrice; i++) {
                 LocalDateTime createdDate = storage.getCreatedAt().plusDays(faker.number().numberBetween(1, 3));
                 out.add(
                         new ModelPrice(
                                 UUID.randomUUID(),
                                 storage.getStorageId(),
-                                BigDecimal.valueOf((Math.random() * 100 + 1) * 1000),
-                                String.valueOf("ABC".charAt(random.nextInt(3))),
+                                price,
+                                cellClass,
                                 createdDate
                         )
                 );
