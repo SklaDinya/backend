@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,10 @@ public class UtilsFaker {
                 faker.number().numberBetween(from, to),
                 faker.number().numberBetween(10, 50)
         );
+    }
+
+    static <T> T getRandomElement(List<T> list) {
+        return list.get(random.nextInt(list.size()));
     }
 
     static String getCellClass() {

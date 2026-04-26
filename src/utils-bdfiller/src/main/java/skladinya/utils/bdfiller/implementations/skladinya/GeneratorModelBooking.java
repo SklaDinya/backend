@@ -24,10 +24,6 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
         this.encoder = encoder;
     }
 
-    private <T> T getRandomElement(List<T> list) {
-        return list.get(random.nextInt(list.size()));
-    }
-
     @Override
     public String getModelName() {
         return "bookings";
@@ -62,7 +58,7 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
             );
             LocalDateTime startTime = createdDate.plusHours(faker.number().numberBetween(1, 10));
             Duration bookingTime = Duration.ofHours(faker.number().numberBetween(1, 100));
-            ModelCell cell = getRandomElement(cells);
+            ModelCell cell = UtilsFaker.getRandomElement(cells);
 
             String cellClass = cell.getCellClass();
             BigDecimal price = UtilsFaker.getClassPrice(cellClass);
@@ -70,7 +66,7 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
                     out.add(
                     new ModelBooking(
                             UUID.randomUUID(),
-                            getRandomElement(users).getUserId(),
+                            UtilsFaker.getRandomElement(users).getUserId(),
                             cell.getStorageId(),
                             List.of(cell.getCellId()),
                             startTime,
