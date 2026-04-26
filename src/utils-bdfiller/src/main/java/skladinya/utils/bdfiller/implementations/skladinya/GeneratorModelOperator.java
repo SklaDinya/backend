@@ -56,10 +56,21 @@ public class GeneratorModelOperator extends GeneratorModel<ModelOperator> {
                             UUID.randomUUID(),
                             operators.get(operatorIndex).getUserId(),
                             storage.getStorageId(),
-                            getRandomRole()
+                            OperatorRole.MainOperator
                     )
             );
             operatorIndex = (operatorIndex + 1) % operators.size();
+        }
+
+        for (int i = operatorIndex; i < operators.size(); i++) {
+            out.add(
+                    new ModelOperator(
+                            UUID.randomUUID(),
+                            operators.get(i).getUserId(),
+                            UtilsFaker.getRandomElement(out).getStorageId(),
+                            OperatorRole.OrdinaryOperator
+                    )
+            );
         }
         return out;
     }
