@@ -56,7 +56,7 @@ public class GeneratorModelStorage extends GeneratorModel<ModelStorage> {
                             name,
                             address,
                             description,
-                            getRandomStatus(),
+                            StorageStatus.Active,
                             createdDate,
                             updatedDate)
             );
