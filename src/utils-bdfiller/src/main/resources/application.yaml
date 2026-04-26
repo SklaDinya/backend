@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: fakeDataGenerator
+
+config:
+  export:
+    outputDir: "utils-bdfiller/generatedData/"
+    fileType:
+      txt: false
+      json: false
+      csw: false
+      sql: true
+  generators:
+    package: "skladinya.utils.bdfiller.implementations.skladinya"
+  models:
+    baseGeneratedNumber: 50
+
+logging:
+  level:
+    root: ERROR
+    org:
+      srd: DEBUG
+      springframework:
+        boot:
+          autoconfigure: WARN
+  file:
+    name: utils-bdfiller/logs/fakeDataGenerator.log
+
+faker:
+  locale: ru
+  seed: 228
