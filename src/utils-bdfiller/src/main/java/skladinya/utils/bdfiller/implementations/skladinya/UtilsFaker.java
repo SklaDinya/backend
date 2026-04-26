@@ -44,17 +44,30 @@ public class UtilsFaker {
     }
 
     static String generateSentence(int minWordsCount, int maxWordsCount) {
-        int wordCount = random.nextInt(maxWordsCount) + minWordsCount;
+        String[] russianWords = {
+                "Привет", "Мир", "Программист", "Код", "Работа", "Дом", "Машина",
+                "Солнце", "Луна", "Звезда", "Друг", "Книга", "Стол", "Компьютер",
+                "Интернет", "Утро", "Вечер", "День", "Ночь", "Красивый"
+        };
+
+        int wordCount = random.nextInt(minWordsCount, maxWordsCount + 1);
 
         StringBuilder sentence = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
             if (i > 0) {
                 sentence.append(" ");
             }
-            sentence.append(faker.lorem().word());
+            String word = russianWords[random.nextInt(russianWords.length)];
+
+            if (i == 0) {
+                sentence.append(word);
+            } else {
+                sentence.append(word.toLowerCase());
+            }
         }
 
-        return capitalizeFirst(sentence.toString());
+        sentence.append(".");
+        return sentence.toString();
     }
 
     static String capitalizeFirst(String text) {
