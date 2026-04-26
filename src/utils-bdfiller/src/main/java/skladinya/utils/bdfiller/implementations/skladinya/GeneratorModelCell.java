@@ -10,7 +10,6 @@ import skladinya.utils.bdfiller.service.GeneratorModel;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -23,16 +22,16 @@ public class GeneratorModelCell extends GeneratorModel<ModelCell> {
         this.encoder = encoder;
     }
 
-    public static String getRandomName() {
+    public String getRandomName() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < 3; i++) {
-            char letter = (char) ('A' + ThreadLocalRandom.current().nextInt(26));
+            char letter = (char) ('A' + random.nextInt(26));
             sb.append(letter);
         }
 
         for (int i = 0; i < 5; i++) {
-            int digit = ThreadLocalRandom.current().nextInt(10);
+            int digit = random.nextInt(10);
             sb.append(digit);
         }
 
@@ -41,7 +40,7 @@ public class GeneratorModelCell extends GeneratorModel<ModelCell> {
 
     private String getRandomClass() {
         String[] sizes = {"Малая", "Обычная", "Большая"};
-        return sizes[ThreadLocalRandom.current().nextInt(sizes.length)];
+        return sizes[random.nextInt(sizes.length)];
     }
 
     @Override

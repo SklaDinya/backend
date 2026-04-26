@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -26,7 +25,7 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
     }
 
     private <T> T getRandomElement(List<T> list) {
-        return list.get(ThreadLocalRandom.current().nextInt(list.size()));
+        return list.get(random.nextInt(list.size()));
     }
 
     @Override

@@ -9,7 +9,6 @@ import skladinya.utils.bdfiller.model.Model;
 import skladinya.utils.bdfiller.service.GeneratorModel;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -22,10 +21,8 @@ public class GeneratorModelOperator extends GeneratorModel<ModelOperator> {
         this.encoder = encoder;
     }
 
-    private static OperatorRole getRandomRole() {
-        double random = ThreadLocalRandom.current().nextDouble();
-
-        if (random < 0.8) {
+    private OperatorRole getRandomRole() {
+        if (random.nextDouble() < 0.8) {
             return OperatorRole.OrdinaryOperator;
         } else {
             return OperatorRole.MainOperator;

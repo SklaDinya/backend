@@ -45,7 +45,7 @@ public class GeneratorModelPrice extends GeneratorModel<ModelPrice> {
                                 UUID.randomUUID(),
                                 storage.getStorageId(),
                                 BigDecimal.valueOf((Math.random() * 100 + 1) * 1000),
-                                String.valueOf("ABC".charAt(new Random().nextInt(3))),
+                                String.valueOf("ABC".charAt(random.nextInt(3))),
                                 createdDate
                         )
                 );

@@ -9,7 +9,6 @@ import skladinya.utils.bdfiller.model.Model;
 import skladinya.utils.bdfiller.service.GeneratorModel;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -22,21 +21,19 @@ public class GeneratorModelPayment extends GeneratorModel<ModelPayment> {
         this.encoder = encoder;
     }
 
-    private static PaymentType getRandomPaymentType() {
-        double random = ThreadLocalRandom.current().nextDouble();
-
-        if (random < 0.5) {
-            return PaymentType.Random;
-        } else {
-            return PaymentType.NoOp;
-        }
-    }
-
     private static PaymentPayload getPayload(PaymentType type) {
         return switch (type) {
             case PaymentType.NoOp -> new NoOpPaymentPayload();
             case PaymentType.Random -> new RandomPaymentPayload();
         };
+    }
+
+    private PaymentType getRandomPaymentType() {
+        if (random.nextDouble() < 0.5) {
+            return PaymentType.Random;
+        } else {
+            return PaymentType.NoOp;
+        }
     }
 
     @Override

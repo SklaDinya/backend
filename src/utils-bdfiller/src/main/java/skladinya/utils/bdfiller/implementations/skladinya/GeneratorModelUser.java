@@ -10,7 +10,6 @@ import skladinya.utils.bdfiller.service.GeneratorModel;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -23,12 +22,12 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
         this.encoder = encoder;
     }
 
-    private static UserRole getRandomRole() {
-        double random = ThreadLocalRandom.current().nextDouble();
+    private UserRole getRandomRole() {
+        double randomNumber = random.nextDouble();
 
-        if (random < 0.6) {
+        if (randomNumber < 0.6) {
             return UserRole.Client;
-        } else if (random < 0.9) {
+        } else if (randomNumber < 0.9) {
             return UserRole.StorageOperator;
         } else {
             return UserRole.Admin;

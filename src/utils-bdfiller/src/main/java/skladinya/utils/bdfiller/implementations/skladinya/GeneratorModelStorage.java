@@ -10,7 +10,6 @@ import skladinya.utils.bdfiller.service.GeneratorModel;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @Getter
@@ -23,10 +22,8 @@ public class GeneratorModelStorage extends GeneratorModel<ModelStorage> {
         this.encoder = encoder;
     }
 
-    private static StorageStatus getRandomStatus() {
-        double random = ThreadLocalRandom.current().nextDouble();
-
-        if (random < 0.8) {
+    private StorageStatus getRandomStatus() {
+        if (random.nextDouble() < 0.8) {
             return StorageStatus.Active;
         } else {
             return StorageStatus.Created;
