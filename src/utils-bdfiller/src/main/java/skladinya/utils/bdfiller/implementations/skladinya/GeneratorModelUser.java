@@ -25,7 +25,7 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
     private UserRole getRandomRole() {
         double randomNumber = random.nextDouble();
 
-        if (randomNumber < 0.6) {
+        if (randomNumber < 0.7) {
             return UserRole.Client;
         } else if (randomNumber < 0.9) {
             return UserRole.StorageOperator;
@@ -43,9 +43,16 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
     public List<ModelUser> generate(Map<String, List<? extends Model>> context) {
         List<ModelUser> out = new ArrayList<>();
         for (int id = 1; id <= baseGeneratedCount; id++) {
-            String name = faker.name().firstName();
+            String name = faker.name().fullName();
             String username = faker.funnyName().name().replace(" ", "") + id;
+
+            var role = getRandomRole();
             String email = username + "@yandex.ru";
+            if (role == UserRole.Client) {
+                if (random.nextDouble() > 0.3) {
+                    email = "";
+                }
+            }
             LocalDateTime createdDate = LocalDateTime.of(
                     faker.number().numberBetween(2020, 2021),
                     faker.number().numberBetween(1, 12),
@@ -54,7 +61,7 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
                     faker.number().numberBetween(0, 59)
             );
             LocalDateTime updatedDate = createdDate.plusWeeks(faker.number().numberBetween(0, 55));
-            boolean banned = Math.random() < 0.1;
+            boolean banned = Math.random() < 0.05;
             out.add(
                     new ModelUser(
                             UUID.randomUUID(),
@@ -62,7 +69,7 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
                             username,
                             name,
                             email,
-                            getRandomRole(),
+                            role,
                             createdDate,
                             updatedDate,
                             banned)

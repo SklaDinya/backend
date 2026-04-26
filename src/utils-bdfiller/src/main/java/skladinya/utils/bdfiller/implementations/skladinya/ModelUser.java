@@ -29,7 +29,7 @@ public class ModelUser extends Model {
         map.put("username", username);
         map.put("password", password);
         map.put("name", name);
-        map.put("email", email);
+        map.put("email", email.isEmpty() ? null : email);
         map.put("role", role.toString());
         map.put("created_at", createdAt);
         map.put("updated_at", updatedAt);
