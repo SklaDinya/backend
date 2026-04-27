@@ -64,7 +64,14 @@ public class FakeDataManager {
         String out = "main.sql";
 
         try {
-            Files.write(Paths.get(outputDir + out), new byte[0]);
+            Files.write(Paths.get(outputDir + out), ("DO $$\n" +
+                    "DECLARE\n" +
+                    "  r RECORD;\n" +
+                    "BEGIN\n" +
+                    "  FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP\n" +
+                    "    EXECUTE 'TRUNCATE TABLE ' || quote_ident(r.tablename) || ' CASCADE';\n" +
+                    "  END LOOP;\n" +
+                    "END $$;\n").getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
