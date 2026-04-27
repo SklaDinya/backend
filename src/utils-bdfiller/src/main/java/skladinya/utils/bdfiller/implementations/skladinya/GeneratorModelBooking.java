@@ -33,10 +33,16 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
     public List<ModelBooking> generate(Map<String, List<? extends Model>> context) {
         List<? extends Model> cellsCommon = context.getOrDefault("cells", Collections.emptyList());
         List<? extends Model> usersCommon = context.getOrDefault("users", Collections.emptyList());
+        List<? extends Model> pricesCommon = context.getOrDefault("prices", Collections.emptyList());
 
         List<ModelCell> cells = cellsCommon.stream()
                 .filter(c -> c instanceof ModelCell)
                 .map(c -> (ModelCell) c)
+                .toList();
+
+        List<ModelPrice> prices = pricesCommon.stream()
+                .filter(p -> p instanceof ModelPrice)
+                .map(p -> (ModelPrice) p)
                 .toList();
 
         List<ModelUser> users = usersCommon.stream()
@@ -60,8 +66,15 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
             Duration bookingTime = Duration.ofHours(faker.number().numberBetween(1, 100));
             ModelCell cell = UtilsFaker.getRandomElement(cells);
 
+
             String cellClass = cell.getCellClass();
-            BigDecimal price = UtilsFaker.getClassPrice(cellClass);
+
+            BigDecimal pricePerHour = prices.stream()
+                    .filter(p -> Objects.equals(p.getCellClass(), cellClass))
+                    .filter(p -> p.getStorageId() == cell.getStorageId())
+                    .findFirst()
+                    .orElseThrow()
+                    .getPrice();
 
                     out.add(
                     new ModelBooking(
@@ -74,7 +87,7 @@ public class GeneratorModelBooking extends GeneratorModel<ModelBooking> {
                             startTime.plus(bookingTime),
                             createdDate,
                             BookingStatus.Finished,
-                            BigDecimal.valueOf(price.intValue() * bookingTime.toHours())
+                            BigDecimal.valueOf(pricePerHour.intValue() * bookingTime.toHours())
                     )
             );
         }

@@ -37,17 +37,18 @@ public class GeneratorModelPrice extends GeneratorModel<ModelPrice> {
             if (!(model instanceof ModelStorage storage)) {
                 continue;
             }
-            int cntPrice = faker.number().numberBetween(1, 3);
-            String cellClass = UtilsFaker.getCellClass();
-            BigDecimal price = UtilsFaker.getClassPrice(cellClass);
+            int cntPrice = 3;
+            String cellClasses = UtilsFaker.getCellClasses();
 
             for (int i = 0; i < cntPrice; i++) {
+                String cellClass = cellClasses.substring(i, i + 1);
+                BigDecimal price = UtilsFaker.getClassPrice(cellClass);
                 LocalDateTime createdDate = storage.getCreatedAt().plusDays(faker.number().numberBetween(1, 3));
                 out.add(
                         new ModelPrice(
                                 UUID.randomUUID(),
                                 storage.getStorageId(),
-                                price,
+                                price.add(BigDecimal.valueOf((long) faker.number().numberBetween(1, 5) * price.intValue())),
                                 cellClass,
                                 createdDate
                         )

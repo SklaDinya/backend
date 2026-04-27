@@ -54,6 +54,10 @@ public class UtilsFaker {
         return String.valueOf("ABC".charAt(random.nextInt(3)));
     }
 
+    static String getCellClasses() {
+        return "ABC";
+    }
+
     static BigDecimal getClassPrice(String cellClass) {
         Map<String, BigDecimal> prices = Map.of("A", BigDecimal.ONE, "B", BigDecimal.TEN, "C", BigDecimal.valueOf(100));
         return prices.getOrDefault(cellClass, BigDecimal.valueOf(0));
