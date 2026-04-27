@@ -8,6 +8,10 @@ build/
 **/gradlew.bat
 **/gradle/
 
+# Fake data generator
+utils-bdfiller/generatedData
+utils-bdfiller/logs
+
 ### IntelliJ IDEA ###
 .idea/
 *.iws
