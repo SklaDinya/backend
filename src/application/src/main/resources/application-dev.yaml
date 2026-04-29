@@ -1,5 +1,5 @@
 server:
-    address: ${SPRING_HOST}
+    address: 0.0.0.0
     port: ${SPRING_PORT}
 spring:
     datasource:
@@ -16,11 +16,35 @@ spring:
         redis:
             host: ${REDIS_HOST}
             port: ${REDIS_PORT}
-            username: pupa
-            password: lupa
+            username: ${REDIS_USERNAME}
+            password: ${REDIS_PASSWORD}
     threads:
         virtual:
             enabled: true
+    web:
+        resources:
+            static-locations:
+                - "file:/static"
+springdoc:
+    swagger-ui:
+        urls:
+            -   name: Auth API
+                url: /api/auth-swagger-api.yaml
+            -   name: Bookings API
+                url: /api/bookings-swagger-api.yaml
+            -   name: Cells API
+                url: /api/cells-swagger-api.yaml
+            -   name: Operators API
+                url: /api/operators-swagger-api.yaml
+            -   name: Payments API
+                url: /api/payments-swagger-api.yaml
+            -   name: Prices API
+                url: /api/prices-swagger-api.yaml
+            -   name: Storages API
+                url: /api/storages-swagger-api.yaml
+            -   name: Users API
+                url: /api/users-swagger-api.yaml
+
 skladinya:
     jwt:
         issuer: ${JWT_ISSUER}

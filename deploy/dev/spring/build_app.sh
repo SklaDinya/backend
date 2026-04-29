@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 cd ../../src/
-./gradlew utils-bdfiller:bootRun --no-daemon
+./gradlew application:bootJar --no-daemon
 cd ../deploy/dev/
