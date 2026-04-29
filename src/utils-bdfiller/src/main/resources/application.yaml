@@ -4,7 +4,7 @@ spring:
 
 config:
   export:
-    outputDir: "utils-bdfiller/generatedData/"
+    outputDir: "generatedData/"
     fileType:
       txt: false
       json: false
@@ -24,7 +24,7 @@ logging:
         boot:
           autoconfigure: WARN
   file:
-    name: utils-bdfiller/logs/fakeDataGenerator.log
+    name: logs/fakeDataGenerator.log
 
 faker:
   locale: ru

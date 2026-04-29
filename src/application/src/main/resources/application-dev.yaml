@@ -9,13 +9,15 @@ spring:
         driver-class-name: org.postgresql.Driver
     jpa:
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: validate
         show-sql: false
         database-platform: org.hibernate.dialect.PostgreSQLDialect
     data:
         redis:
             host: ${REDIS_HOST}
             port: ${REDIS_PORT}
+            username: pupa
+            password: lupa
     threads:
         virtual:
             enabled: true
