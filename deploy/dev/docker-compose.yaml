@@ -1,0 +1,36 @@
+services:
+#    postgres:
+#        image: postgres:18.3
+#        container_name: db-postgres
+#        restart: unless-stopped
+#        env_file:
+#            - .env
+#        environment:
+#            POSTGRES_DB: ${POSTGRES_DB}
+#            POSTGRES_USER: ${POSTGRES_USER}
+#            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#        ports:
+#            - "${POSTGRES_PORT}:5432"
+#        volumes:
+#            - postgres_data:/var/lib/postgresql
+    redis:
+        image: redis:8.6-alpine
+        restart: unless-stopped
+        env_file:
+            - .env
+        hostname: ${REDIS_HOST}
+        command: >
+            sh -c "
+            chmod +x /init.sh && 
+            /init.sh
+            "
+        volumes:
+            - ./redis/init.sh:/init.sh
+        ports:
+            - "6379:${REDIS_PORT}"
+
+volumes:
+    postgres_data:
+
+# Для запуска: docker-compose -f docker-compose.yaml up -d
+# Для остановки: docker-compose -f docker-compose.yaml down
