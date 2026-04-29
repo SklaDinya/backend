@@ -9,7 +9,7 @@ services:
         hostname: ${SPRING_HOST}
         command: [ "java", "-jar", "app.jar" ]
         ports:
-            - "8080:${SPRING_PORT}"
+            - "${SPRING_OUTER_PORT}:${SPRING_PORT}"
         volumes:
             - ./spring/app.jar:/app.jar:ro
             - ./spring/api:/static:ro
