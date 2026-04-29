@@ -2,7 +2,7 @@
 
 set -e
 
-cd deploy/dev
+cd "$(dirname "$(readlink -f "$0")")"
 
 # End previous session
 
