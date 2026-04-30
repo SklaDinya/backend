@@ -47,7 +47,9 @@ services:
             retries: 5
 
     redis:
-        image: redis:8.6-alpine
+        build:
+            context: ./redis
+            dockerfile: Dockerfile
         restart: unless-stopped
         env_file:
             - .env
@@ -56,12 +58,14 @@ services:
         hostname: ${REDIS_HOST}
         command: >
             sh -c "
-            chmod +x /init.sh && 
-            /init.sh &&
+            mkdir -p /usr/local/etc/redis &&
+            echo 'bind 0.0.0.0' > /usr/local/etc/redis/redis.conf &&
+            echo 'port '${REDIS_PORT} >> /usr/local/etc/redis/redis.conf &&
+            echo 'requirepass '${REDIS_PASSWORD} >> /usr/local/etc/redis/redis.conf &&
+            echo 'user default off' >> /usr/local/etc/redis/redis.conf &&
+            echo 'user '${REDIS_USERNAME}' on >'${REDIS_PASSWORD}' ~* +@all' >> /usr/local/etc/redis/redis.conf &&
             redis-server /usr/local/etc/redis/redis.conf
             "
-        volumes:
-            - ./redis/init.sh:/init.sh
         ports:
             - "6379:${REDIS_PORT}"
         healthcheck:
@@ -77,5 +81,5 @@ networks:
         driver: bridge
 
 
-# Для запуска: docker compose -f docker-compose.yaml up -d
-# Для остановки: docker compose -f docker-compose.yaml down
+# Для запуска: docker compose -f docker-compose-win.yaml up -d
+# Для остановки: docker compose -f docker-compose-win.yaml down
