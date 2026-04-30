@@ -38,7 +38,11 @@ public class GeneratorModelStorage extends GeneratorModel<ModelStorage> {
     @Override
     public List<ModelStorage> generate(Map<String, List<? extends Model>> context) {
         List<ModelStorage> out = new ArrayList<>();
-        for (int id = 1; id <= baseGeneratedCount / 4; id++) {
+        List<? extends Model> users = context.getOrDefault("users", Collections.emptyList());
+        var generated = baseGeneratedCount / 4 + 1;
+        var found = users.stream().filter(u -> ((ModelUser)u).getRole().equals(UserRole.StorageOperator)).count();
+        var count = Math.min(generated, found);
+        for (int id = 1; id < count; id++) {
             String name = faker.lorem().word();
             String address = "Улица " + faker.name().lastName();
             String description = UtilsFaker.generateSentence(2, 5);
