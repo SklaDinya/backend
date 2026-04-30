@@ -42,13 +42,19 @@ public class GeneratorModelUser extends GeneratorModel<ModelUser> {
     @Override
     public List<ModelUser> generate(Map<String, List<? extends Model>> context) {
         List<ModelUser> out = new ArrayList<>();
+        var userCount = 0;
+        var operatorCount = 0;
+        var adminCount = 0;
         for (int id = 1; id <= baseGeneratedCount; id++) {
             String name = faker.name().fullName();
-            String username = faker.funnyName().name().replace(" ", "") + id;
-
             var role = getRandomRole();
+            String username = switch (role) {
+                case UserRole.Client -> String.format("ClientUser%d", ++userCount);
+                case UserRole.StorageOperator -> String.format("OperatorUser%d", ++operatorCount);
+                case UserRole.Admin -> String.format("AdminUser%d", ++adminCount);
+            };
             String email = username + "@yandex.ru";
-            if (role == UserRole.Client) {
+            if (role != UserRole.StorageOperator) {
                 if (random.nextDouble() > 0.3) {
                     email = "";
                 }

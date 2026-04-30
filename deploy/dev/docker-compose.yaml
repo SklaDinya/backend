@@ -1,0 +1,81 @@
+services:
+    spring:
+        image: amazoncorretto:21
+        restart: unless-stopped
+        env_file:
+            - .env
+        networks:
+            - skladinya-dev
+        hostname: ${SPRING_HOST}
+        command: [ "java", "-jar", "app.jar" ]
+        ports:
+            - "${SPRING_OUTER_PORT}:${SPRING_PORT}"
+        volumes:
+            - ./spring/app.jar:/app.jar:ro
+            - ./spring/api:/static:ro
+        depends_on:
+            - postgres
+            - redis
+        healthcheck:
+            test: [ "CMD-SHELL", "curl localhost:${SPRING_PORT}/actuator/health" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    postgres:
+        image: postgres:18.3
+        restart: unless-stopped
+        env_file:
+            - .env
+        networks:
+            - skladinya-dev
+        hostname: ${POSTGRES_HOST}
+        command: -p ${POSTGRES_PORT}
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - "5432:${POSTGRES_PORT}"
+        volumes:
+            - ./postgres/scripts/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+            - ./postgres/scripts/fill.sql:/docker-entrypoint-initdb.d/02-fill.sql:ro
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p ${POSTGRES_PORT}" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:8.6-alpine
+        restart: unless-stopped
+        env_file:
+            - .env
+        networks:
+            - skladinya-dev
+        hostname: ${REDIS_HOST}
+        command: >
+            sh -c "
+            chmod +x /init.sh && 
+            /init.sh &&
+            redis-server /usr/local/etc/redis/redis.conf
+            "
+        volumes:
+            - ./redis/init.sh:/init.sh
+        ports:
+            - "6379:${REDIS_PORT}"
+        healthcheck:
+            test: [ "CMD", "redis-cli", "-p", "${REDIS_PORT}", "--user", "${REDIS_USERNAME}", "--pass", "${REDIS_PASSWORD}", "--no-auth-warning", "ping" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+
+networks:
+    skladinya-dev:
+        name: skladinya
+        driver: bridge
+
+
+# Для запуска: docker compose -f docker-compose.yaml up -d
+# Для остановки: docker compose -f docker-compose.yaml down
