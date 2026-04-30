@@ -1,24 +1,24 @@
 @echo off
-setlocal
-
-REM Get current directory for this script
-set "SCRIPT_DIR=%~dp0"
-cd /d "%SCRIPT_DIR%"
+setlocal enabledelayedexpansion
 
 REM End previous session
-docker compose -f .\docker-compose.yaml down
+docker compose -f docker-compose.yaml down
+if errorlevel 1 exit /b %errorlevel%
 
 REM Redis - no actions to prepare
 
 REM Postgres - build and copy
-call postgres\generate_data.bat
+@REM call postgres\generate_data.bat
+@REM if errorlevel 1 exit /b %errorlevel%
 call postgres\copy_scripts.bat
+if errorlevel 1 exit /b %errorlevel%
 
 REM Spring - build and copy
-call spring\build_app.bat
+@REM call spring\build_app.bat
+@REM if errorlevel 1 exit /b %errorlevel%
 call spring\copy_files.bat
+if errorlevel 1 exit /b %errorlevel%
 
 REM Start
-docker compose -f .\docker-compose.yaml up -d
-
-endlocal
+docker compose -f docker-compose.yaml up -d
+if errorlevel 1 exit /b %errorlevel%
