@@ -107,7 +107,7 @@ class PostgresOperatorRepositoryTest {
                 0
         );
 
-        List<Operator> result = operatorRepo.getAllBySearchOptions(options);
+        List<Operator> result = operatorRepo.getAllBySearchOptions(storage.storageId(), options);
 
         assertFalse(result.isEmpty());
         assertTrue(result.stream()

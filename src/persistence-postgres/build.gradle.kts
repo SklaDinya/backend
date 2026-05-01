@@ -11,6 +11,7 @@ group = "skladinya.persistence.postgres"
 dependencies {
     implementation(project(":domain"))
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework:spring-web")
 
     implementation("com.google.code.gson:gson:2.10.1")
     runtimeOnly("org.postgresql:postgresql")

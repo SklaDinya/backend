@@ -45,7 +45,7 @@ public class StorageServiceImpl implements StorageService {
         synchronizer.executeTransactionConsumer(() -> {
             var created = new Storage(createForm.storageName(), createForm.address(), createForm.description());
             var storage = storageRepository.create(created);
-            var operator = operatorService.create(storage.storageId(), createForm.operatorCreate());
+            var operator = operatorService.create(storage.storageId(), createForm.operatorCreate(), true);
             emailService.sendStorageCreated(operator.user().email(), storage);
         });
     }

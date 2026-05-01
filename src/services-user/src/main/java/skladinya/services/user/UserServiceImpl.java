@@ -122,6 +122,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void delete(UUID userId) {
+        synchronizer.executeTransactionConsumer(() -> {
+            getByUserId(userId);
+            userRepository.delete(userId);
+        });
+    }
+
+    @Override
     public String generateToken(User user) {
         var result = "";
         if (user.role() == UserRole.StorageOperator) {
