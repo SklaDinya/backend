@@ -70,6 +70,27 @@ class PostgresCellRepositoryTest {
     }
 
     @Test
+    void getByName_shouldReturnCell_whenExists() {
+        var cell = CellBuilder.builder().storageId(storage.storageId()).build();
+        cellRepo.create(cell);
+
+        var result = cellRepo.getByName(storage.storageId(), cell.name()).orElse(null);
+
+        assertNotNull(result);
+        assertEquals(cell.cellId(), result.cellId());
+        assertEquals(cell.storageId(), result.storageId());
+        assertEquals(cell.name(), result.name());
+        assertEquals(cell.cellClass(), result.cellClass());
+    }
+
+    @Test
+    void getByName_shouldReturnEmpty_whenNotExists() {
+        var result = cellRepo.getByName(storage.storageId(), UUID.randomUUID().toString()).orElse(null);
+
+        assertNull(result);
+    }
+
+    @Test
     void getAllBySearchOptions_shouldReturnCells_whenFilterByClass() {
         UUID storageId = storage.storageId();
         createCells(storageId);

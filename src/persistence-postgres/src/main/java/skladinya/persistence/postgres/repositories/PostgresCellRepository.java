@@ -19,9 +19,12 @@ import skladinya.persistence.postgres.mappers.CellMapper;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 interface SpringCellRepository extends JpaRepository<CellEntity, UUID>, JpaSpecificationExecutor<CellEntity> {
+
+    Optional<CellEntity> findByStorageIdAndName(UUID storageId, String name);
 
     List<CellEntity> findAllByIdInOrderByName(List<UUID> ids);
 
@@ -82,6 +85,11 @@ public class PostgresCellRepository implements CellRepository {
         CellEntity entity = CellMapper.toEntity(cell);
         CellEntity saved = repo.save(entity);
         return CellMapper.toDomain(saved);
+    }
+
+    @Override
+    public Optional<Cell> getByName(UUID storageId, String name) {
+        return repo.findByStorageIdAndName(storageId, name).map(CellMapper::toDomain);
     }
 
     @Override

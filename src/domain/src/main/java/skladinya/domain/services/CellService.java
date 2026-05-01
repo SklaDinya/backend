@@ -15,5 +15,5 @@ public interface CellService {
 
     List<Cell> getAllByCellIds(UUID storageId, List<UUID> cellIds);
 
-    List<String> getClasses(UUID storageId);
+    List<String> getAllCellClasses(UUID storageId);
 }
