@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявка отклонена</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #E74C3C; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+        .content { background-color: #ffffff; padding: 30px; border: 1px solid #dddddd; border-top: none; border-radius: 0 0 5px 5px; }
+        .info-block { background-color: #f8f9fa; padding: 15px; border-left: 4px solid #E74C3C; margin: 20px 0; border-radius: 3px; }
+        .info-label { font-weight: bold; color: #E74C3C; min-width: 100px; display: inline-block; }
+        .reject-message { background-color: #fdf0ef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .footer { margin-top: 30px; font-size: 12px; color: #999999; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Заявка отклонена</h1>
+    </div>
+    <div class="content">
+        <p>Здравствуйте!</p>
+
+        <div class="reject-message">
+            <p>К сожалению, администратор сервиса <strong>«СклаДыня»</strong> отклонил вашу заявку на создание пункта хранения.</p>
+        </div>
+
+        <div class="info-block">
+            <p><span class="info-label">Название:</span> <span th:text="${storage.name}">Название склада</span></p>
+            <p><span class="info-label">Адрес:</span> <span th:text="${storage.address}">г. Москва, ул. Примерная, д. 1</span></p>
+            <p><span class="info-label">Описание:</span> <span th:text="${storage.description ?: 'Не указано'}">Описание склада</span></p>
+        </div>
+
+        <p>Вы можете подать новую заявку, уточнив данные пункта хранения, или обратиться в службу поддержки для выяснения причины отказа.</p>
+
+        <p>С уважением,<br/>Команда сервиса «СклаДыня»</p>
+
+        <div class="footer">
+            <p>Это автоматическое уведомление. Пожалуйста, не отвечайте на это письмо.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
