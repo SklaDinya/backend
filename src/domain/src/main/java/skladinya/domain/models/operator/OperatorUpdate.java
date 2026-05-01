@@ -8,4 +8,8 @@ public record OperatorUpdate(
         OperatorRole role,
         Boolean banned
 ) {
+
+    public OperatorUpdate(boolean banned) {
+        this(null, null, null, null, null, banned);
+    }
 }
