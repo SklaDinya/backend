@@ -36,7 +36,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class StorageServiceTest {
+class StorageServiceTest {
 
     @Mock
     private StorageRepository storageRepository;
@@ -62,7 +62,7 @@ public class StorageServiceTest {
         var operator = OperatorBuilder.builder().user(user).storageId(storage.storageId()).build();
         var storageCreate = StorageCreateFactory.create(storage, operator);
         given(storageRepository.create(any())).willReturn(storage);
-        given(operatorService.create(storage.storageId(), storageCreate.operatorCreate())).willReturn(operator);
+        given(operatorService.create(storage.storageId(), storageCreate.operatorCreate(), true)).willReturn(operator);
 
         storageService.create(storageCreate);
 
@@ -77,7 +77,7 @@ public class StorageServiceTest {
         var storageCreate = StorageCreateFactory.create(storage, operator);
         given(storageRepository.create(any())).willReturn(storage);
         willThrow(SklaDinyaException.conflict("")).given(operatorService)
-                .create(storage.storageId(), storageCreate.operatorCreate());
+                .create(storage.storageId(), storageCreate.operatorCreate(), true);
 
         assertThrows(SklaDinyaException.class, () -> storageService.create(storageCreate));
 
