@@ -2,6 +2,7 @@ rootProject.name = "sklaDinya"
 include(":application")
 include(":domain")
 include(":services-auth")
+include(":services-cell")
 include(":services-jwt")
 include(":services-operator")
 include(":services-storage")
