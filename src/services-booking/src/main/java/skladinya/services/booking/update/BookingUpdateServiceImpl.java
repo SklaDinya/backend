@@ -1,4 +1,4 @@
-package skladinya.services.bookingUpdate;
+package skladinya.services.booking.update;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
