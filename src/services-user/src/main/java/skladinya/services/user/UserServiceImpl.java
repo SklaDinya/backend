@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public User getByUserId(UUID userId) {
         return synchronizer.executeSingleFunction(() ->
                 userRepository.getByUserId(userId).orElseThrow(() ->
-                        SklaDinyaException.notFound("UserNotFound")));
+                        SklaDinyaException.notFound("User Not Found")));
     }
 
     @Override
@@ -71,8 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(UUID userId, UserUpdate updateForm) {
         return synchronizer.executeTransactionFunction(() -> {
-            var user = userRepository.getByUserId(userId).orElseThrow(
-                    () -> SklaDinyaException.notFound("User not found"));
+            var user = getByUserId(userId);
             if (updateForm.username() != null) {
                 var found = userRepository.getByUsername(updateForm.username()).orElse(null);
                 if (found != null && !found.userId().equals(userId)) {
@@ -95,8 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateSelf(UUID userId, SelfUpdate updateForm) {
         return synchronizer.executeTransactionFunction(() -> {
-            var user = userRepository.getByUserId(userId).orElseThrow(
-                    () -> SklaDinyaException.notFound("User not found"));
+            var user = getByUserId(userId);
             if (user.banned()) {
                 throw SklaDinyaException.invalidAccess("User was banned");
             }
@@ -120,6 +118,14 @@ public class UserServiceImpl implements UserService {
             var updated = getUpdatedUser(userId, new UserUpdate(updateForm), user);
             var saved = userRepository.update(userId, updated);
             return generateToken(saved);
+        });
+    }
+
+    @Override
+    public void delete(UUID userId) {
+        synchronizer.executeTransactionConsumer(() -> {
+            getByUserId(userId);
+            userRepository.delete(userId);
         });
     }
 

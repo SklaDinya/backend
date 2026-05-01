@@ -12,4 +12,8 @@ public final class TimeConverter {
     public static OffsetDateTime toOffsetDateTime(LocalDateTime time) {
         return time.atZone(ZoneId.systemDefault()).toOffsetDateTime();
     }
+
+    public static LocalDateTime toLocalDateTime(OffsetDateTime time) {
+        return time.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+    }
 }

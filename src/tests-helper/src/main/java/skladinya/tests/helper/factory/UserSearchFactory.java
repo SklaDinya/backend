@@ -8,6 +8,6 @@ public final class UserSearchFactory {
     }
 
     public static UserSearchOptions create() {
-        return new UserSearchOptions("", "", "", null, 50, 0);
+        return new UserSearchOptions(null, null, null, null, 50, 0);
     }
 }

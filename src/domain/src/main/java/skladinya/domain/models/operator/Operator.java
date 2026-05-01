@@ -12,7 +12,7 @@ public record Operator(
         OperatorRole role
 ) {
 
-    public Operator(UUID userId, UUID storageId, OperatorRole role) {
-        this(UUID.randomUUID(), userId, null, storageId, role);
+    public Operator(User user, UUID storageId, OperatorRole role) {
+        this(UUID.randomUUID(), user.userId(), user, storageId, role);
     }
 }

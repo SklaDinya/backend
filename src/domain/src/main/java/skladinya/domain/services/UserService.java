@@ -17,5 +17,7 @@ public interface UserService {
 
     String updateSelf(UUID userId, SelfUpdate updateForm);
 
+    void delete(UUID userId);
+
     String generateToken(User user);
 }

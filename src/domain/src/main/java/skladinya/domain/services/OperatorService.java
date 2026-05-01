@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface OperatorService {
 
-    Operator create(UUID storageId, OperatorCreate createForm);
+    Operator create(UUID storageId, OperatorCreate createForm, boolean banned);
 
     Operator getByOperatorId(UUID storageId, UUID operatorId);
 
