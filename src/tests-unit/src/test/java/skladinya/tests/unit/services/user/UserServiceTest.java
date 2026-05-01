@@ -288,6 +288,26 @@ class UserServiceTest {
     }
 
     @Test
+    void givenValidData_whenDelete_thenReturnNothing() {
+        var user = UserBuilder.builder().build();
+        given(userRepository.getByUserId(user.userId())).willReturn(Optional.of(user));
+
+        userService.delete(user.userId());
+
+        verify(userRepository).delete(user.userId());
+    }
+
+    @Test
+    void givenInvalidUserId_whenDelete_thenThrowException() {
+        var userId = UUID.randomUUID();
+        given(userRepository.getByUserId(userId)).willReturn(Optional.empty());
+
+        assertThrows(SklaDinyaException.class, () -> userService.getByUserId(userId));
+
+        verify(userRepository, never()).delete(any());
+    }
+
+    @Test
     void givenValidData_whenGenerateToken_thenReturnToken() {
         var user = UserBuilder.builder().build();
         var token = JwtFactory.create();

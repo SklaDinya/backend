@@ -9,6 +9,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":tests-helper"))
     implementation(project(":services-auth"))
+    implementation(project(":services-operator"))
     implementation(project(":services-storage"))
     implementation(project(":services-user"))
     // Add project dependencies here
