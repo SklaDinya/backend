@@ -52,9 +52,13 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public Storage getByStorageId(UUID storageId) {
-        return synchronizer.executeSingleFunction(() ->
-                storageRepository.getByStorageId(storageId).orElseThrow(() ->
-                        SklaDinyaException.notFound(String.format("Storage %s not found", storageId))));
+        return synchronizer.executeSingleFunction(() -> {
+            var storage = get(storageId);
+            if (StorageStatus.Created.equals(storage.status())) {
+                throw SklaDinyaException.notFound("Not approved");
+            }
+            return storage;
+        });
     }
 
     @Override
@@ -65,24 +69,17 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public Storage update(UUID storageId, StorageUpdate updateForm) {
         return synchronizer.executeTransactionFunction(() -> {
-            var storage = getByStorageId(storageId);
-            var updated = new Storage(
-                    storageId,
-                    updateForm.name() == null ? storage.name() : updateForm.name(),
-                    updateForm.address() == null ? storage.address() : updateForm.address(),
-                    updateForm.description() == null ? storage.description() : updateForm.description(),
-                    updateForm.status() == null ? storage.status() : updateForm.status(),
-                    storage.createdAt()
-            );
-            return storageRepository.update(storageId, updated);
+            var storage = get(storageId);
+            return update(storage, updateForm);
         });
     }
 
     @Override
     public Storage approve(UUID storageId) {
         return synchronizer.executeTransactionFunction(() -> {
+            var request = getCreatedStorage(storageId);
             var storageUpdate = new StorageUpdate(StorageStatus.Active);
-            var storage = update(storageId, storageUpdate);
+            var storage = update(request, storageUpdate);
             var bannedOperator = getCreatedOperator(storageId);
             var operatorUpdate = new OperatorUpdate(false);
             var operator = operatorService.update(storageId, bannedOperator.operatorId(), operatorUpdate);
@@ -102,8 +99,13 @@ public class StorageServiceImpl implements StorageService {
         });
     }
 
+    private Storage get(UUID storageId) {
+        return storageRepository.getByStorageId(storageId).orElseThrow(() ->
+                SklaDinyaException.notFound(String.format("Storage %s not found", storageId)));
+    }
+
     private Storage getCreatedStorage(UUID storageId) {
-        var storage = getByStorageId(storageId);
+        var storage = get(storageId);
         if (!StorageStatus.Created.equals(storage.status())) {
             throw SklaDinyaException.validationError(String.format("Storage %s already approved", storageId));
         }
@@ -117,5 +119,17 @@ public class StorageServiceImpl implements StorageService {
             throw SklaDinyaException.wrap(new RuntimeException("Invalid operator count"));
         }
         return operators.getFirst();
+    }
+
+    private Storage update(Storage storage, StorageUpdate updateForm) {
+        var updated = new Storage(
+                storage.storageId(),
+                updateForm.name() == null ? storage.name() : updateForm.name(),
+                updateForm.address() == null ? storage.address() : updateForm.address(),
+                updateForm.description() == null ? storage.description() : updateForm.description(),
+                updateForm.status() == null ? storage.status() : updateForm.status(),
+                storage.createdAt()
+        );
+        return storageRepository.update(storage.storageId(), updated);
     }
 }
