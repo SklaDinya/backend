@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import skladinya.domain.models.storage.Storage;
+import skladinya.domain.models.storage.StorageSearchOptions;
 import skladinya.domain.repositories.StorageRepository;
 import skladinya.persistence.postgres.entities.StorageEntity;
 import skladinya.persistence.postgres.mappers.StorageMapper;
 import skladinya.persistence.postgres.mappers.enums.StorageStatusMapper;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +33,12 @@ public class PostgresStorageRepository implements StorageRepository {
     public Optional<Storage> getByStorageId(UUID storageId) {
         return repo.findById(storageId)
                 .map(StorageMapper::toDomain);
+    }
+
+    @Override
+    public List<Storage> getAllBySearchOptions(StorageSearchOptions options) {
+        // TODO: implement
+        return List.of();
     }
 
     @Override

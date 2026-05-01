@@ -8,4 +8,8 @@ public record OperatorSearchOptions(
         int pageSize,
         int pageNumber
 ) {
+
+    public OperatorSearchOptions(int pageSize, int pageNumber) {
+        this(null, null, null, null, pageSize, pageNumber);
+    }
 }
