@@ -13,7 +13,11 @@ dependencies {
     implementation(project(":persistence-postgres"))
     implementation(project(":persistence-redis"))
     implementation(project(":services-auth"))
+    implementation(project(":services-cell"))
+    implementation(project(":services-email"))
     implementation(project(":services-jwt"))
+    implementation(project(":services-operator"))
+    implementation(project(":services-storage"))
     implementation(project(":services-user"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(module = "spring-boot-starter-tomcat")
@@ -45,4 +49,12 @@ tasks.bootJar {
     archiveBaseName.set("skladinya-application")
     archiveClassifier.set("")
     archiveVersion.set("")
+    dependsOn(copyEmailTemplates)
+}
+
+val copyEmailTemplates by tasks.registering(Copy::class) {
+    from(project(":services-email").sourceSets["main"].resources + "/templates")
+    include("*.html")
+    into("src/main/resources/templates")
+    dependsOn(tasks.processResources)
 }
