@@ -87,6 +87,20 @@ paths:
             security:
                 -   JWTBearer: [ ]
             parameters:
+                -   name: name
+                    in: query
+                    required: false
+                    description: Название пункта хранения
+                    schema:
+                        type: string
+                        example: Хранилище "У Рязановой"
+                -   name: address
+                    in: query
+                    required: false
+                    description: Адрес пункта хранения
+                    schema:
+                        type: string
+                        example: Москва
                 -   name: pageNumber
                     in: query
                     required: false
@@ -144,10 +158,6 @@ paths:
                                 $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные параметры запроса
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
                 '404':
                     description: Пункт хранения не найден
                 '500':
