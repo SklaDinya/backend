@@ -32,11 +32,16 @@ interface SpringOperatorRepository extends
 
 class OperatorSpecification {
 
-    public static Specification<OperatorEntity> byOptions(OperatorSearchOptions options) {
+    public static Specification<OperatorEntity> byOptions(UUID storageId, OperatorSearchOptions options) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             Join<OperatorEntity, UserEntity> userJoin = root.join("user", JoinType.LEFT);
+
+            predicates.add(cb.equal(
+                    root.get("storageId"),
+                    storageId
+            ));
 
             if (options.username() != null && !options.username().isBlank()) {
                 predicates.add(cb.like(
@@ -99,10 +104,10 @@ public class PostgresOperatorRepository implements OperatorRepository {
     }
 
     @Override
-    public List<Operator> getAllBySearchOptions(OperatorSearchOptions options) {
+    public List<Operator> getAllBySearchOptions(UUID storageId, OperatorSearchOptions options) {
         Pageable pageable = PageRequest.of(options.pageNumber(), options.pageSize());
 
-        return repo.findAll(OperatorSpecification.byOptions(options), pageable)
+        return repo.findAll(OperatorSpecification.byOptions(storageId, options), pageable)
                 .stream()
                 .map(OperatorMapper::toDomain)
                 .toList();

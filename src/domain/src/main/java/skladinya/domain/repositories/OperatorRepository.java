@@ -15,7 +15,7 @@ public interface OperatorRepository {
 
     Optional<Operator> getByUserId(UUID userId);
 
-    List<Operator> getAllBySearchOptions(OperatorSearchOptions options);
+    List<Operator> getAllBySearchOptions(UUID storageId, OperatorSearchOptions options);
 
     Operator update(UUID operatorId, Operator operator);
 
