@@ -1,15 +1,17 @@
 package skladinya.persistence.postgres.repositories;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import skladinya.domain.models.storage.Storage;
+import skladinya.domain.models.storage.StorageSearchOptions;
 import skladinya.domain.repositories.StorageRepository;
 import skladinya.tests.helper.builder.StorageBuilder;
+import skladinya.tests.helper.factory.StorageSearchFactory;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +47,50 @@ class PostgresStorageRepositoryTest {
         assertNotNull(actual);
         assertEquals(storage.storageId(), actual.storageId());
         assertEquals(storage.name(), actual.name());
+    }
+
+    @Test
+    void getAllBySearchOptions_shouldReturnAll_whenExists() {
+        var storage1 = StorageBuilder.builder().build();
+        var storage2 = StorageBuilder.builder().build();
+        storageRepo.create(storage1);
+        storageRepo.create(storage2);
+        var options = StorageSearchFactory.create();
+
+        var result = storageRepo.getAllBySearchOptions(options);
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void getAllBySearchOptions_shouldReturnEmpty_whenNotExists() {
+
+        var options = StorageSearchFactory.create();
+
+        var result = storageRepo.getAllBySearchOptions(options);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getAllBySearchOptions_shouldReturnStorages_whenFilterByName() {
+        var storage1 = StorageBuilder.builder().name("GoodName1").build();
+        var storage2 = StorageBuilder.builder().name("Go0dName2").build();
+        var storage3 = StorageBuilder.builder().name("GoodName3").build();
+        storageRepo.create(storage1);
+        storageRepo.create(storage2);
+        storageRepo.create(storage3);
+        var options = new StorageSearchOptions(
+                "GoodName",
+                null,
+                List.of(),
+                50,
+                0
+        );
+
+        var result = storageRepo.getAllBySearchOptions(options);
+
+        assertEquals(2, result.size());
     }
 
     @Test

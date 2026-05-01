@@ -10,6 +10,6 @@ public final class StorageSearchFactory {
     }
 
     public static StorageSearchOptions create() {
-        return new StorageSearchOptions("", "", List.of(), 50, 0);
+        return new StorageSearchOptions(null, null, List.of(), 50, 0);
     }
 }
