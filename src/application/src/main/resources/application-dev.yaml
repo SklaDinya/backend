@@ -18,6 +18,17 @@ spring:
             port: ${REDIS_PORT}
             username: ${REDIS_USERNAME}
             password: ${REDIS_PASSWORD}
+    mail:
+        host: ${MAIL_HOST}
+        port: ${MAIL_PORT}
+        username: ${MAIL_USERNAME}
+        password: ${MAIL_PASSWORD}
+        properties:
+            mail:
+                smtp:
+                    auth: ${MAIL_AUTH}
+                    starttls:
+                        enable: ${MAIL_STARTTLS}
     threads:
         virtual:
             enabled: true

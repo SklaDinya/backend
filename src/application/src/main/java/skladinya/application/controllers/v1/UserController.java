@@ -1,6 +1,8 @@
 package skladinya.application.controllers.v1;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skladinya.application.converters.v1.user.*;
 import skladinya.application.dtos.v1.user.*;
@@ -31,10 +33,10 @@ public class UserController {
     }
 
     @PostMapping
-    public UserGetDto create(@RequestHeader String authorization, @Valid @RequestBody UserCreateDto dto) {
+    public ResponseEntity<UserGetDto> create(@RequestHeader String authorization, @Valid @RequestBody UserCreateDto dto) {
         roleChecker.requireAdmin(authorization);
         var result = userService.create(UserCreateDtoConverter.toCoreEntity(dto));
-        return UserGetDtoConverter.toDto(result);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserGetDtoConverter.toDto(result));
     }
 
     @GetMapping("/{userId}")

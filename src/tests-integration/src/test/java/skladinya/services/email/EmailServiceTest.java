@@ -5,7 +5,6 @@ import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.GreenMailUtil;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMultipart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -17,8 +16,6 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import skladinya.domain.services.EmailService;
 import skladinya.persistence.redis.repositories.TestApplication;
 import skladinya.tests.helper.builder.StorageBuilder;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,7 +49,7 @@ class EmailServiceTest {
     }
 
     @Test
-    void sendStorageCreated_shouldSendMessage_whenCreated() throws MessagingException, IOException {
+    void sendStorageCreated_shouldSendMessage_whenCreated() throws MessagingException {
         var storage = StorageBuilder.builder().build();
         var email = "a@b.c";
 
@@ -68,7 +65,7 @@ class EmailServiceTest {
     }
 
     @Test
-    void sendStorageApproved_shouldSendMessage_whenCreated() throws MessagingException, IOException {
+    void sendStorageApproved_shouldSendMessage_whenCreated() throws MessagingException {
         var storage = StorageBuilder.builder().build();
         var email = "a@b.c";
 
@@ -84,7 +81,7 @@ class EmailServiceTest {
     }
 
     @Test
-    void sendStorageRejected_shouldSendMessage_whenCreated() throws MessagingException, IOException {
+    void sendStorageRejected_shouldSendMessage_whenCreated() throws MessagingException {
         var storage = StorageBuilder.builder().build();
         var email = "a@b.c";
 
