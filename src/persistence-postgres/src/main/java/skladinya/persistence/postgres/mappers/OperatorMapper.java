@@ -13,6 +13,7 @@ public class OperatorMapper {
             entity.setId(operator.operatorId());
             entity.setRole(OperatorRoleMapper.toEntity(operator.role()));
             entity.setUserId(operator.userId());
+            entity.setUser(UserMapper.toEntity(operator.user()));
             entity.setStorageId(operator.storageId());
         }
 
