@@ -13,6 +13,9 @@ dependencies {
 
     implementation("org.springframework:spring-context")
     implementation("org.springframework:spring-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks.jar {

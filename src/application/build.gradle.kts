@@ -19,6 +19,9 @@ dependencies {
     implementation(project(":services-operator"))
     implementation(project(":services-storage"))
     implementation(project(":services-user"))
+    implementation(project(":services-booking"))
+    implementation(project(":services-price"))
+    implementation(project(":services-payment"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(module = "spring-boot-starter-tomcat")
     }

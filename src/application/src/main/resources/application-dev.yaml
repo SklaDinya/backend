@@ -61,3 +61,5 @@ skladinya:
         issuer: ${JWT_ISSUER}
         secret: ${JWT_SECRET}
         ttl: ${JWT_TTL}
+    booking:
+      payment-timeout-minutes: 15
