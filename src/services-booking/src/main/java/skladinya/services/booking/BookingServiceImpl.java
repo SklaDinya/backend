@@ -89,9 +89,9 @@ public class BookingServiceImpl implements BookingService {
                     null
             );
 
-            var saved = bookingRepository.create(booking);
+            bookingRepository.create(booking);
 
-            return new BookingReceipt(saved, paymentService.createReceipt(booking));
+            return new BookingReceipt(booking, paymentService.createReceipt(booking));
         });
     }
 

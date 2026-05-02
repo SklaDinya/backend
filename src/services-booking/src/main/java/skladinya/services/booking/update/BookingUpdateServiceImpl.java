@@ -46,6 +46,7 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
 
         LocalDateTime now = LocalDateTime.now();
         int pageSize = 1000;
+        int pageNumber = 0;
 
         while (true) {
 
@@ -54,7 +55,7 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
                     new BookingSearchOptions(
                             null, null,
                             List.of(BookingStatus.Created, BookingStatus.Paid, BookingStatus.InProcess),
-                            pageSize, 0));
+                            pageSize, pageNumber));
 
             if (bookings.isEmpty()) {
                 break;
@@ -87,6 +88,7 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
                     }
                 }
             }
+            pageNumber++;
         }
     }
 }
