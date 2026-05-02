@@ -53,7 +53,7 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
                     null,
                     new BookingSearchOptions(
                             null, null,
-                            List.of(BookingStatus.Created, BookingStatus.InProcess),
+                            List.of(BookingStatus.Created, BookingStatus.Paid, BookingStatus.InProcess),
                             pageSize, 0));
 
             if (bookings.isEmpty()) {
