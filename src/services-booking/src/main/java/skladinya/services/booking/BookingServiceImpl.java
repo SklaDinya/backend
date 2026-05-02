@@ -30,7 +30,7 @@ public class BookingServiceImpl implements BookingService {
     private final StorageService storageService;
     private final CellService cellService;
     private final PriceService priceService;
-    private final PaymentRepository paymentRepository; // TODO заменить на сервис
+    private final PaymentService paymentService;
     private final Synchronizer synchronizer;
 
     public BookingServiceImpl(
@@ -38,7 +38,7 @@ public class BookingServiceImpl implements BookingService {
             UserService userService,
             StorageService storageService,
             CellService cellService, PriceService priceService,
-            PaymentRepository paymentRepository,
+            PaymentService paymentService,
             Synchronizer synchronizer
     ) {
         this.bookingRepository = bookingRepository;
@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
         this.storageService = storageService;
         this.cellService = cellService;
         this.priceService = priceService;
-        this.paymentRepository = paymentRepository;
+        this.paymentService = paymentService;
         this.synchronizer = synchronizer;
     }
 
@@ -91,7 +91,7 @@ public class BookingServiceImpl implements BookingService {
 
             var saved = bookingRepository.create(booking);
 
-            return new BookingReceipt(saved, "HZ"); // TODO: receipt
+            return new BookingReceipt(saved, booking.bookingId().toString());
         });
     }
 
@@ -122,46 +122,32 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking payNoOp(UUID userId, String receipt) { // TODO: receipt
+    public Booking payNoOp(UUID userId, String receipt) {
         return synchronizer.executeTransactionFunction(() -> {
-            UUID bookingId = UUID.fromString(receipt);
-
-            var booking = getOwnedBooking(userId, bookingId);
+            var booking = paymentService.validateReceipt(receipt);
+            UUID bookingId = booking.bookingId();
 
             if (booking.status() != BookingStatus.Created) {
                 throw SklaDinyaException.conflict("Invalid status");
             }
 
-            var payment = new Payment(
-                    UUID.randomUUID(),
-                    bookingId,
-                    PaymentType.NoOp,
-                    new NoOpPaymentPayload()
-            );
-            paymentRepository.create(payment);
+            paymentService.payNoOp(booking);
 
             return bookingRepository.updateStatus(bookingId, BookingStatus.Paid);
         });
     }
 
     @Override
-    public Booking payRandom(UUID userId, String receipt) { // TODO: receipt
+    public Booking payRandom(UUID userId, String receipt) {
         return synchronizer.executeTransactionFunction(() -> {
-            UUID bookingId = UUID.fromString(receipt);
-
-            var booking = getOwnedBooking(userId, bookingId);
+            var booking = paymentService.validateReceipt(receipt);
+            UUID bookingId = booking.bookingId();
 
             if (booking.status() != BookingStatus.Created) {
                 throw SklaDinyaException.conflict("Invalid status");
             }
 
-            var payment = new Payment(
-                    UUID.randomUUID(),
-                    bookingId,
-                    PaymentType.Random,
-                    new RandomPaymentPayload()
-            );
-            paymentRepository.create(payment);
+            paymentService.payRandom(booking);
 
             return bookingRepository.updateStatus(bookingId, BookingStatus.Paid);
         });
@@ -171,7 +157,8 @@ public class BookingServiceImpl implements BookingService {
     public Booking cancel(UUID userId, UUID bookingId) {
         return synchronizer.executeTransactionFunction(() -> {
 
-            var booking = getOwnedBooking(userId, bookingId);
+            var booking = bookingRepository.getByBookingId(bookingId)
+                    .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
 
             if (booking.status() == BookingStatus.Finished) {
                 throw SklaDinyaException.conflict("Cannot cancel finished booking");
@@ -179,17 +166,6 @@ public class BookingServiceImpl implements BookingService {
 
             return bookingRepository.updateStatus(bookingId, BookingStatus.Cancelled);
         });
-    }
-
-    private Booking getOwnedBooking(UUID userId, UUID bookingId) {
-        var booking = bookingRepository.getByBookingId(bookingId)
-                .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
-
-        if (!booking.userId().equals(userId)) {
-            throw SklaDinyaException.invalidAccess("Access denied");
-        }
-
-        return booking;
     }
 
     private BigDecimal calculatePrice(UUID storageId, List<Cell> cells, Duration duration) {
