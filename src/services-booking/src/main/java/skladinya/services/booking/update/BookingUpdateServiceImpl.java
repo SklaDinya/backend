@@ -70,9 +70,9 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
                                 .isBefore(now)) {
 
                             setDelayedCancel(booking.bookingId());
-                            continue;
                         }
-
+                    }
+                    case Paid -> {
                         if (!booking.startTime().isAfter(now)) {
                             bookingRepository.updateStatus(
                                     booking.bookingId(),
