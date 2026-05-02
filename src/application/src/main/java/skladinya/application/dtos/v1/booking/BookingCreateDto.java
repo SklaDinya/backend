@@ -1,6 +1,6 @@
 package skladinya.application.dtos.v1.booking;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,16 +17,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingCreateDto {
 
-    @NotBlank
+    @NotNull
     private UUID storageId;
 
-    @NotBlank
+    @NotNull
     private List<UUID> cellIds;
 
-    @NotBlank
+    @NotNull
     private LocalDateTime startTime;
 
-    @NotBlank
+    @NotNull
     private Duration bookingTime;
 
 }

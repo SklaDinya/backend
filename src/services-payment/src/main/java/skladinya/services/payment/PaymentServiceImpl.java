@@ -71,8 +71,6 @@ public class PaymentServiceImpl implements PaymentService {
                     new NoOpPaymentPayload()
             );
 
-            bookingRepository.updateStatus(booking.bookingId(), BookingStatus.Paid);
-
             return paymentRepository.create(payment);
         });
     }
@@ -96,8 +94,6 @@ public class PaymentServiceImpl implements PaymentService {
                     new RandomPaymentPayload()
             );
 
-            bookingRepository.updateStatus(booking.bookingId(), BookingStatus.Paid);
-
             return paymentRepository.create(payment);
         });
     }
@@ -107,7 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
         synchronizer.executeTransactionConsumer(() -> {
 
             if (payment == null) {
-                throw SklaDinyaException.validationError("Payment is null");
+                throw SklaDinyaException.validationError("Payment is null and WTF");
             }
 
         });

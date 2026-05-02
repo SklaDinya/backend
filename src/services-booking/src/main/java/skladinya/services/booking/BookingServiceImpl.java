@@ -91,7 +91,7 @@ public class BookingServiceImpl implements BookingService {
 
             var saved = bookingRepository.create(booking);
 
-            return new BookingReceipt(saved, booking.bookingId().toString());
+            return new BookingReceipt(saved, paymentService.createReceipt(booking));
         });
     }
 
@@ -100,10 +100,7 @@ public class BookingServiceImpl implements BookingService {
         return synchronizer.executeSingleFunction(() -> {
             var booking = bookingRepository.getByBookingId(bookingId)
                     .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
-
-            if (!booking.userId().equals(userId)) {
-                throw SklaDinyaException.invalidAccess("Access denied");
-            }
+            checkBookingOwner(userId, booking);
 
             return booking;
         });
@@ -111,8 +108,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getAllForUser(UUID userId, int pageSize, int pageNumber) {
-        return synchronizer.executeSingleFunction(() ->
-                bookingRepository.getAllForUser(userId, pageSize, pageNumber));
+        return synchronizer.executeSingleFunction(() -> {
+            var bookings = bookingRepository.getAllForUser(userId, pageSize, pageNumber);
+            bookings.forEach(booking -> checkBookingOwner(userId, booking));
+            return bookings;
+        });
     }
 
     @Override
@@ -125,6 +125,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking payNoOp(UUID userId, String receipt) {
         return synchronizer.executeTransactionFunction(() -> {
             var booking = paymentService.validateReceipt(receipt);
+            checkBookingOwner(userId, booking);
             UUID bookingId = booking.bookingId();
 
             if (booking.status() != BookingStatus.Created) {
@@ -141,6 +142,7 @@ public class BookingServiceImpl implements BookingService {
     public Booking payRandom(UUID userId, String receipt) {
         return synchronizer.executeTransactionFunction(() -> {
             var booking = paymentService.validateReceipt(receipt);
+            checkBookingOwner(userId, booking);
             UUID bookingId = booking.bookingId();
 
             if (booking.status() != BookingStatus.Created) {
@@ -159,6 +161,7 @@ public class BookingServiceImpl implements BookingService {
 
             var booking = bookingRepository.getByBookingId(bookingId)
                     .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
+            checkBookingOwner(userId, booking);
 
             if (booking.status() == BookingStatus.Finished) {
                 throw SklaDinyaException.conflict("Cannot cancel finished booking");
@@ -166,6 +169,13 @@ public class BookingServiceImpl implements BookingService {
 
             return bookingRepository.updateStatus(bookingId, BookingStatus.Cancelled);
         });
+    }
+
+    private void checkBookingOwner(UUID userId, Booking booking) {
+
+        if (!booking.userId().equals(userId)) {
+            throw SklaDinyaException.invalidAccess("Access denied");
+        }
     }
 
     private BigDecimal calculatePrice(UUID storageId, List<Cell> cells, Duration duration) {
