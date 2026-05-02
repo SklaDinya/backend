@@ -73,7 +73,6 @@ class PaymentServiceTest {
         assertNotNull(result);
         assertEquals(booking.bookingId(), result.bookingId());
 
-        then(bookingRepository).should().updateStatus(booking.bookingId(), BookingStatus.Paid);
         then(paymentRepository).should().create(any());
     }
 

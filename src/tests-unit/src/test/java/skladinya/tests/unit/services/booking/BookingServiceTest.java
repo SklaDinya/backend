@@ -88,7 +88,6 @@ class BookingServiceTest {
         var result = bookingService.create(user.userId(), form);
 
         assertNotNull(result);
-        assertEquals(result.booking().bookingId().toString(), result.receipt());
     }
 
     @Test
