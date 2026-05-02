@@ -202,7 +202,6 @@ public class BookingServiceImpl implements BookingService {
         return cells.stream()
                 .map(cell -> Optional.ofNullable(priceMap.get(cell.cellClass()))
                         .orElseThrow(() -> SklaDinyaException.notFound("Price for cell not found")))
-                .map(price -> price.multiply(hours))
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .multiply(hours);
     }
