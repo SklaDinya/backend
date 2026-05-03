@@ -99,8 +99,8 @@ class PostgresCellRepositoryTest {
                 null,
                 null,
                 List.of("A"),
-                0,
-                10
+                10,
+                0
         );
 
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
@@ -134,8 +134,8 @@ class PostgresCellRepositoryTest {
                 LocalDateTime.of(2020, 10, 10, 14, 0),
                 Duration.ofHours(1),
                 null,
-                0,
-                10
+                10,
+                0
         );
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
 
@@ -167,8 +167,8 @@ class PostgresCellRepositoryTest {
                 LocalDateTime.of(2020, 10, 10, 11, 0),
                 Duration.ofHours(1),
                 null,
-                0,
-                10
+                10,
+                0
         );
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
 
@@ -200,8 +200,8 @@ class PostgresCellRepositoryTest {
                 LocalDateTime.of(2020, 10, 10, 11, 0),
                 Duration.ofHours(10),
                 null,
-                0,
-                10
+                10,
+                0
         );
         List<Cell> result = cellRepo.getAllBySearchOptions(storageId, options);
 

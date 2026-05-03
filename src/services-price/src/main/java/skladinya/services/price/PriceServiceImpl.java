@@ -13,6 +13,7 @@ import skladinya.domain.services.StorageService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequestScope
@@ -57,14 +58,16 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public List<Price> getAllByStorageId(UUID storageId) {
         return synchronizer.executeTransactionFunction(() -> {
-
-            try {
-                storageService.getByStorageId(storageId);
-            } catch (SklaDinyaException ex) {
-                throw SklaDinyaException.notFound("Storage not found");
-            }
-
-            return priceRepository.getAllByStorageId(storageId);
+            storageService.getByStorageId(storageId);
+            return priceRepository.getAllByStorageId(storageId)
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Price::cellClass,
+                            p -> p,
+                            (firstPrice, lastPrice) -> lastPrice))
+                    .values()
+                    .stream()
+                    .toList();
         });
     }
 
