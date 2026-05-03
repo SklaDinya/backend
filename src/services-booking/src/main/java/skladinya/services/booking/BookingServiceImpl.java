@@ -53,6 +53,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingReceipt create(UUID userId, BookingCreate createForm) {
         return synchronizer.executeTransactionFunction(() -> {
+            LocalDateTime now = LocalDateTime.now();
 
             var user = userService.getByUserId(userId);
 
@@ -64,6 +65,9 @@ public class BookingServiceImpl implements BookingService {
             }
 
             LocalDateTime start = createForm.startTime();
+            if (start.isBefore(now)) {
+                throw SklaDinyaException.conflict("Start booking time in the past");
+            }
             Duration duration = createForm.bookingTime();
             LocalDateTime end = start.plus(duration);
 
@@ -80,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
                     start,
                     duration,
                     end,
-                    LocalDateTime.now(),
+                    now,
                     BookingStatus.Created,
                     price,
                     null
