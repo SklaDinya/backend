@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 interface SpringPriceRepository extends JpaRepository<PriceEntity, UUID> {
-    List<PriceEntity> findAllByStorageId(UUID storageId);
+    List<PriceEntity> findAllByStorageIdOrderByCreatedAtAsc(UUID storageId);
 }
 
 @Repository
@@ -30,7 +30,7 @@ public class PostgresPriceRepository implements PriceRepository {
 
     @Override
     public List<Price> getAllByStorageId(UUID storageId) {
-        return repo.findAllByStorageId(storageId).stream()
+        return repo.findAllByStorageIdOrderByCreatedAtAsc(storageId).stream()
                 .map(PriceMapper::toDomain)
                 .toList();
     }

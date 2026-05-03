@@ -3,7 +3,7 @@ package skladinya.persistence.postgres.repositories;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -67,8 +67,6 @@ class CellSpecification {
                 predicates.add(cb.not(cb.exists(subquery)));
             }
 
-            query.distinct(true);
-
             return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
@@ -94,8 +92,8 @@ public class PostgresCellRepository implements CellRepository {
 
     @Override
     public List<Cell> getAllBySearchOptions(UUID storageId, CellSearchOptions options) {
-        Pageable pageable = PageRequest.of(options.pageNumber(), options.pageSize());
-
+        var sort = Sort.by("name").ascending();
+        var pageable = PageRequest.of(options.pageNumber(), options.pageSize(), sort);
         return repo.findAll(CellSpecification.byOptions(storageId, options), pageable)
                 .stream()
                 .map(CellMapper::toDomain)
