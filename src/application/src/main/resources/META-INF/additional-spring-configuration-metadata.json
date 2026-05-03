@@ -14,6 +14,11 @@
             "name": "skladinya.jwt.ttl",
             "type": "java.lang.Integer",
             "description": "JWT TTL (in seconds)."
+        },
+        {
+            "name": "skladinya.booking.payment-timeout-minutes",
+            "type": "java.lang.Integer",
+            "description": "Unpaid booking TTL."
         }
     ]
 }
