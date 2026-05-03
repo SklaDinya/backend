@@ -38,6 +38,9 @@ public class AuthServiceImpl implements AuthService {
             if (!user.password().equals(password)) {
                 throw SklaDinyaException.invalidAccess("Invalid password");
             }
+            if (user.banned()) {
+                throw SklaDinyaException.invalidAccess("User is banned");
+            }
             return userService.generateToken(user);
         });
     }
