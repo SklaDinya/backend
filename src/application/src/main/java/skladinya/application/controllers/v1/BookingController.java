@@ -66,19 +66,9 @@ public class BookingController {
     @GetMapping("/storages/my/bookings")
     public List<BookingGetOperatorDto> getOperatorBookings(
             @RequestHeader String authorization,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startBooking,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endBooking,
-            @RequestParam(required = false) List<BookingStatusDto> statuses,
-            @RequestParam(defaultValue = "0") int pageNumber,
-            @RequestParam(defaultValue = "50") int pageSize) {
+            @Valid BookingSearchParametersDto dto) {
         var data = roleChecker.requireStorageOperator(authorization);
-        var options = new BookingSearchParametersDto();
-        options.setStartBooking(startBooking);
-        options.setEndBooking(endBooking);
-        options.setStatuses(statuses);
-        options.setPageNumber(pageNumber);
-        options.setPageSize(pageSize);
-        var result = bookingService.getAllForOperator(data.storageId(), BookingSearchParametersDtoConverter.toCoreEntity(options));
+        var result = bookingService.getAllForOperator(data.storageId(), BookingSearchParametersDtoConverter.toCoreEntity(dto));
         return result.stream().map(BookingGetOperatorDtoConverter::toDto).toList();
     }
 }
