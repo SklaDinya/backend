@@ -19,6 +19,7 @@ public final class BookingGetOperatorDtoConverter {
                 .cells(booking.cells().stream().map(CellGetDtoConverter::toDto).toList())
                 .startTime(TimeConverter.toOffsetDateTime(booking.startTime()))
                 .bookingTime(booking.bookingTime())
+                .price(booking.price())
                 .createdAt(TimeConverter.toOffsetDateTime(booking.createdAt()))
                 .status(booking.status())
                 .build();
