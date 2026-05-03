@@ -19,6 +19,9 @@ dependencies {
     implementation(project(":services-operator"))
     implementation(project(":services-storage"))
     implementation(project(":services-user"))
+    implementation(project(":services-booking"))
+    implementation(project(":services-price"))
+    implementation(project(":services-payment"))
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(module = "spring-boot-starter-tomcat")
     }
@@ -28,6 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.16")
+    implementation("com.google.code.gson:gson:2.10.1")
     compileOnly("org.projectlombok:lombok:1.18.32")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }

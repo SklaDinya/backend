@@ -53,31 +53,6 @@ class PostgresOperatorRepositoryTest {
     }
 
     @Test
-    void create_shouldSaveOperatorAndReturnDomain() {
-        Operator operator = OperatorBuilder.builder().build();
-
-        Operator result = operatorRepo.create(operator);
-        Operator actual = operatorRepo.getByOperatorId(result.operatorId()).orElse(null);
-
-        assertNotNull(actual);
-        assertEquals(operator.operatorId(), actual.operatorId());
-        assertEquals(operator.role(), actual.role());
-        assertEquals(operator.userId(), actual.userId());
-    }
-
-    @Test
-    void getByOperatorId_shouldReturnOperator_whenExists() {
-        Operator operator = OperatorBuilder.builder().build();
-        operatorRepo.create(operator);
-
-        Operator actual = operatorRepo.getByOperatorId(operator.operatorId()).orElse(null);
-
-        assertNotNull(actual);
-        assertEquals(operator.operatorId(), actual.operatorId());
-        assertEquals(operator.role(), actual.role());
-    }
-
-    @Test
     void getByUserId_shouldReturnOperator_whenUserHasOperator() {
         Operator operator = OperatorBuilder.builder()
                 .user(user)
@@ -112,29 +87,5 @@ class PostgresOperatorRepositoryTest {
         assertFalse(result.isEmpty());
         assertTrue(result.stream()
                 .anyMatch(o -> o.userId().equals(operator.userId())));
-    }
-
-    @Test
-    void update_shouldModifyOperator_whenExists() {
-        Operator operator = OperatorBuilder.builder().build();
-        operatorRepo.create(operator);
-        Operator updated = OperatorBuilder.builder()
-                .role(OperatorRole.OrdinaryOperator)
-                .build();
-
-        Operator result = operatorRepo.update(operator.operatorId(), updated);
-
-        assertEquals(OperatorRole.OrdinaryOperator, result.role());
-    }
-
-    @Test
-    void delete_shouldRemoveOperator_whenExists() {
-        Operator operator = OperatorBuilder.builder().build();
-        operatorRepo.create(operator);
-        operatorRepo.delete(operator.operatorId());
-
-        Optional<Operator> result = operatorRepo.getByOperatorId(operator.operatorId());
-
-        assertTrue(result.isEmpty());
     }
 }

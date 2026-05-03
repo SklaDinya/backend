@@ -13,6 +13,9 @@ dependencies {
     implementation(project(":services-operator"))
     implementation(project(":services-storage"))
     implementation(project(":services-user"))
+    implementation(project(":services-booking"))
+    implementation(project(":services-payment"))
+    implementation(project(":services-price"))
     // Add project dependencies here
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
