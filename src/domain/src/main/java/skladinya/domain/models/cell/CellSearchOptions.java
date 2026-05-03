@@ -8,6 +8,6 @@ public record CellSearchOptions(
         LocalDateTime startBooking,
         Duration timeBooking,
         List<String> cellClasses,
-        int pageNumber,
-        int pageSize) {
+        int pageSize,
+        int pageNumber) {
 }

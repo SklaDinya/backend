@@ -6,13 +6,8 @@ import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.helpers.Synchronizer;
 import skladinya.domain.models.booking.*;
 import skladinya.domain.models.cell.Cell;
-import skladinya.domain.models.payment.Payment;
-import skladinya.domain.models.payment.PaymentType;
-import skladinya.domain.models.payment.payloads.NoOpPaymentPayload;
-import skladinya.domain.models.payment.payloads.RandomPaymentPayload;
 import skladinya.domain.models.price.Price;
 import skladinya.domain.repositories.BookingRepository;
-import skladinya.domain.repositories.PaymentRepository;
 import skladinya.domain.services.*;
 
 import java.math.BigDecimal;
@@ -109,9 +104,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getAllForUser(UUID userId, int pageSize, int pageNumber) {
-        return synchronizer.executeSingleFunction(() -> {
-            return bookingRepository.getAllForUser(userId, pageSize, pageNumber);
-        });
+        return synchronizer.executeSingleFunction(() ->
+                bookingRepository.getAllForUser(userId, pageSize, pageNumber));
     }
 
     @Override
@@ -184,8 +178,7 @@ public class BookingServiceImpl implements BookingService {
                 .stream()
                 .collect(Collectors.toMap(
                         Price::cellClass,
-                        Price::price,
-                        (firstPrice, lastPrice) -> lastPrice));
+                        Price::price));
 
         return cells.stream()
                 .map(cell -> Optional.ofNullable(priceMap.get(cell.cellClass()))

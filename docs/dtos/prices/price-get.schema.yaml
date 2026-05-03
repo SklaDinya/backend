@@ -16,8 +16,7 @@ properties:
         example: Обычная
     price:
         description: Цена
-        type: string
-        format: decimal128
+        type: number
         example: 993
     createdAt:
         description: Время установления тарифа
