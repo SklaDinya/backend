@@ -12,7 +12,6 @@ import skladinya.domain.services.BookingUpdateService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class BookingUpdateServiceImpl implements BookingUpdateService {
@@ -21,27 +20,14 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
     private final long paymentTimeoutMinutes;
 
     public BookingUpdateServiceImpl(BookingRepository bookingRepository,
-                                    @Value("${skladinya.booking.payment-timeout-minutes}") long paymentTimeoutMinutes) {
+                                    @Value("${skladinya.booking.payment-timeout-minutes}")
+                                    long paymentTimeoutMinutes) {
         this.bookingRepository = bookingRepository;
         this.paymentTimeoutMinutes = paymentTimeoutMinutes;
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void setDelayedCancel(UUID bookingId) { // TODO мб сделать private
-        Booking booking = bookingRepository.getByBookingId(bookingId)
-                .orElseThrow();
-
-        if (booking.status() == BookingStatus.Created) {
-            bookingRepository.updateStatus(
-                    bookingId,
-                    BookingStatus.Cancelled
-            );
-        }
-    }
-
-    @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateBookingsStatuses() {
 
         LocalDateTime now = LocalDateTime.now();
@@ -69,8 +55,10 @@ public class BookingUpdateServiceImpl implements BookingUpdateService {
                         if (booking.createdAt()
                                 .plusMinutes(paymentTimeoutMinutes)
                                 .isBefore(now)) {
-
-                            setDelayedCancel(booking.bookingId());
+                            bookingRepository.updateStatus(
+                                    booking.bookingId(),
+                                    BookingStatus.Cancelled
+                            );
                         }
                     }
                     case Paid -> {

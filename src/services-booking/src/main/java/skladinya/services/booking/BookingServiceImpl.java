@@ -55,9 +55,6 @@ public class BookingServiceImpl implements BookingService {
         return synchronizer.executeTransactionFunction(() -> {
 
             var user = userService.getByUserId(userId);
-            if (user.banned()) {
-                throw SklaDinyaException.invalidAccess("User banned");
-            }
 
             var storage = storageService.getByStorageId(createForm.storageId());
 
@@ -109,9 +106,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllForUser(UUID userId, int pageSize, int pageNumber) {
         return synchronizer.executeSingleFunction(() -> {
-            var bookings = bookingRepository.getAllForUser(userId, pageSize, pageNumber);
-            bookings.forEach(booking -> checkBookingOwner(userId, booking));
-            return bookings;
+            return bookingRepository.getAllForUser(userId, pageSize, pageNumber);
         });
     }
 
@@ -174,7 +169,7 @@ public class BookingServiceImpl implements BookingService {
     private void checkBookingOwner(UUID userId, Booking booking) {
 
         if (!booking.userId().equals(userId)) {
-            throw SklaDinyaException.invalidAccess("Access denied");
+            throw SklaDinyaException.notFound("Booking not found");
         }
     }
 
@@ -183,7 +178,10 @@ public class BookingServiceImpl implements BookingService {
 
         Map<String, BigDecimal> priceMap = priceService.getAllByStorageId(storageId)
                 .stream()
-                .collect(Collectors.toMap(Price::cellClass, Price::price));
+                .collect(Collectors.toMap(
+                        Price::cellClass,
+                        Price::price,
+                        (firstPrice, lastPrice) -> lastPrice));
 
         return cells.stream()
                 .map(cell -> Optional.ofNullable(priceMap.get(cell.cellClass()))

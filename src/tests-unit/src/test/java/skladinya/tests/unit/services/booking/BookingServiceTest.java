@@ -70,12 +70,13 @@ class BookingServiceTest {
         var user = UserBuilder.builder().build();
         var storage = StorageBuilder.builder().build();
         var cells = List.of(CellBuilder.builder().storageId(storage.storageId()).build());
+        var hours = 2;
 
         var form = new BookingCreate(
                 storage.storageId(),
                 cells.stream().map(Cell::cellId).toList(),
                 LocalDateTime.now(),
-                Duration.ofHours(1));
+                Duration.ofHours(hours));
 
         given(userService.getByUserId(user.userId())).willReturn(user);
         given(storageService.getByStorageId(storage.storageId())).willReturn(storage);
@@ -88,6 +89,7 @@ class BookingServiceTest {
         var result = bookingService.create(user.userId(), form);
 
         assertNotNull(result);
+        assertEquals(BigDecimal.TEN.multiply(BigDecimal.valueOf(hours)), result.booking().price());
     }
 
     @Test

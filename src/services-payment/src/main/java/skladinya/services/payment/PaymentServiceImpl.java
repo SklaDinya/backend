@@ -84,7 +84,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
 
             if (ThreadLocalRandom.current().nextBoolean()) {
-                throw SklaDinyaException.conflict("Random payment failed");
+                throw SklaDinyaException.joke("Random payment failed");
             }
 
             var payment = new Payment(

@@ -1,6 +1,7 @@
 package skladinya.application.dtos.v1.price;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,6 @@ public class PriceCreateDto {
     private String cellClass;
 
     @NotNull
+    @PositiveOrZero
     private BigDecimal price;
 }

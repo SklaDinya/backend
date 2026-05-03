@@ -1,5 +1,6 @@
 package skladinya.application.converters.v1.price;
 
+import skladinya.application.converters.v1.help.TimeConverter;
 import skladinya.application.dtos.v1.price.PriceGetDto;
 import skladinya.domain.models.price.Price;
 
@@ -14,7 +15,7 @@ public final class PriceGetDtoConverter {
                 .storageId(price.storageId())
                 .cellClass(price.cellClass())
                 .price(price.price())
-                .createdAt(price.createdAt())
+                .createdAt(TimeConverter.toOffsetDateTime(price.createdAt()))
                 .build();
     }
 }

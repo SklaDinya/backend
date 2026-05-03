@@ -1,12 +1,14 @@
 package skladinya.application.dtos.v1.booking;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data
@@ -16,18 +18,17 @@ import java.util.List;
 public class BookingSearchParametersDto {
 
     @NotNull
-    private LocalDateTime startBooking;
+    private OffsetDateTime startBooking;
 
     @NotNull
-    private LocalDateTime endBooking;
+    private OffsetDateTime endBooking;
 
-    @NotNull
     private List<BookingStatusDto> statuses;
 
-    @NotNull
-    private int pageSize;
+    @PositiveOrZero
+    private Integer pageNumber;
 
-    @NotNull
-    private int pageNumber;
+    @Positive
+    private Integer pageSize;
 
 }

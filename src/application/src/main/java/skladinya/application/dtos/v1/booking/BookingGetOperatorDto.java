@@ -9,7 +9,7 @@ import skladinya.application.dtos.v1.cell.CellGetDto;
 import skladinya.domain.models.booking.BookingStatus;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,13 +35,13 @@ public class BookingGetOperatorDto {
     private List<CellGetDto> cells;
 
     @NotNull
-    private LocalDateTime startTime;
+    private OffsetDateTime startTime;
 
     @NotNull
     private Duration bookingTime;
 
     @NotNull
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @NotNull
     private BookingStatus status;
