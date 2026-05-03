@@ -91,7 +91,7 @@ public class OperatorServiceImpl implements OperatorService {
                     operatorId,
                     user.userId(),
                     user,
-                    operatorId,
+                    storageId,
                     updateForm.role() == null ? operator.role() : updateForm.role()
             );
             return operatorRepository.update(operatorId, updated);
