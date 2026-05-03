@@ -1,7 +1,11 @@
 package skladinya.services.payment;
 
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import skladinya.domain.exceptions.SklaDinyaException;
 import skladinya.domain.helpers.Synchronizer;
 import skladinya.domain.models.booking.Booking;
@@ -10,49 +14,69 @@ import skladinya.domain.models.payment.Payment;
 import skladinya.domain.models.payment.PaymentType;
 import skladinya.domain.models.payment.payloads.NoOpPaymentPayload;
 import skladinya.domain.models.payment.payloads.RandomPaymentPayload;
-import skladinya.domain.repositories.BookingRepository;
 import skladinya.domain.repositories.PaymentRepository;
 import skladinya.domain.services.PaymentService;
+import skladinya.services.payment.adapters.DurationAdapter;
+import skladinya.services.payment.adapters.LocalDateTimeAdapter;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Service
-@RequestScope
 public class PaymentServiceImpl implements PaymentService {
 
+    private static final String BOOKING_CLAIM = "booking";
+
     private final PaymentRepository paymentRepository;
-    private final BookingRepository bookingRepository;
+
     private final Synchronizer synchronizer;
+
+    private final Algorithm algorithm;
+
+    private final JWTVerifier verifier;
+
+    private final String issuer;
+
+    private final int expiration;
 
     public PaymentServiceImpl(
             PaymentRepository paymentRepository,
-            BookingRepository bookingRepository,
+            PaymentConfig config,
             Synchronizer synchronizer
     ) {
         this.paymentRepository = paymentRepository;
-        this.bookingRepository = bookingRepository;
         this.synchronizer = synchronizer;
+        issuer = config.issuer();
+        algorithm = Algorithm.HMAC256(config.secret());
+        verifier = createVerifier();
+        expiration = config.ttl();
     }
 
     @Override
     public String createReceipt(Booking booking) {
-        return booking.bookingId().toString();
+        var gson = getGson();
+        var data = gson.toJson(booking);
+        return JWT.create()
+                .withIssuer(issuer)
+                .withClaim(BOOKING_CLAIM, data)
+                .withExpiresAt(getExpirationDate(expiration))
+                .sign(algorithm);
     }
 
     @Override
     public Booking validateReceipt(String receipt) {
         return synchronizer.executeSingleFunction(() -> {
-            UUID bookingId;
-
             try {
-                bookingId = UUID.fromString(receipt);
-            } catch (Exception ex) {
-                throw SklaDinyaException.validationError("Invalid receipt");
+                var decoded = verifier.verify(receipt);
+                var data = decoded.getClaim(BOOKING_CLAIM).asString();
+                var gson = getGson();
+                return gson.fromJson(data, Booking.class);
+            } catch (JWTVerificationException e) {
+                throw SklaDinyaException.validationError("Invalid receipt data");
             }
-
-            return bookingRepository.getByBookingId(bookingId)
-                    .orElseThrow(() -> SklaDinyaException.notFound("Booking not found"));
         });
     }
 
@@ -105,7 +129,27 @@ public class PaymentServiceImpl implements PaymentService {
             if (payment == null) {
                 throw SklaDinyaException.validationError("Payment is null and WTF");
             }
-
         });
+    }
+
+    private static Date getExpirationDate(int expiration) {
+        var calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MINUTE, expiration);
+        return calendar.getTime();
+    }
+
+    private JWTVerifier createVerifier() {
+        return JWT.require(algorithm)
+                .withIssuer(issuer)
+                .withClaimPresence(BOOKING_CLAIM)
+                .build();
+    }
+
+    private Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
+                .create();
     }
 }
