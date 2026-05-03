@@ -3,6 +3,7 @@ package skladinya.persistence.postgres.repositories;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -67,8 +68,8 @@ public class PostgresStorageRepository implements StorageRepository {
 
     @Override
     public List<Storage> getAllBySearchOptions(StorageSearchOptions options) {
-        var pageable = PageRequest.of(options.pageNumber(), options.pageSize());
-
+        var sort = Sort.by("updatedAt").descending();
+        var pageable = PageRequest.of(options.pageNumber(), options.pageSize(), sort);
         return repo.findAll(StorageSpecification.byOptions(options), pageable)
                 .stream()
                 .map(StorageMapper::toDomain)

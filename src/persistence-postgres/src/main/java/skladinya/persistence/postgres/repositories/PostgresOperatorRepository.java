@@ -5,7 +5,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -71,8 +71,6 @@ class OperatorSpecification {
                 ));
             }
 
-            query.distinct(true);
-
             return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
@@ -105,8 +103,8 @@ public class PostgresOperatorRepository implements OperatorRepository {
 
     @Override
     public List<Operator> getAllBySearchOptions(UUID storageId, OperatorSearchOptions options) {
-        Pageable pageable = PageRequest.of(options.pageNumber(), options.pageSize());
-
+        var sort = Sort.by("user.updatedAt").descending();
+        var pageable = PageRequest.of(options.pageNumber(), options.pageSize(), sort);
         return repo.findAll(OperatorSpecification.byOptions(storageId, options), pageable)
                 .stream()
                 .map(OperatorMapper::toDomain)

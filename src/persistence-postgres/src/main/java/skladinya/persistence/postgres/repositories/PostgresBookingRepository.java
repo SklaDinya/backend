@@ -55,7 +55,6 @@ class BookingSpecification {
                 predicates.add(timeOverlap);
             }
 
-            query.distinct(true);
             return cb.and(predicates.toArray(Predicate[]::new));
         };
     }
