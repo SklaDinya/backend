@@ -75,7 +75,7 @@ class BookingServiceTest {
         var form = new BookingCreate(
                 storage.storageId(),
                 cells.stream().map(Cell::cellId).toList(),
-                LocalDateTime.now(),
+                LocalDateTime.now().plusHours(67),
                 Duration.ofHours(hours));
 
         given(userService.getByUserId(user.userId())).willReturn(user);
