@@ -18,8 +18,4 @@ public final class TimeConverter {
     public static LocalDateTime toLocalDateTime(OffsetDateTime time) {
         return time.atZoneSameInstant(MSK_ZONE).toLocalDateTime();
     }
-
-    public static LocalDateTime toLocalDateTime(OffsetDateTime time) {
-        return time.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-    }
 }
