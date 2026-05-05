@@ -1,4 +1,26 @@
 services:
+    caddy:
+        image: caddy:alpine
+        restart: unless-stopped
+        env_file:
+            - .env
+        networks:
+            - skladinya-dev
+        hostname: ${CADDY_HOST}
+        ports:
+            - "${CADDY_OUTER_PORT}:${CADDY_PORT}"
+        volumes:
+            - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+            - ./caddy/dist:/var/www/static:ro
+        depends_on:
+            spring:
+                condition: service_healthy
+        healthcheck:
+            test: [ "CMD", "caddy", "version" ]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+
     spring:
         image: amazoncorretto:21
         restart: unless-stopped
@@ -8,14 +30,14 @@ services:
             - skladinya-dev
         hostname: ${SPRING_HOST}
         command: [ "java", "-jar", "app.jar" ]
-        ports:
-            - "${SPRING_OUTER_PORT}:${SPRING_PORT}"
         volumes:
             - ./spring/app.jar:/app.jar:ro
             - ./spring/api:/static:ro
         depends_on:
-            - postgres
-            - redis
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
         healthcheck:
             test: [ "CMD-SHELL", "curl localhost:${SPRING_PORT}/actuator/health" ]
             interval: 10s
@@ -36,7 +58,7 @@ services:
             POSTGRES_USER: ${POSTGRES_USER}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         ports:
-            - "5432:${POSTGRES_PORT}"
+            - "${POSTGRES_OUTER_PORT}:${POSTGRES_PORT}"
         volumes:
             - ./postgres/scripts/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
             - ./postgres/scripts/fill.sql:/docker-entrypoint-initdb.d/02-fill.sql:ro
@@ -67,7 +89,7 @@ services:
             redis-server /usr/local/etc/redis/redis.conf
             "
         ports:
-            - "6379:${REDIS_PORT}"
+            - "${REDIS_OUTER_PORT}:${REDIS_PORT}"
         healthcheck:
             test: [ "CMD", "redis-cli", "-p", "${REDIS_PORT}", "--user", "${REDIS_USERNAME}", "--pass", "${REDIS_PASSWORD}", "--no-auth-warning", "ping" ]
             interval: 10s
