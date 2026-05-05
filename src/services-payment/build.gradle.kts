@@ -11,8 +11,8 @@ group = "skladinya.services.payment"
 dependencies {
     implementation(project(":domain"))
 
-    implementation("org.springframework:spring-context")
-    implementation("org.springframework:spring-web")
+    implementation("com.auth0:java-jwt:4.5.1")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.jar {

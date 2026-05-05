@@ -8,6 +8,7 @@ required:
     - cells
     - startTime
     - bookingTime
+    - price
     - createdAt
     - status
 properties:
@@ -39,6 +40,10 @@ properties:
         description: Длительность бронирования
         type: string
         format: duration
+    price:
+        description: Цена
+        type: number
+        example: 993
     createdAt:
         description: Время создания бронирования
         type: string

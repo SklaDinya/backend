@@ -146,5 +146,4 @@ public final class JwtServiceImpl implements JwtService {
             throw SklaDinyaException.badCredentials("Invalid token version");
         }
     }
-
 }
