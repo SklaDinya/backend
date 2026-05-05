@@ -1,0 +1,24 @@
+{
+    "properties": [
+        {
+            "name": "skladinya.jwt.issuer",
+            "type": "java.lang.String",
+            "description": "Token issuer name (usually server name)."
+        },
+        {
+            "name": "skladinya.jwt.secret",
+            "type": "java.lang.String",
+            "description": "Secret passphrase to generate token."
+        },
+        {
+            "name": "skladinya.jwt.ttl",
+            "type": "java.lang.Integer",
+            "description": "JWT TTL (in seconds)."
+        },
+        {
+            "name": "skladinya.booking.payment-timeout-minutes",
+            "type": "java.lang.Integer",
+            "description": "Unpaid booking TTL."
+        }
+    ]
+}

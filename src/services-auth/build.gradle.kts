@@ -8,7 +8,12 @@ plugins {
 description = "services-auth"
 group = "skladinya.services.auth"
 
-dependencies {}
+dependencies {
+    implementation(project(":domain"))
+
+    implementation("org.springframework:spring-context")
+    implementation("org.springframework:spring-web")
+}
 
 tasks.jar {
     manifest {

@@ -56,10 +56,6 @@ paths:
                                     $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные параметры поиска
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
                 '500':
                     description: Ошибки сервера
         post:
@@ -81,6 +77,61 @@ paths:
                     description: Сервер запущен только на чтение
                 '409':
                     description: Пользователь с таким логином или почтой уже существует
+                '500':
+                    description: Ошибки сервера
+    /api/v1/storages/requests:
+        get:
+            tags:
+                - storages
+            summary: Найти заявки на создание пунктов хранения
+            security:
+                -   JWTBearer: [ ]
+            parameters:
+                -   name: name
+                    in: query
+                    required: false
+                    description: Название пункта хранения
+                    schema:
+                        type: string
+                        example: Хранилище "У Рязановой"
+                -   name: address
+                    in: query
+                    required: false
+                    description: Адрес пункта хранения
+                    schema:
+                        type: string
+                        example: Москва
+                -   name: pageNumber
+                    in: query
+                    required: false
+                    description: Номер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 0
+                -   name: pageSize
+                    in: query
+                    required: false
+                    description: Размер страницы
+                    schema:
+                        type: integer
+                        format: int32
+                        example: 50
+            responses:
+                '200':
+                    description: Данные получены
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/StorageGet'
+                '400':
+                    description: Некорректные параметры поиска
+                '401':
+                    description: Пользователь не авторизован
+                '403':
+                    description: Пользователь не имеет прав на эту операцию
                 '500':
                     description: Ошибки сервера
     /api/v1/storages/{storageId}:
@@ -107,10 +158,6 @@ paths:
                                 $ref: '#/components/schemas/StorageGet'
                 '400':
                     description: Некорректные параметры запроса
-                '401':
-                    description: Пользователь не авторизован
-                '403':
-                    description: Пользователь не имеет прав на эту операцию
                 '404':
                     description: Пункт хранения не найден
                 '500':
@@ -276,6 +323,8 @@ components:
             $ref: '../dtos/storages/storage-create.schema.yaml'
         StorageGet:
             $ref: '../dtos/storages/storage-get.schema.yaml'
+        StorageStatus:
+            $ref: '../dtos/storages/storage-status.schema.yaml'
         StorageUpdate:
             $ref: '../dtos/storages/storage-update.schema.yaml'
     securitySchemes:

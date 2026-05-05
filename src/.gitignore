@@ -4,6 +4,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 .kotlin
+**/gradlew
+**/gradlew.bat
+**/gradle/
+
+# Fake data generator
+utils-bdfiller/generatedData
+utils-bdfiller/logs
 
 ### IntelliJ IDEA ###
 .idea/
@@ -39,4 +46,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+# other
 *.jar
+*.env

@@ -8,7 +8,13 @@ plugins {
 description = "persistence-redis"
 group = "skladinya.persistence.redis"
 
-dependencies {}
+dependencies {
+    implementation(project(":domain"))
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+}
 
 tasks.jar {
     manifest {
